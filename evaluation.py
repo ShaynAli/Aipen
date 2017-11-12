@@ -1,16 +1,18 @@
 ''' evaluation.py - Evaluates AI and ML models '''
 
-from warnings import warn
-import numpy as np
-from math import ceil
 import logging, sys, os
+from warnings import warn
 from time import strftime, localtime
+from math import ceil
+import numpy as np
+
+# TODO Break apart ML and AI files into different modules
 
 # Logging
 # TODO: Set up logging config file in /log
 
 time_fmt = '%Y-%m-%d, %H-%M-%S'
-log_fmt = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+log_fmt = '%(asctime)s %(name)-8s %(levelname)-12s %(message)s'
 curr_path = sys.path[0]  # Current path, i.e. where the script is being run from
 log_loc = os.path.join(curr_path, 'log')  # Logging location
 log_file_name = os.path.join(log_loc, '{time}.log'.format(time=strftime(time_fmt, localtime())))
@@ -41,10 +43,7 @@ def accuracy(predicted, actual, rounding=False):
     if predicted.shape != actual.shape:
         raise RuntimeError('Shape mismatch, predicted had shape {predicted_shape} while actual had shape {actual_shape}'
                            .format(predicted_shape=predicted.shape, actual_shape=actual.shape))
-    if rounding:
-        err = np.round(predicted) - actual
-    else:
-        err = predicted - actual
+    err = np.round(predicted) - actual if rounding else predicted - actual
     abs_err = np.absolute(err)
     return 1 - np.mean(abs_err)
 
@@ -53,7 +52,7 @@ def score_prediction(x, y_predicted, y_actual, score=accuracy):
     return score(y_predicted, y_actual)
 
 
-# def eval_predictions(x_data, y_predicted_data, y_actual_data):
+# def eval_predictions(x_data, y_predicted_data, y_actual_data):  # Potentially useful for series data
 #     pass
 
 
@@ -96,20 +95,22 @@ def score_ml_model(model, x_data, y_data,
         data_i = n_pre_training if epoch_i == 0 else 0
         # Go through each batch, test, then train
         for batch_i in range(n_batches):
-            max_batch_i = min(data_i + batch_size, max_i)
-            logging.info('\t\tBatch ' + str(batch_i+1) + '/' + str(n_batches) +
-                         '\n\t\tIndex range: ' + str([data_i, max_batch_i]))
+            batch_max_i = min(data_i + batch_size, max_i)
+            logging.info('\t\tBatch ' + str(batch_i+1) + '/' + str(n_batches))
+            logging.info('\t\tIndex range: ' + str([data_i, batch_max_i]))
             # Test
             logging.info('\t\t\tTesting')
-            for i in range(data_i, max_batch_i):
+            batch_scores = np.zeros((batch_max_i-data_i,))
+            for i in range(data_i, batch_max_i):
                 x = x_data[i]
                 y = y_data[i]
-                score = score_prediction(x, model.predict(x), y)
-                scores[epoch_i][batch_i] = score
-                logging.info('\t\t\t\tScore:' + str(score))
+                batch_scores[i-data_i] = score_prediction(x, model.predict(x), y)
+            avg_score = np.mean(batch_scores)
+            scores[epoch_i][batch_i] = avg_score
+            logging.info('\t\t\tAverage score:' + str(avg_score))
             # Train
             logging.info('\t\t\tTraining')
-            for i in range(data_i, max_batch_i):
+            for i in range(data_i, batch_max_i):
                 x = x_data[i]
                 y = y_data[i]
                 model.learn(x, y)
@@ -123,9 +124,12 @@ def score_ml_models(models, x_data, y_data):
     for mdl in models:
         logging.info('Model: ' + str(mdl))
         performance[mdl] = score_ml_model(mdl, x_data, y_data)
+    avg_performance = {mdl: np.mean(performance[mdl]) for mdl in performance.keys()}
+    scoreboard = sorted(avg_performance.items(), key=lambda x: x[1])
     logging.info('Scoring complete, model performances:')
-    logging.info(performance)
-    return performance
+    for s in scoreboard:
+        logging.info(s)
+    return scoreboard
 
 
 # For AI models

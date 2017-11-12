@@ -1,11 +1,12 @@
 ''' test_models.py Simple models for testing '''
-from abstract_models import MLModel, EvolutionaryMLModel
 import numpy as np
+
+from models.abstract_models import MLModel
 
 
 class ZeroModel(MLModel):
 
-    _DEFAULT_PREDICTION = []
+    _DEFAULT_PREDICTION = np.zeros([])
 
     @staticmethod
     def properties():
@@ -62,7 +63,7 @@ class RandomModel(MLModel):
     def predict(self, x):
         prediction = self.z_mdl.predict(x)
         if len(prediction) > 0:
-            prediction[:] = [self.distribution(self.range[0], self.range[1]) for p in prediction]
+            prediction[:] = [self.distribution(self.range[0], self.range[1]) for _ in prediction]
         return prediction
 
     def summary(self):
