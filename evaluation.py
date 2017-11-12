@@ -6,8 +6,10 @@ from math import ceil
 import logging, sys, os
 from time import strftime, localtime
 
-# Set up logging
-time_fmt = '%Y-%m-%d %H%M'
+# Logging
+# TODO: Set up logging config file in /log
+
+time_fmt = '%Y-%m-%d, %H-%M-%S'
 log_fmt = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
 curr_path = sys.path[0]  # Current path, i.e. where the script is being run from
 log_loc = os.path.join(curr_path, 'log')  # Logging location
@@ -30,8 +32,9 @@ logging.getLogger('').addHandler(console)  # Add console as handler to root logg
 
 # For ML models
 
-EVAL_BATCH_SIZE = 1
+EVAL_BATCH_SIZE = 5
 N_EPOCHS = 1
+N_PRE_TRAINING = 1
 
 
 def accuracy(predicted, actual, rounding=False):
@@ -54,17 +57,20 @@ def score_prediction(x, y_predicted, y_actual, score=accuracy):
 #     pass
 
 
-def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N_EPOCHS):
+def score_ml_model(model, x_data, y_data,
+                   batch_size=EVAL_BATCH_SIZE,
+                   n_epochs=N_EPOCHS,
+                   n_pre_training=N_PRE_TRAINING):
     # TODO
     '''
     
-    First batch will be trained but not tested on, this allows the model to learn the shape of the input and output
+    First entries will be trained but not tested on, this allows the model to learn the shape of the input and output
     :param model: 
     :param x_data: 
     :param y_data: 
     :param batch_size: 
     :param n_epochs: 
-    :param train_first: Whether 
+    :param n_pre_training: Number of entries to pre-train on
     :return: 
     '''
 
@@ -78,31 +84,32 @@ def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N
     scores = np.zeros((n_epochs, n_batches))
 
     # Train one batch for shape
-    for i in range(0, min(batch_size, max_i)):
-        logging.info('\t\tBatch 0')
-        logging.info('\t\t\tTraining for shape ' + str(i))
+    logging.info('\tPre-training')
+    for i in range(0, n_pre_training):
+        logging.info('\t\t' + str(i+1) + '/' + str(n_pre_training))
         x = x_data[i]
         y = y_data[i]
         model.learn(x, y)
 
     for epoch_i in range(n_epochs):
-        logging.info('\tEpoch ' + str(epoch_i))
-        data_i = batch_size
+        logging.info('\tEpoch ' + str(epoch_i+1) + '/' + str(n_epochs))
+        data_i = n_pre_training if epoch_i == 0 else 0
         # Go through each batch, test, then train
-        for batch_i in range(1, n_batches):
-            logging.info('\t\tBatch ' + str(batch_i))
+        for batch_i in range(n_batches):
             max_batch_i = min(data_i + batch_size, max_i)
+            logging.info('\t\tBatch ' + str(batch_i+1) + '/' + str(n_batches) +
+                         '\n\t\tIndex range: ' + str([data_i, max_batch_i]))
             # Test
+            logging.info('\t\t\tTesting')
             for i in range(data_i, max_batch_i):
-                logging.info('\t\t\tTesting ' + str(i))
                 x = x_data[i]
                 y = y_data[i]
                 score = score_prediction(x, model.predict(x), y)
                 scores[epoch_i][batch_i] = score
                 logging.info('\t\t\t\tScore:' + str(score))
             # Train
+            logging.info('\t\t\tTraining')
             for i in range(data_i, max_batch_i):
-                logging.info('\t\t\tTraining ' + str(i))
                 x = x_data[i]
                 y = y_data[i]
                 model.learn(x, y)
@@ -111,12 +118,14 @@ def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N
 
 
 def score_ml_models(models, x_data, y_data):
-    perf = {}  # Begin with empty dict, then fill
+    performance = {}  # Begin with empty dict, then fill
     logging.info('Scoring models')
     for mdl in models:
         logging.info('Model: ' + str(mdl))
-        perf[mdl] = score_ml_model(mdl, x_data, y_data)
-    return perf
+        performance[mdl] = score_ml_model(mdl, x_data, y_data)
+    logging.info('Scoring complete, model performances:')
+    logging.info(performance)
+    return performance
 
 
 # For AI models
