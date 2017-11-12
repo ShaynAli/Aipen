@@ -22,7 +22,7 @@ class ZeroModel(MLModel):
     def predict(self, x):
         if self.y_shape is None:  # No output shape has been learned
             return ZeroModel._DEFAULT_PREDICTION
-        return np.zeros(x.shape[0:1] + self.y_shape[1:])
+        return np.zeros(self.y_shape)
 
     def summary(self):
         return '''
@@ -62,9 +62,7 @@ class RandomModel(MLModel):
     def predict(self, x):
         prediction = self.z_mdl.predict(x)
         if len(prediction) > 0:
-            for p in prediction:
-                p = self.distribution(self.range[0], self.range[1])
-                print(p)
+            prediction[:] = [self.distribution(self.range[0], self.range[1]) for p in prediction]
         return prediction
 
     def summary(self):
