@@ -3,8 +3,30 @@
 from warnings import warn
 import numpy as np
 from math import ceil
-import logging, sys
-logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
+import logging, sys, os
+from time import strftime, localtime
+
+# Set up logging
+time_fmt = '%Y-%m-%d %H%M'
+log_fmt = '%(asctime)s %(name)-12s %(levelname)-8s %(message)s'
+curr_path = sys.path[0]  # Current path, i.e. where the script is being run from
+log_loc = os.path.join(curr_path, 'log')  # Logging location
+log_file_name = os.path.join(log_loc, '{time}.log'.format(time=strftime(time_fmt, localtime())))
+# Create logging file
+open(log_file_name, 'w').close()
+# Configure logging to file
+logging.basicConfig(
+    level=logging.DEBUG,
+    format=log_fmt,
+    datefmt=time_fmt,
+    filename=log_file_name,
+    filemode='a',
+    # stream=sys.stderr,
+)
+# Add console as logging handler, in the future other handlers can be added
+console = logging.StreamHandler()
+console.setLevel(logging.NOTSET)
+logging.getLogger('').addHandler(console)  # Add console as handler to root logger
 
 # For ML models
 
@@ -57,28 +79,30 @@ def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N
 
     # Train one batch for shape
     for i in range(0, min(batch_size, max_i)):
-        logging.debug('\t\tBatch 0')
-        logging.debug('\t\t\tTraining for shape ' + str(i))
+        logging.info('\t\tBatch 0')
+        logging.info('\t\t\tTraining for shape ' + str(i))
         x = x_data[i]
         y = y_data[i]
         model.learn(x, y)
 
     for epoch_i in range(n_epochs):
-        logging.debug('\tEpoch ' + str(epoch_i))
+        logging.info('\tEpoch ' + str(epoch_i))
         data_i = batch_size
         # Go through each batch, test, then train
         for batch_i in range(1, n_batches):
-            logging.debug('\t\tBatch ' + str(batch_i))
+            logging.info('\t\tBatch ' + str(batch_i))
             max_batch_i = min(data_i + batch_size, max_i)
             # Test
             for i in range(data_i, max_batch_i):
-                logging.debug('\t\t\tTesting ' + str(i))
+                logging.info('\t\t\tTesting ' + str(i))
                 x = x_data[i]
                 y = y_data[i]
-                scores[epoch_i][batch_i] = score_prediction(x, model.predict(x), y)
+                score = score_prediction(x, model.predict(x), y)
+                scores[epoch_i][batch_i] = score
+                logging.info('\t\t\t\tScore:' + str(score))
             # Train
             for i in range(data_i, max_batch_i):
-                logging.debug('\t\t\tTraining ' + str(i))
+                logging.info('\t\t\tTraining ' + str(i))
                 x = x_data[i]
                 y = y_data[i]
                 model.learn(x, y)
@@ -88,7 +112,9 @@ def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N
 
 def score_ml_models(models, x_data, y_data):
     perf = {}  # Begin with empty dict, then fill
+    logging.info('Scoring models')
     for mdl in models:
+        logging.info('Model: ' + str(mdl))
         perf[mdl] = score_ml_model(mdl, x_data, y_data)
     return perf
 
