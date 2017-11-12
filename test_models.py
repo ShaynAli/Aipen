@@ -1,10 +1,16 @@
 ''' test_models.py Simple models for testing '''
-
 from abstract_models import MLModel, EvolutionaryMLModel
 import numpy as np
 
 
 class ZeroModel(MLModel):
+
+    _DEFAULT_PREDICTION = []
+
+    @staticmethod
+    def properties():
+        # TODO
+        return None
 
     def __init__(self):
         super(ZeroModel, self).__init__()
@@ -15,7 +21,7 @@ class ZeroModel(MLModel):
 
     def predict(self, x):
         if self.y_shape is None:  # No output shape has been learned
-            return np.zeros(None)
+            return ZeroModel._DEFAULT_PREDICTION
         return np.zeros(x.shape[0:1] + self.y_shape[1:])
 
     def summary(self):
@@ -27,3 +33,42 @@ class ZeroModel(MLModel):
             \tother dimensions based on the learned shape of y
             '''
 
+
+class RandomModel(MLModel):
+    from random import uniform
+
+    _DEFAULT_RANGE = [0, 1]
+    _DEFAULT_LEARN_RANGES = True  # Whether to learn the range of each output
+    _DEFAULT_DISTRIBUTION = uniform
+
+    @staticmethod
+    def properties():
+        # TODO
+        return None
+
+    def __init__(self, range=_DEFAULT_RANGE, distribution=_DEFAULT_DISTRIBUTION):
+        super(RandomModel, self).__init__()
+        self.z_mdl = ZeroModel()  # Zero model for shape
+        self.range = range
+        self.distribution = distribution
+
+    def learn(self, x, y):
+        self.z_mdl.learn(x, y)
+        # Update min
+        self.range[0] = min(np.min(y), self.range[0])
+        # Update max
+        self.range[1] = max(np.max(y), self.range[1])
+
+    def predict(self, x):
+        prediction = self.z_mdl.predict(x)
+        if len(prediction) > 0:
+            for p in prediction:
+                p = self.distribution(self.range[0], self.range[1])
+                print(p)
+        return prediction
+
+    def summary(self):
+        return '''
+            RandomModel\n
+            \tPredicts randomly, tried to have predictions fall within the possible output range
+            '''

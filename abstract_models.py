@@ -1,11 +1,11 @@
 ''' super_model.py - An abstract ML model for all other Aipen models to inherit from '''
-
 from abc import ABCMeta, abstractmethod
 
 
 class MLModel(metaclass=ABCMeta):
     '''
     Abstract class for all ML_Models to implement
+    Expected fields or properties for acces
     Expected methods to implement:
         __init__()
         learn(x, y)
@@ -37,6 +37,14 @@ class MLModel(metaclass=ABCMeta):
         :param y: True outputs corresponding to the predictors (y values) in a pandas DataFrame
         '''
 
+    @staticmethod
+    @abstractmethod
+    def properties():
+        '''
+        A list of properties about the model
+        :return: A dict of properties related to the model
+        '''
+
     def summary(self):
         '''
         A summary of the model
@@ -60,15 +68,40 @@ class MLModel(metaclass=ABCMeta):
 
 class EvolutionaryMLModel(MLModel):
 
-    mutations = {}  # Dict of possible mutations
+    @staticmethod
+    @abstractmethod
+    def mutations():
+        '''
+        Ways in which the model can mutate - see .mutate()
+        :return: A dict of possible mutations to a generator of possible values
+        '''
+
+    @staticmethod
+    @abstractmethod
+    def properties():
+        # TODO
+        pass
+
+    @abstractmethod
+    def __init__(self):
+        super(EvolutionaryMLModel, self).__init__()
+
+    @abstractmethod
+    def predict(self, x):
+        super(EvolutionaryMLModel, self).predict()
+
+    @abstractmethod
+    def learn(self, x, y):
+        super(EvolutionaryMLModel, self).learn()
 
     @abstractmethod
     def mutate(self):
         '''
         Change model hyper-parameters to potentially produce a better model
-        The model should draw from the dict of possible mutations, mutations
+        The model should draw from the dict of possible mutations given by .mutations()
         '''
 
+    @abstractmethod
     def simplify(self, preserving=True):
         '''
         Simplify model to reduce computation complexity
@@ -78,15 +111,6 @@ class EvolutionaryMLModel(MLModel):
         eliminate low-weight, high-computation parts of the system
         :param preserving: Whether the model is exactly preserved or not
         '''
-
-    def __init__(self):
-        super(EvolutionaryMLModel, self).__init__()
-
-    def predict(self, x):
-        super(EvolutionaryMLModel, self).predict()
-
-    def learn(self, x, y):
-        super(EvolutionaryMLModel, self).learn()
 
     def summary(self):
         return ('''

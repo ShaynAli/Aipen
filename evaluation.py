@@ -9,6 +9,7 @@ from math import ceil
 EVAL_BATCH_SIZE = 1
 N_EPOCHS = 1
 
+
 def eval_prediction(x, y_predicted, y_actual):
     return 0
 
@@ -57,6 +58,7 @@ def eval_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N_
                 y = y_data[i]
                 model.learn(x, y)
             data_i = data_i + batch_size
+    return scores
 
 
 def eval_ml_models(models, x_data, y_data):

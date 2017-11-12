@@ -3,7 +3,9 @@ import numpy as np
 import test_models
 
 z_mdl = test_models.ZeroModel()
+r_mdl = test_models.RandomModel()
 
-ev.eval_ml_model(z_mdl, x_data=np.zeros((100, 3)), y_data=np.zeros((100, 1)), batch_size=5)
+mdls = [z_mdl, r_mdl]
 
-# print(z_mdl.name())
+ev.eval_ml_models(mdls, x_data=np.zeros((100, 3)), y_data=np.zeros((100, 1)))
+
