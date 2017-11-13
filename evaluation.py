@@ -27,8 +27,16 @@ N_PRE_TRAINING = 1
 #     return np.sum(predicted == actual)
 
 
-def inverse_norm_err(predicted, actual, rounding=False):
-    err = np.round(predicted) - actual if rounding else predicted - actual
+def mae(predicted, actual):
+    return np.mean(np.absolute(predicted - actual))
+
+
+def rmse(predicted, actual):
+    return np.sqrt(np.mean((predicted - actual)**2))
+
+
+def inverse_norm_err(predicted, actual):
+    err = predicted - actual
     norm_err = np.linalg.norm(err)
     return 1.0/norm_err
 
@@ -51,19 +59,24 @@ def inverse_norm_err(predicted, actual, rounding=False):
 #     pct_diff = abs_diff*(1.0/avg)
 #     return pct_diff
 
+DEFAULT_SCORE_FUNCTION = inverse_norm_err
+DEFAULT_ACCURACY_FUNCTION = mae
 
-def score_prediction(x, y_predicted, y_actual, score=inverse_norm_err):
+
+def score_prediction(x, y_predicted, y_actual, score_function=DEFAULT_SCORE_FUNCTION, rounding=False):
     if y_predicted.shape != y_actual.shape:
         raise RuntimeError('Shape mismatch, predicted had shape {predicted_shape} while actual had shape {actual_shape}'
                            .format(predicted_shape=y_predicted.shape, actual_shape=y_actual.shape))
-    return score(y_predicted, y_actual)
+    return score_function((np.round(y_predicted) if rounding else y_predicted), y_actual)
 
 # # TODO: Change to eval batch predictions and refactor score_ml_model
 # def eval_predictions(x_data, y_predicted_data, y_actual_data):  # Potentially useful for series data
 #     pass
 
 
-def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N_EPOCHS, n_pre_training=N_PRE_TRAINING):
+def score_ml_model(model, x_data, y_data,
+                   batch_size=EVAL_BATCH_SIZE, n_epochs=N_EPOCHS, n_pre_training=N_PRE_TRAINING,
+                   score_function=DEFAULT_SCORE_FUNCTION, train_after_testing=True):
 
     n_x = x_data.shape[0]  # Number of x entries
     n_y = y_data.shape[0]  # Number of y entries
@@ -97,7 +110,7 @@ def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N
                 x = x_data[i]
                 y = y_data[i]
                 prediction = model.predict(x)
-                score = score_prediction(x, prediction, y)
+                score = score_prediction(x, prediction, y, score_function=score_function)
                 batch_scores[i-data_i] = score
                 _log.log(level=TEST_ELEMENT_LOG_LEVEL, msg='x:' + str(x))
                 _log.log(level=TEST_ELEMENT_LOG_LEVEL, msg='y:' + str(y))
@@ -106,29 +119,29 @@ def score_ml_model(model, x_data, y_data, batch_size=EVAL_BATCH_SIZE, n_epochs=N
             batch_score = np.mean(batch_scores)
             scores[epoch_i][batch_i] = batch_score
             _log.log(level=TEST_LOG_LEVEL, msg='Average score:' + str(batch_score))
-            # Train
-            _log.log(level=TRAIN_LOG_LEVEL, msg='Training')
-            for i in range(data_i, batch_max_i):
-                x = x_data[i]
-                y = y_data[i]
-                model.learn(x, y)
-                _log.log(level=TRAIN_ELEMENT_LOG_LEVEL, msg='Trained on data at ' + str(i))
+            if train_after_testing:
+                # Train
+                _log.log(level=TRAIN_LOG_LEVEL, msg='Training')
+                for i in range(data_i, batch_max_i):
+                    x = x_data[i]
+                    y = y_data[i]
+                    model.learn(x, y)
+                    _log.log(level=TRAIN_ELEMENT_LOG_LEVEL, msg='Trained on data at ' + str(i))
             data_i = data_i + batch_size
     return scores
 
 
-def score_ml_models(models, x_data, y_data):
+def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTION):
     performance = {}
     _log.info('Scoring models')
     for mdl in models:
         _log.info('\tScoring model: ' + str(mdl))
-        performance[mdl] = score_ml_model(mdl, x_data, y_data)
+        performance[mdl] = score_ml_model(mdl, x_data, y_data, score_function=score_function)
     scores = {mdl: np.mean(performance[mdl]) for mdl in performance.keys()}
     _log.info('Scoring complete, model performances:')
     for s in scores.items():
         _log.info('\t' + str(s))
     return scores
-
 
 # For AI models
 

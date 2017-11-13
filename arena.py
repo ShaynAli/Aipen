@@ -54,9 +54,6 @@ class Arena:
     def gen_model(self):
         return self.model_gen.__next__()
 
-    def n_models(self):
-        return self.model_gen.mdl_no
-
     # Set log_top to None to log all
     def compete(self, x_data, y_data, live_ratio=0.5, mutate_ratio=0.5, n_rounds=1, log_top=10):
         self.n_tourneys = self.n_tourneys + 1
@@ -65,16 +62,20 @@ class Arena:
         for round_no in range(n_rounds):
             # Score each model
             scores = ev.score_ml_models(self.models, x_data, y_data)
+            accuracy = ev.score_ml_models(self.models, x_data, y_data, score_function=ev.DEFAULT_ACCURACY_FUNCTION)
             self.models = sorted(self.models, key=lambda mdl: scores[mdl], reverse=True)
             self.scores.append(scores)
             # TODO: Panda-ize scoreboard
             _log.info('Round ' + str(round_no+1) + '/' + str(n_rounds))
-            _log.info('model number\t| score\t\t\t| model type')
-            _log.info('----------------|-----------------------|------------------')
+            _log.info('model number\t| model type\t\t| score\t\t\t| accuracy')
+            _log.info('----------------|-----------------------|-----------------------|-----------------------')
             for mdl in (self.models if log_top is None else self.models[:log_top]):
                 _log.info(
-                    str(Arena.model_number(mdl)).rjust(15) + ' | ' + str(scores[mdl]).ljust(21) + ' | ' +
-                    str(mdl.name()))
+                    str(Arena.model_number(mdl)).ljust(15) + ' | '
+                    + str(mdl.name()).rjust(21) + ' | '
+                    + str(scores[mdl]).ljust(21) + ' | '
+                    + str(accuracy[mdl]).ljust(21)
+                )
             # Kill and regenerate
             live_i = int(len(self.models)*live_ratio)
             regen = self.models[live_i:]
@@ -92,7 +93,7 @@ class Arena:
             for mdl in mutate:
                 if mdl is EvolutionaryMLModel:
                     mdl.mutate()
-        _log.info(str(self.n_models()) + ' models generated so far')
+        _log.info(str(Arena.model_number(self.models[-1])+1) + ' models generated so far')
 
     def gen_new_models(self, n):
         '''
