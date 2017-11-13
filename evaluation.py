@@ -22,7 +22,6 @@ EVAL_BATCH_SIZE = 5
 N_EPOCHS = 1
 N_PRE_TRAINING = 1
 
-
 # Error functions
 
 
@@ -57,6 +56,7 @@ def score_prediction(x, y_predicted, y_actual, score_function=DEFAULT_SCORE_FUNC
         raise RuntimeError('Shape mismatch, predicted had shape {predicted_shape} while actual had shape {actual_shape}'
                            .format(predicted_shape=y_predicted.shape, actual_shape=y_actual.shape))
     return score_function((np.round(y_predicted) if rounding else y_predicted), y_actual)
+
 
 # # TODO: Change to eval batch predictions and refactor score_ml_model
 # def eval_predictions(x_data, y_predicted_data, y_actual_data):  # Potentially useful for series data

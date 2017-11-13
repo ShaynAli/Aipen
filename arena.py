@@ -19,18 +19,15 @@ if LISTEN_TO_EVAL_LOG:
 
 
 class Arena:
-    _MODEL_NO_STR = 'number'
+    MODEL_ID = 'model number'
     MODEL_POOL = [
         test_models.ZeroModel,
         test_models.RandomModel,
         test_models.RandomStaticModel,
     ]
 
-    @staticmethod
-    def model_number(model):
-        return getattr(model, Arena._MODEL_NO_STR)
-
     def __init__(self, model_pool=MODEL_POOL, n_models=100):
+        self.model_id = Arena.MODEL_ID
         self.model_pool = model_pool
         self.model_gen = Arena.ModelGenerator(self)
         self.models = self.gen_new_models(n_models)
@@ -40,12 +37,13 @@ class Arena:
     class ModelGenerator:
 
         def __init__(self, arena):
-            self.model_pool = arena.model_pool
+            self.arena = arena
+            self.model_pool = self.arena.model_pool
             self.mdl_no = count()
 
         def __next__(self):
             mdl = choice(self.model_pool)()
-            setattr(mdl, Arena._MODEL_NO_STR, self.mdl_no.__next__())
+            setattr(mdl, self.arena.model_id, self.mdl_no.__next__())
             return mdl
 
         def __iter__(self):
@@ -54,25 +52,29 @@ class Arena:
     def gen_model(self):
         return self.model_gen.__next__()
 
+    def model_number(self, model):
+        return getattr(model, self.model_id)
+
     # Set log_top to None to log all
     def compete(self, x_data, y_data, live_ratio=0.5, mutate_ratio=0.5, n_rounds=1, log_top=10,
-                score_function=ev.DEFAULT_SCORE_FUNCTION):
+                score_function=ev.DEFAULT_SCORE_FUNCTION, error_function=ev.DEFAULT_ERROR_FUNCTION):
         self.n_tourneys = self.n_tourneys + 1
         _log.info('')
         _log.info('Tournament ' + str(self.n_tourneys))
         for round_no in range(n_rounds):
             # Score each model
             score = ev.score_ml_models(self.models, x_data, y_data, score_function=score_function)
-            error = ev.score_ml_models(self.models, x_data, y_data, score_function=ev.DEFAULT_ERROR_FUNCTION)
+            error = ev.score_ml_models(self.models, x_data, y_data, score_function=error_function)
             self.models = sorted(self.models, key=lambda mdl: score[mdl], reverse=True)
             self.scores.append(score)
             # TODO: Panda-ize scoreboard
             _log.info('Round ' + str(round_no+1) + '/' + str(n_rounds))
-            _log.info('model number\t| model type\t\t| {sf:21}\t| error'.format(sf=score_function.__name__))
+            _log.info('{id}\t| model type\t\t| {sco:21}\t| {err:21}\t'
+                      .format(id=self.model_id, sco=score_function.__name__, err=error_function.__name__))
             _log.info('----------------|-----------------------|-----------------------|-----------------------')
             for mdl in (self.models if log_top is None else self.models[:log_top]):
                 _log.info(
-                    str(Arena.model_number(mdl)).ljust(15) + ' | '
+                    str(self.model_number(mdl)).ljust(15) + ' | '
                     + str(mdl.name()).rjust(21) + ' | '
                     + str(score[mdl]).ljust(21) + ' | '
                     + str(error[mdl]).ljust(21)
@@ -81,12 +83,12 @@ class Arena:
             live_i = int(len(self.models)*live_ratio)
             regen = self.models[live_i:]
             _log.info('Regenerating ' + str(len(regen)) + ' models')
-            _log.log(level=logging.INFO-1, msg='Regenerating models: ' + str([Arena.model_number(mdl) for mdl in regen]))
+            _log.log(level=logging.INFO-1, msg='Regenerating models: ' + str([self.model_number(mdl) for mdl in regen]))
             for i, _ in enumerate(regen):
                 self.models[live_i+i] = self.gen_model()
             _log.info('Next generation ready')
             _log.log(level=logging.INFO-1,
-                     msg='Next generation models: ' + str([Arena.model_number(mdl) for mdl in self.models]))
+                     msg='Next generation models: ' + str([self.model_number(mdl) for mdl in self.models]))
             # Mutate any surviving evolutionary models
             live = self.models[:live_i]
             mutate_i = int(len(live)*mutate_ratio)
@@ -94,7 +96,7 @@ class Arena:
             for mdl in mutate:
                 if mdl is EvolutionaryMLModel:
                     mdl.mutate()
-        _log.info(str(Arena.model_number(self.models[-1])+1) + ' models generated so far')
+        _log.info(str(self.model_number(self.models[-1])+1) + ' models generated so far')
 
     def gen_new_models(self, n):
         '''
