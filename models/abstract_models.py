@@ -18,7 +18,7 @@ class MLModel(metaclass=ABCMeta):
     @abstractmethod
     def __init__(self):
         '''
-        Initialize the model
+        Initialize the model with random properties and mutations
         '''
 
     @abstractmethod
