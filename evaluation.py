@@ -75,7 +75,7 @@ def simple_gauss_acc(predicted, actual, error=mean_abs_error):
 
 DEFAULT_SCORE_FUNCTION = simple_gauss_acc
 DEFAULT_ERROR_FUNCTION = rms_error
-DEFAULT_TRACK_FUNCTION = mean_abs_error
+DEFAULT_TRACK_FUNCTION = rms_error
 
 
 def score_prediction(x, y_predicted, y_actual, score_function=DEFAULT_SCORE_FUNCTION, rounding=False):
@@ -147,7 +147,7 @@ def score_ml_model(model, x_data, y_data,
     return scores
 
 
-def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTION):
+def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTION): # TODO: Parallel-ize
     performance = {}
     _log.info('Scoring models')
     for mdl in models:

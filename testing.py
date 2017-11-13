@@ -25,7 +25,7 @@ live_ratio = params['live_ratio']
 x_data = np.random.uniform(min_x, max_x, (n_rows, n_x))
 y_data = np.random.uniform(min_y, max_y, (n_rows, n_y))
 
-_arena = Arena(n_models=n_models, model_pool=[test_models.RandomStaticModel])
+_arena = Arena(n_models=n_models)
 for i in range(n_tournaments):
     _arena.compete(x_data, y_data, live_ratio=live_ratio)
 
