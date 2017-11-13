@@ -1,7 +1,6 @@
 ''' test_models.py Simple models for testing '''
-import numpy as np
-
 from models.abstract_models import MLModel
+import numpy as np
 
 
 class ZeroModel(MLModel):

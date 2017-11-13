@@ -6,7 +6,7 @@ from models import test_models
 import numpy as np
 import pandas as pd
 
-logging = logger.Log('arena', console_logging=True)
+logging = logger.get('arena', console_logging=True)
 
 
 class Arena:
@@ -20,12 +20,18 @@ class Arena:
         self.model_no = 0
         self.model_pool = model_pool
         self.models = self.gen_new_models(n)
-        self.scores = None
+        self.scoreboards = []
 
     def compete(self, x_data, y_data, live_ratio=0.5, mutate_ratio=0.5):
-        self.scores = ev.score_ml_models(self.models, x_data, y_data)
-        # n_live = int(len(self.scores) * live_ratio)
-        # kill = self.scores[n_live:]
+        scores = ev.score_ml_models(self.models, x_data, y_data)
+        # Sort models by score
+        scoreboard = sorted(scores.items(), key=lambda k: k[1])
+        self.scoreboards.append(scoreboard)
+        for s in scoreboard:
+            logging.debug(s)
+        # Kill
+        # Mutate
+        # Generate new models
 
     def gen_new_models(self, n):
         '''

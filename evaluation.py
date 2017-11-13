@@ -5,7 +5,7 @@ import numpy as np
 
 # TODO Break apart ML and AI files into different modules
 
-logging = logger.Log('evaluation')
+logging = logger.get('evaluation')
 
 # For ML models
 EVAL_BATCH_SIZE = 5
@@ -95,12 +95,11 @@ def score_ml_models(models, x_data, y_data):
     for mdl in models:
         logging.info('Model: ' + str(mdl))
         performance[mdl] = score_ml_model(mdl, x_data, y_data)
-    avg_performance = {mdl: np.mean(performance[mdl]) for mdl in performance.keys()}
-    scoreboard = sorted(avg_performance.items(), key=lambda x: x[1], reverse=True)
+    scores = {mdl: np.mean(performance[mdl]) for mdl in performance.keys()}
     logging.info('Scoring complete, model performances:')
-    for s in scoreboard:
+    for s in scores:
         logging.info('\t' + str(s))
-    return scoreboard
+    return scores
 
 
 # For AI models
