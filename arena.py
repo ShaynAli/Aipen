@@ -55,26 +55,27 @@ class Arena:
         return self.model_gen.__next__()
 
     # Set log_top to None to log all
-    def compete(self, x_data, y_data, live_ratio=0.5, mutate_ratio=0.5, n_rounds=1, log_top=10):
+    def compete(self, x_data, y_data, live_ratio=0.5, mutate_ratio=0.5, n_rounds=1, log_top=10,
+                score_function=ev.DEFAULT_SCORE_FUNCTION):
         self.n_tourneys = self.n_tourneys + 1
         _log.info('')
         _log.info('Tournament ' + str(self.n_tourneys))
         for round_no in range(n_rounds):
             # Score each model
-            scores = ev.score_ml_models(self.models, x_data, y_data)
-            accuracy = ev.score_ml_models(self.models, x_data, y_data, score_function=ev.DEFAULT_ACCURACY_FUNCTION)
-            self.models = sorted(self.models, key=lambda mdl: scores[mdl], reverse=True)
-            self.scores.append(scores)
+            score = ev.score_ml_models(self.models, x_data, y_data, score_function=score_function)
+            error = ev.score_ml_models(self.models, x_data, y_data, score_function=ev.DEFAULT_ERROR_FUNCTION)
+            self.models = sorted(self.models, key=lambda mdl: score[mdl], reverse=True)
+            self.scores.append(score)
             # TODO: Panda-ize scoreboard
             _log.info('Round ' + str(round_no+1) + '/' + str(n_rounds))
-            _log.info('model number\t| model type\t\t| score\t\t\t| accuracy')
+            _log.info('model number\t| model type\t\t| {sf:21}\t| error'.format(sf=score_function.__name__))
             _log.info('----------------|-----------------------|-----------------------|-----------------------')
             for mdl in (self.models if log_top is None else self.models[:log_top]):
                 _log.info(
                     str(Arena.model_number(mdl)).ljust(15) + ' | '
                     + str(mdl.name()).rjust(21) + ' | '
-                    + str(scores[mdl]).ljust(21) + ' | '
-                    + str(accuracy[mdl]).ljust(21)
+                    + str(score[mdl]).ljust(21) + ' | '
+                    + str(error[mdl]).ljust(21)
                 )
             # Kill and regenerate
             live_i = int(len(self.models)*live_ratio)

@@ -23,8 +23,7 @@ N_EPOCHS = 1
 N_PRE_TRAINING = 1
 
 
-# def accuracy(predicted, actual, rounding=False):
-#     return np.sum(predicted == actual)
+# Error functions
 
 
 def mae(predicted, actual):
@@ -35,32 +34,22 @@ def rmse(predicted, actual):
     return np.sqrt(np.mean((predicted - actual)**2))
 
 
+DEFAULT_ERROR_FUNCTION = rmse
+
+
+# Score/accuracy functions
+
+
 def inverse_norm_err(predicted, actual):
     err = predicted - actual
     norm_err = np.linalg.norm(err)
     return 1.0/norm_err
 
-# def normalize(arr):
-#     return arr*(1.0/(max(arr.max(), np.finfo(arr.dtype).eps)))
-#
-#
-# def percent_difference(predicted, actual):
-#     '''
-#     For single predictions
-#     :param predicted: The predicted value
-#     :param actual: The actual value
-#     :return: The percent difference
-#     '''
-#     print((predicted, actual))
-#     avg = 0.5*(predicted + actual)
-#     print('Avg: ' + str(avg))
-#     abs_diff = abs(predicted - actual)
-#     print('Abs diff: ' + str(abs_diff))
-#     pct_diff = abs_diff*(1.0/avg)
-#     return pct_diff
 
-DEFAULT_SCORE_FUNCTION = inverse_norm_err
-DEFAULT_ACCURACY_FUNCTION = mae
+def accuracy(predicted, actual, error=DEFAULT_ERROR_FUNCTION):
+    return 1 - error(predicted, actual)
+
+DEFAULT_SCORE_FUNCTION = accuracy
 
 
 def score_prediction(x, y_predicted, y_actual, score_function=DEFAULT_SCORE_FUNCTION, rounding=False):
