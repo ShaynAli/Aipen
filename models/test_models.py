@@ -10,7 +10,7 @@ class ZeroModel(MLModel):
     @staticmethod
     def properties():
         # TODO
-        return None
+        pass
 
     def __init__(self):
         super(ZeroModel, self).__init__()
@@ -38,13 +38,13 @@ class RandomModel(MLModel):
     from random import uniform
 
     _DEFAULT_RANGE = [0, 1]
-    _DEFAULT_LEARN_RANGES = True  # Whether to learn the range of each output
+    # _DEFAULT_LEARN_RANGES = True  # Whether to learn the range of each output - TODO: Implement
     _DEFAULT_DISTRIBUTION = uniform
 
     @staticmethod
     def properties():
         # TODO
-        return None
+        pass
 
     def __init__(self, range=_DEFAULT_RANGE, distribution=_DEFAULT_DISTRIBUTION):
         super(RandomModel, self).__init__()
@@ -62,7 +62,7 @@ class RandomModel(MLModel):
     def predict(self, x):
         prediction = self.z_mdl.predict(x)
         if len(prediction) > 0:
-            prediction[:] = [self.distribution(self.range[0], self.range[1]) for _ in prediction]
+            prediction[:] = [self.distribution(*self.range) for _ in prediction]
         return prediction
 
     def summary(self):
@@ -70,3 +70,23 @@ class RandomModel(MLModel):
             RandomModel\n
             \tPredicts randomly, tried to have predictions fall within the possible output range
             '''
+
+
+class RandomStaticModel(RandomModel):
+
+    @staticmethod
+    def properties():
+        # TODO
+        pass
+
+    def __init__(self):
+        super(RandomStaticModel, self).__init__()
+        self.prediction = None
+
+    def learn(self, x, y):
+        super(RandomStaticModel, self).learn(x, y)
+
+    def predict(self, x):
+        if self.prediction is None:
+            self.prediction = super(RandomStaticModel, self).predict(x)
+        return self.prediction
