@@ -22,33 +22,60 @@ EVAL_BATCH_SIZE = 5
 N_EPOCHS = 1
 N_PRE_TRAINING = 1
 
+
+def gaussian(x, a=1, mu=0, sigma=1):
+    return a*np.exp(-(((x - mu)/(2.*sigma))**2))
+
+
+def simple_gaussian(x):
+    return np.exp(-(x**2))
+
+
 # Error functions
 
 
-def mae(predicted, actual):
-    return np.mean(np.absolute(predicted - actual))
+def absolute_error(predicted, actual):
+    return np.absolute(predicted - actual)
 
 
-def rmse(predicted, actual):
+def mean_abs_error(predicted, actual):
+    return np.mean(absolute_error(predicted, actual))
+
+
+def rms_error(predicted, actual):
     return np.sqrt(np.mean((predicted - actual)**2))
 
 
-DEFAULT_ERROR_FUNCTION = rmse
+def norm_err(predicted, actual):
+    return np.linalg.norm(predicted - actual)
+
+
+def mean_pct_error(predicted, actual):
+    return np.mean(np.absolute((predicted-actual)/(np.linalg.norm(actual))))
 
 
 # Score/accuracy functions
 
 
-def inverse_norm_err(predicted, actual):
-    err = predicted - actual
-    norm_err = np.linalg.norm(err)
-    return 1.0/norm_err
+def pure_accuracy(predicted, actual, tolerance=2 * np.finfo('float64').eps):
+    return np.mean(np.absolute(predicted - actual) <= tolerance)
 
 
-def accuracy(predicted, actual, error=DEFAULT_ERROR_FUNCTION):
+def inv_norm_err(predicted, actual):
+    return 1.0/norm_err(predicted, actual)
+
+
+def complement_err_acc(predicted, actual, error=rms_error):
     return 1 - error(predicted, actual)
 
-DEFAULT_SCORE_FUNCTION = accuracy
+
+def simple_gauss_acc(predicted, actual, error=mean_abs_error):
+    return simple_gaussian(error(predicted, actual))
+
+
+DEFAULT_SCORE_FUNCTION = simple_gauss_acc
+DEFAULT_ERROR_FUNCTION = rms_error
+DEFAULT_TRACK_FUNCTION = mean_abs_error
 
 
 def score_prediction(x, y_predicted, y_actual, score_function=DEFAULT_SCORE_FUNCTION, rounding=False):

@@ -6,7 +6,7 @@ import evaluation as ev
 
 # TODO: Write data module (processing, generation), model auto-serialization, more models
 
-params = {'n_rows': 10, 'n_models': 10, 'n_tournaments': 10000, 'live_ratio': 0.5}
+params = {'n_rows': 10, 'n_models': 10, 'n_tournaments': 10, 'live_ratio': 0.5}
 if len(argv) > 1:
     print(argv)
     for i in range(int(len(argv)/2)):
