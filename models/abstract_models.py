@@ -68,20 +68,6 @@ class MLModel(metaclass=ABCMeta):
 
 class EvolutionaryMLModel(MLModel):
 
-    @staticmethod
-    @abstractmethod
-    def mutations():
-        '''
-        Ways in which the model can mutate - see .mutate()
-        :return: A dict of possible mutations to a generator of possible values
-        '''
-
-    @staticmethod
-    @abstractmethod
-    def properties():
-        # TODO
-        pass
-
     @abstractmethod
     def __init__(self):
         super(EvolutionaryMLModel, self).__init__()
@@ -93,6 +79,17 @@ class EvolutionaryMLModel(MLModel):
     @abstractmethod
     def learn(self, x, y):
         super(EvolutionaryMLModel, self).learn()
+
+    @abstractmethod
+    def mutations(self):
+        '''
+        Ways in which the model can mutate - see .mutate()
+        :return: A dict of possible mutations to a generator of possible values
+        '''
+
+    @abstractmethod
+    def properties(self):  # TODO
+        pass
 
     @abstractmethod
     def mutate(self):
@@ -119,6 +116,5 @@ class EvolutionaryMLModel(MLModel):
             ''')
 
 
-class AIModel(metaclass=ABCMeta):
-    # TODO
+class AIModel(metaclass=ABCMeta):  # TODO
     pass

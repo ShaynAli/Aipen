@@ -1,0 +1,6 @@
+TODO: Add dict/function/etc for parameters (for learning) and hyperparameters (for evolution) to models
+TODO: Write data module for data processing, data generation, and model serialization
+TODO: Write more models - linear, fitting, neural nets
+TODO: Write more rigorous tests
+TODO: Documentation
+TODO: Reconsider simplify

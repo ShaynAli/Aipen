@@ -7,11 +7,6 @@ class ZeroModel(MLModel):
 
     _DEFAULT_PREDICTION = np.zeros([])
 
-    @staticmethod
-    def properties():
-        # TODO
-        pass
-
     def __init__(self):
         super(ZeroModel, self).__init__()
         self.y_shape = None
@@ -23,6 +18,9 @@ class ZeroModel(MLModel):
         if self.y_shape is None:  # No output shape has been learned
             return ZeroModel._DEFAULT_PREDICTION
         return np.zeros(self.y_shape)
+
+    def properties(self):
+        pass
 
     def summary(self):
         return '''
@@ -40,11 +38,6 @@ class RandomModel(MLModel):
     _DEFAULT_RANGE = [0, 1]
     # _DEFAULT_LEARN_RANGES = True  # Whether to learn the range of each output - TODO: Implement
     _DEFAULT_DISTRIBUTION = uniform
-
-    @staticmethod
-    def properties():
-        # TODO
-        pass
 
     def __init__(self, range=_DEFAULT_RANGE, distribution=_DEFAULT_DISTRIBUTION):
         super(RandomModel, self).__init__()
@@ -65,6 +58,9 @@ class RandomModel(MLModel):
             prediction[:] = [self.distribution(*self.range) for _ in prediction]
         return prediction
 
+    def properties(self):  # TODO
+        pass
+
     def summary(self):
         return '''
             RandomModel\n
@@ -73,11 +69,6 @@ class RandomModel(MLModel):
 
 
 class RandomStaticModel(RandomModel):
-
-    @staticmethod
-    def properties():
-        # TODO
-        pass
 
     def __init__(self):
         super(RandomStaticModel, self).__init__()
@@ -90,3 +81,8 @@ class RandomStaticModel(RandomModel):
         if self.prediction is None:
             self.prediction = super(RandomStaticModel, self).predict(x)
         return self.prediction
+
+    def properties(self):  # TODO
+        pass
+
+    # TODO: summary()
