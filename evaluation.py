@@ -5,8 +5,6 @@ from math import ceil
 import numpy as np
 
 
-# TODO Break apart ML and AI files into different modules
-
 # Logging
 _log = logger.get('evaluation')
 EPOCH_LOG_LEVEL = logging.INFO - 1
@@ -85,11 +83,6 @@ def score_prediction(x, y_predicted, y_actual, score_function=DEFAULT_SCORE_FUNC
     return score_function((np.round(y_predicted) if rounding else y_predicted), y_actual)
 
 
-# # TODO: Change to eval batch predictions and refactor score_ml_model
-# def eval_predictions(x_data, y_predicted_data, y_actual_data):  # Potentially useful for series data
-#     pass
-
-
 def score_ml_model(model, x_data, y_data,
                    batch_size=EVAL_BATCH_SIZE, n_epochs=N_EPOCHS, n_pre_training=N_PRE_TRAINING,
                    score_function=DEFAULT_SCORE_FUNCTION, train_after_testing=True):
@@ -159,6 +152,4 @@ def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTIO
         _log.info('\t' + str(s))
     return scores
 
-# For AI models
-
-# TODO
+# TODO (future): AI model evaluation
