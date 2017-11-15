@@ -1,6 +1,5 @@
 .idea/*
-**/__pycache__/*
-log/*
-models/saved/*
-models/cached/*
+**/__pycache__/
+!log/
+!models/
 todo.txt
