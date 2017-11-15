@@ -47,10 +47,8 @@ class RandomModel(MLModel):
 
     def learn(self, x, y):
         self.z_mdl.learn(x, y)
-        # Update min
-        self.range[0] = min(np.min(y), self.range[0])
-        # Update max
-        self.range[1] = max(np.max(y), self.range[1])
+        self.range[0] = min(np.min(y), self.range[0])  # Update min
+        self.range[1] = max(np.max(y), self.range[1])  # Update max
 
     def predict(self, x):
         prediction = self.z_mdl.predict(x)

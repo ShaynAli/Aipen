@@ -37,9 +37,8 @@ class MLModel(metaclass=ABCMeta):
         :param y: True outputs corresponding to the predictors (y values) in a pandas DataFrame
         '''
 
-    @staticmethod
     @abstractmethod
-    def properties():
+    def properties(self):
         '''
         A list of properties about the model
         :return: A dict of properties related to the model

@@ -6,7 +6,6 @@ import numpy as np
 
 
 # Logging
-_log = logger.get('evaluation')
 EPOCH_LOG_LEVEL = logging.INFO - 1
 BATCH_LOG_LEVEL = logging.INFO - 2
 TEST_LOG_LEVEL = logging.INFO - 3
@@ -14,6 +13,7 @@ TEST_ELEMENT_LOG_LEVEL = logging.INFO - 4
 TRAIN_LOG_LEVEL = logging.INFO - 3
 TRAIN_ELEMENT_LOG_LEVEL = logging.INFO - 4
 ELEMENT_LOG_LEVEL = logging.INFO - 5
+_log = logger.get('evaluation', level=logging.INFO)
 
 # For ML models
 EVAL_BATCH_SIZE = 5
@@ -71,7 +71,7 @@ def simple_gauss_acc(predicted, actual, error=mean_abs_error):
     return simple_gaussian(error(predicted, actual))
 
 
-DEFAULT_SCORE_FUNCTION = simple_gauss_acc
+DEFAULT_SCORE_FUNCTION = complement_err_acc
 DEFAULT_ERROR_FUNCTION = rms_error
 DEFAULT_TRACK_FUNCTION = rms_error
 
