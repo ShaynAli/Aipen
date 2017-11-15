@@ -1,9 +1,9 @@
 ''' evaluation.py - Evaluates AI and ML models '''
-from log import logger
-import logging
 from math import ceil
 import numpy as np
-
+import sys, os
+import logging
+import logger
 
 # Logging
 EPOCH_LOG_LEVEL = logging.INFO - 1
@@ -13,6 +13,7 @@ TEST_ELEMENT_LOG_LEVEL = logging.INFO - 4
 TRAIN_LOG_LEVEL = logging.INFO - 3
 TRAIN_ELEMENT_LOG_LEVEL = logging.INFO - 4
 ELEMENT_LOG_LEVEL = logging.INFO - 5
+
 _log = logger.get('evaluation', level=logging.INFO)
 
 # For ML models
@@ -55,8 +56,8 @@ def mean_pct_error(predicted, actual):
 # Score/accuracy functions
 
 
-def pure_accuracy(predicted, actual, tolerance=2 * np.finfo('float64').eps):
-    return np.mean(np.absolute(predicted - actual) <= tolerance)
+def tolerant_binary_accuracy(predicted, actual, tolerance=0.001):
+    return np.mean(np.absolute(predicted - actual) <= tolerance*actual)
 
 
 def inv_norm_err(predicted, actual):

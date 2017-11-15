@@ -1,5 +1,6 @@
 ''' super_model.py - An abstract ML model for all other Aipen models to inherit from '''
 from abc import ABCMeta, abstractmethod
+import pickle
 
 
 class MLModel(metaclass=ABCMeta):
@@ -59,10 +60,22 @@ class MLModel(metaclass=ABCMeta):
         '''
         Returns the name of the model, should fit on one line
         By default, returns the class name, e.g. MutatingMLModel
-        Generally should not be overriden
+        Generally should not be overridden
         :return: The name of the model as a short string
         '''
         return self.__class__.__name__
+
+    @staticmethod
+    def load(load_file):
+        f = open(load_file, 'rb')
+        mdl = pickle.load(f)
+        f.close()
+        return mdl
+
+    def save(self, save_file):
+        f = open(save_file, 'wb')
+        pickle.dump(self, f)
+        f.close()
 
 
 class EvolutionaryMLModel(MLModel):

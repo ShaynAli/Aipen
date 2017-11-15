@@ -1,10 +1,10 @@
 ''' arena.py - Where ML and AI bots go to face off '''
-from log import logger
 import logging
-import evaluation as ev
-from random import choice
-from models import test_models
 from itertools import count
+from random import choice
+
+import logger, evaluation as ev
+import models.test_models as test_models
 from models.abstract_models import EvolutionaryMLModel
 
 _log = logger.get('arena', console_logging=True, level=logging.INFO)
@@ -19,17 +19,18 @@ if LISTEN_TO_EVAL_LOG:
 
 
 class Arena:
-    MODEL_ID = 'model number'
+    MODEL_ID_FIELD = 'model number'
     MODEL_POOL = [
         test_models.ZeroModel,
         test_models.RandomModel,
         test_models.RandomStaticModel,
     ]
 
-    def __init__(self, model_pool=MODEL_POOL, n_models=100):
-        self.model_id = Arena.MODEL_ID
+    def __init__(self, model_pool=MODEL_POOL, n_models=100):  # TODO: Add option to load serialized models
+        self.mdl_id_field = Arena.MODEL_ID_FIELD  # Set id field name
         self.model_pool = model_pool
-        self.model_gen = Arena.ModelGenerator(self)
+        self.model_gen = Arena.ModelGenerator(self)  # Set generator (requires model_pool to be set)
+        # TODO: Add parameter and initialization of initial models
         self.models = self.gen_new_models(n_models)
         self.n_tourneys = 0
         self.scores = []
@@ -39,11 +40,12 @@ class Arena:
         def __init__(self, arena):
             self.arena = arena
             self.model_pool = self.arena.model_pool
+            self.mdl_id_field = arena.mdl_id_field
             self.mdl_no = count()
 
         def __next__(self):
             mdl = choice(self.model_pool)()
-            setattr(mdl, self.arena.model_id, self.mdl_no.__next__())
+            setattr(mdl, self.mdl_id_field, self.mdl_no.__next__())
             return mdl
 
         def __iter__(self):
@@ -53,13 +55,12 @@ class Arena:
         return self.model_gen.__next__()
 
     def model_number(self, model):
-        return getattr(model, self.model_id)
+        return getattr(model, self.mdl_id_field)
 
     # Set log_top to None to log all
     def compete(self, x_data, y_data, live_ratio=0.5, mutate_ratio=0.5, n_rounds=1, log_top=10,
                 fitness_function=ev.DEFAULT_SCORE_FUNCTION, track=ev.DEFAULT_ERROR_FUNCTION):
         self.n_tourneys = self.n_tourneys + 1
-        _log.info('')
         _log.info('Tournament ' + str(self.n_tourneys))
         for round_no in range(n_rounds):
             # Score each model
@@ -70,7 +71,7 @@ class Arena:
             # TODO: Panda-ize scoreboard
             _log.info('Round ' + str(round_no+1) + '/' + str(n_rounds))
             _log.info('{id}\t| model type\t\t| {sco:21}\t| {err:21}\t'
-                      .format(id=self.model_id, sco=fitness_function.__name__, err=track.__name__))
+                      .format(id=self.mdl_id_field, sco=fitness_function.__name__, err=track.__name__))
             _log.info('----------------|-----------------------|-----------------------|-----------------------')
             for mdl in (self.models if log_top is None else self.models[:log_top]):
                 _log.info(
@@ -97,6 +98,7 @@ class Arena:
                 if mdl is EvolutionaryMLModel:
                     mdl.mutate()
         _log.info(str(self.model_number(self.models[-1])+1) + ' models generated so far')
+        _log.info('')
 
     def gen_new_models(self, n):
         '''
