@@ -1,6 +1,8 @@
 TODO: Add dict/function/etc for parameters (for learning) and hyperparameters (for evolution) to models
 TODO: Write data module for data processing, data generation, and model serialization
+	TODO: Add option for save and load to write to JSON or other readable file
+	TODO: ID class for data? Models too?
 TODO: Write more models - linear, fitting, neural nets
 TODO: Write more rigorous tests
 TODO: Documentation
-TODO: Reconsider simplify
+TODO: Reconsider EvolutionaryMLModel.simplify()

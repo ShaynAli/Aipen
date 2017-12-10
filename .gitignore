@@ -1,5 +1,4 @@
 .idea/*
 **/__pycache__/
-!log/
-!models/
-todo.txt
+log/
+models/

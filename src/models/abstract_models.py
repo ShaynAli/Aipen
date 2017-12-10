@@ -72,7 +72,8 @@ class MLModel(metaclass=ABCMeta):
         f.close()
         return mdl
 
-    def save(self, save_file):
+    def save(self, save_file, file_type='pickle'):
+        
         f = open(save_file, 'wb')
         pickle.dump(self, f)
         f.close()

@@ -9,7 +9,7 @@ DEFAULT_LOG_LOC = os.path.normpath('../log')
 
 def get(log_name,
         console_logging=False, level=logging.DEBUG, log_loc=DEFAULT_LOG_LOC,
-        log_fmt='%(asctime)s %(name)s %(levelname)s %(message)s', time_fmt='%Y-%m-%d %H,%M,%S'):
+        log_fmt='%(asctime)s %(name)-12s %(levelname)-12s %(message)s', time_fmt='%Y-%m-%d %H,%M,%S'):
 
     log_loc = os.path.normpath(log_loc)
     log_start_time = strftime(time_fmt, localtime())
