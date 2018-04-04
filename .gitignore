@@ -1,12 +1,4 @@
-# IDE files
 .idea/*
 **/__pycache__/
-
-# Log files
 log/
-
-# Models
 models/
-
-# Gitkeeps
-!**.gitkeep
