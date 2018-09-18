@@ -1,5 +1,6 @@
 import logging, os
 from time import strftime, localtime
+from pathlib import Path
 
 # TODO: Change to use log config file
 # TODO: Add option to write to directories, e.g. log/logs/log0003_
@@ -18,8 +19,8 @@ def get(log_name,
     log_file = os.path.join(log_loc, log_file_name)
 
     # Create log file if needed
-    if not os.path.isfile(log_file):
-        open(log_file, 'w').close()
+    log_file_path = Path(log_file)
+    log_file_path.touch()
 
     # Get logger and set formatting
     logger = logging.getLogger(log_name)

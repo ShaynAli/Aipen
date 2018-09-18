@@ -6,7 +6,7 @@ import pickle
 class MLModel(metaclass=ABCMeta):
     '''
     Abstract class for all ML_Models to implement
-    Expected fields or properties for acces
+    Expected fields or properties for access
     Expected methods to implement:
         __init__()
         learn(x, y)

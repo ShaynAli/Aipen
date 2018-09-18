@@ -1,5 +1,13 @@
+# IDE files
 .idea/*
 .vs/*
 **/__pycache__/
+
+# Log files
 log/
+
+# Models
 models/
+
+# Gitkeeps
+!**.gitkeep
