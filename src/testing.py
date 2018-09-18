@@ -21,7 +21,7 @@ def run_test_arena(n_models=10, n_tournaments=10, n_rows=10,
     x_data = uniform(min_x, max_x, (n_rows, n_x))
     y_data = uniform(min_y, max_y, (n_rows, n_y))
 
-    _arena = Arena(n_models=n_models, model_pool=[test_models.RandomStaticModel])
+    _arena = Arena(n_models=n_models, model_pool=[test_models.RandomStaticModel, test_models.RandomModel, test_models.ZeroModel])
     for _ in range(n_tournaments):
         _arena.compete(x_data, y_data)
 
@@ -54,5 +54,4 @@ if len(argv) > 1:
     for i in range(int(len(argv)/2)):
         params[argv[2*i+1]] = argv[2*i+2]
 
-test_model_serialization()
-run_test_arena()
+run_test_arena(n_models=10)

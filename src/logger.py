@@ -4,7 +4,7 @@ from time import strftime, localtime
 # TODO: Change to use log config file
 # TODO: Add option to write to directories, e.g. log/logs/log0003_
 
-DEFAULT_LOG_LOC = os.path.normpath('../log')
+DEFAULT_LOG_LOC = os.path.normpath('log')
 
 
 def get(log_name,
