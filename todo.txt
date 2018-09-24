@@ -7,3 +7,4 @@ TODO: Write more models - linear, fitting, neural nets
 TODO: Write more rigorous tests
 TODO: Documentation
 TODO: Reconsider EvolutionaryMLModel.simplify()
+TODO: Implement a source -> channel -> listener systen for logging
