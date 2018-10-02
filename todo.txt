@@ -10,3 +10,4 @@ TODO: Documentation
 TODO: Reconsider EvolutionaryMLModel.simplify()
 TODO: Implement a source -> channel -> listener systen for logging
 TODO: Implement testing system using test cases as a dict key=input, val=expected_ouput
+TODO: Allow Aipen to run itself
