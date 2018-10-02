@@ -1,3 +1,4 @@
+TODO: Set up Travis CI
 TODO: Refactor import error fix with the more elegant solution at https://stackoverflow.com/a/50559323/7195043 
 TODO: Add dict/function/etc for parameters (for learning) and hyperparameters (for evolution) to models
 TODO: Write data module for data processing, data generation, and model serialization
