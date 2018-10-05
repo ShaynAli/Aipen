@@ -2,5 +2,5 @@
 from abc import ABCMeta
 
 
-class Agent(metaclass=ABCMeta): # TODO
+class Agent(metaclass=ABCMeta):  # TODO
     pass
