@@ -8,3 +8,4 @@
   * [Do not repeat yourself](https://www.artima.com/intv/dry.html)
   * Be [Pythonic](https://docs.python-guide.org/writing/style/)
   * Be [Pythonic](https://docs.python-guide.org/writing/style/)
+  * Be [Pythonic](https://docs.python-guide.org/writing/style/)
