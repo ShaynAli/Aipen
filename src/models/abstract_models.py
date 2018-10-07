@@ -111,17 +111,6 @@ class EvolutionaryMLModel(MLModel):
         The model should draw from the dict of possible mutations given by .mutations()
         '''
 
-    # @abstractmethod
-    # def simplify(self, preserving=True):
-    #     '''
-    #     Simplify model to reduce computation complexity, not required to always change model when called
-    #     Preserving simplifications reduce computational complexity without changing the output, however they may affect
-    #     how the system mutates in the future
-    #     Non-preserving simplifications reduce computational complexity, but may affect the output, they should aim to
-    #     eliminate low-weight, high-computation parts of the system
-    #     :param preserving: Whether the model is exactly preserved or not
-    #     '''
-
     def summary(self):
         return ('''
             MutatingMLModel\n
