@@ -26,7 +26,7 @@ class Arena:
         test_models.RandomStaticModel,
     ]
 
-    def __init__(self, model_pool=MODEL_POOL, n_models=100):  # TODO: Add option to load serialized models
+    def __init__(self, model_pool=MODEL_POOL, n_models=100):
         self.mdl_id_field = Arena.MODEL_ID_FIELD  # Set id field name
         self.model_pool = model_pool
         self.model_gen = Arena.ModelGenerator(self)  # Set generator (requires model_pool to be set)

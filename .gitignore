@@ -1,12 +1,14 @@
-# IDE files
-.idea/*
-**/__pycache__/
-
-# Log files
-log/
-
-# Models
-models/
-
 # Gitkeeps
 !**.gitkeep
+
+# IDE files
+.idea/
+.vs/
+**/__pycache__/
+
+# Virtual environment
+venv/
+
+# Aipen specific
+log/
+models/
