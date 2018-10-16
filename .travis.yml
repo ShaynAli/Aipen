@@ -1,4 +1,4 @@
 language: python
 python: "3.6"
-install: py src/setup.py install
-script: py src/testing.py
+install: src/setup.py install
+script: src/testing.py
