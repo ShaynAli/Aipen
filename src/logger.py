@@ -19,8 +19,7 @@ def get(log_name,
     log_file = os.path.join(log_loc, log_file_name)
 
     # Create log file if needed
-    log_file_path = Path(log_file)
-    log_file_path.touch()
+    open(log_file, 'a').close()
 
     # Get logger and set formatting
     logger = logging.getLogger(log_name)
