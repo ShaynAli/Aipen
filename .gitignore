@@ -1,5 +1,5 @@
 # Gitkeeps
-!**.gitkeep
+!**.gitkeep  # TODO: Fix, currently gitkeeps do not work
 
 # IDE files
 .idea/
@@ -9,6 +9,11 @@
 # Virtual environment
 venv/
 
-# Aipen specific
+# Models and logging
 log/
 models/
+
+# Build files
+Aipen.egg-info/
+build/
+dist/
