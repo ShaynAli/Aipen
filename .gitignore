@@ -9,6 +9,11 @@
 # Virtual environment
 venv/
 
-# Aipen specific
+# Models and logging
 log/
 models/
+
+# Build files
+Aipen.egg-info/
+build/
+dist/
