@@ -1,4 +1,4 @@
-''' evaluation.py - Evaluates AI and ML models '''
+""" evaluation.py - Evaluates AI and ML models """
 from math import ceil
 import numpy as np
 import logging
