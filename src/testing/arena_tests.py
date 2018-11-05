@@ -23,25 +23,4 @@ def run_test_arena(n_models=10, n_tournaments=10, n_rows=10,
         test_arena.compete(x_data, y_data)
 
 
-def test_model_serialization():
-    from models import test_models
-    from numpy.random import uniform, randint
-    from os import remove
-
-    r_m = test_models.RandomStaticModel()
-
-    x_data = uniform(0, 1, (100, 1))
-    y_data = uniform(0, 1, (100, 1))
-
-    for (x, y) in zip(x_data, y_data):
-        r_m.learn(x, y)
-    save_file = 'mdl_serial_test_' + str(randint(0, 1000))
-    r_m.save(save_file)
-    before_save = r_m.predict(x_data[0])
-    test_models.RandomStaticModel.load(save_file)
-    after_save = r_m.predict(x_data[0])
-    remove(save_file)
-    assert before_save == after_save
-
-
 run_test_arena(n_models=10)
