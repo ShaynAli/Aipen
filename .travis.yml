@@ -1,5 +1,5 @@
 sudo: true
 language: python
 python: "3.6"
-install: python src/setup.py install
-script: python src/testing.py
+install: pip install -e ./src/
+script: python ./src/testing/build_tests.py

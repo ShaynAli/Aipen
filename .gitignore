@@ -15,5 +15,6 @@ models/
 
 # Build files
 Aipen.egg-info/
+src/Aipen.egg-info/
 build/
 dist/
