@@ -1,8 +1,8 @@
-from src import logger
-from src.constants import LogNames
-from src.testing import arena_tests, model_tests
+import logger
+from constants import LogNames
+from testing import arena_tests, model_tests
 
-log = logger.log(LogNames.BUILD)
+log = logger.log(LogNames.BUILD.value)
 
 log.info('Starting arena tests')
 
