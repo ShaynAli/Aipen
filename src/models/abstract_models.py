@@ -33,6 +33,7 @@ class Model:
         """
         Compares model's hashes, which will be equal if their parameters are equal
         """
+        # TODO: Fix - for RandomStaticModels this check fails
         return hash(self) == hash(other)
 
     # endregion

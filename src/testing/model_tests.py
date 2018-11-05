@@ -4,8 +4,7 @@ from os import remove
 from uuid import uuid4
 
 
-def test_model_serialization(model_type = test_models.RandomStaticModel):
-    # TODO: Fix, currently uses model predictions, should compare models directly
+def test_model_serialization(model_type=test_models.ZeroModel):
     # TODO: Add logging
 
     saved_model = model_type()
@@ -19,5 +18,5 @@ def test_model_serialization(model_type = test_models.RandomStaticModel):
     saved_model.save(save_file)
     loaded_model = abstract_models.Model.load(save_file)
     remove(save_file)
-    if saved_model != loaded_model:
+    if not saved_model == loaded_model:
         raise Exception('Model changed during serialization and deserialization process')

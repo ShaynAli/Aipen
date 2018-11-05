@@ -8,12 +8,11 @@ import evaluation
 import models.test_models as test_models
 from models.abstract_models import EvolutionaryModel
 
-log = logger.log(LogNames.ARENA.value, console_logging=True, level=logger.INFO)
+log = logger.log(LogNames.ARENA.value)
 LISTEN_TO_EVAL_LOG = False
-EVAL_LOG_LEVEL = logger.INFO
 
 # This outputs the evaluation log to your console
-if LISTEN_TO_EVAL_LOG:  # TODO: Add more elegant way using logger API
+if LISTEN_TO_EVAL_LOG:
     logger.listen_to_log(LogNames.EVALUATION.value, logger.console(LogNames.ARENA.value))
 
 
