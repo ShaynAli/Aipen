@@ -3,7 +3,7 @@ import os
 from time import strftime, localtime
 from pathlib import Path
 
-# To prevent dependencies on the STL's logging library keep these in this module
+# To prevent dependencies on the Python's standard logging library we keep these here
 NOTSET = logging.NOTSET
 DEBUG = logging.DEBUG
 INFO = logging.INFO
@@ -13,9 +13,7 @@ CRITICAL = logging.CRITICAL
 FATAL = logging.FATAL
 
 
-# TODO: Refactor to use pathlib
-# TODO: Change to use log config file
-# TODO: Add option to write to directories, e.g. log/logs/log0003_
+# TODO: Refactor to make more use of pathlib
 
 DEFAULT_LOG_LOC = os.path.normpath('log')
 

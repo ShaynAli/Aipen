@@ -3,7 +3,9 @@ from abc import ABCMeta, abstractmethod
 import pickle
 
 
-class SerializableModel:
+class Model:
+
+    # region Serialization
 
     @staticmethod
     def load(load_file):
@@ -17,8 +19,26 @@ class SerializableModel:
         pickle.dump(self, f)
         f.close()
 
+    # endregion
 
-class MLModel(SerializableModel, metaclass=ABCMeta):
+    # region Equality
+
+    def __hash__(self):
+        """
+        This causes models with the exact same parameters (and object data in general) to have the same hash
+        """
+        return hash(str(sorted(self.__dict__.items())))
+
+    def __eq__(self, other):
+        """
+        Compares model's hashes, which will be equal if their parameters are equal
+        """
+        return hash(self) == hash(other)
+
+    # endregion
+
+
+class MLModel(Model, metaclass=ABCMeta):
     """
     Abstract class for all ML_Models to implement
     Expected fields or properties for access
@@ -54,7 +74,7 @@ class MLModel(SerializableModel, metaclass=ABCMeta):
         """
 
 
-class EvolutionaryModel(SerializableModel, metaclass=ABCMeta):  # TODO: Make more rigorous
+class EvolutionaryModel(Model, metaclass=ABCMeta):  # TODO: Make more rigorous
 
     @abstractmethod
     def __init__(self):
@@ -81,5 +101,5 @@ class EvolutionaryModel(SerializableModel, metaclass=ABCMeta):  # TODO: Make mor
         """
 
 
-class AgentModel(SerializableModel, metaclass=ABCMeta):  # TODO
+class AgentModel(Model, metaclass=ABCMeta):  # TODO
     pass

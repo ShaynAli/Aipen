@@ -17,9 +17,7 @@ def test_model_serialization(model_type = test_models.RandomStaticModel):
         saved_model.learn(x, y)
     save_file = 'mdl_serial_test_' + str(uuid4())
     saved_model.save(save_file)
-    saved_model_prediction = saved_model.predict(x_data[0])
-    loaded_model = abstract_models.SerializableModel.load(save_file)
-    loaded_model_prediction = loaded_model.predict(x_data[0])
+    loaded_model = abstract_models.Model.load(save_file)
     remove(save_file)
-    if saved_model_prediction != loaded_model_prediction:
+    if saved_model != loaded_model:
         raise Exception('Model changed during serialization and deserialization process')
