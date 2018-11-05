@@ -22,5 +22,3 @@ def run_test_arena(n_models=10, n_tournaments=10, n_rows=10,
     for _ in range(n_tournaments):
         test_arena.compete(x_data, y_data)
 
-
-run_test_arena(n_models=10)

@@ -2,5 +2,6 @@ from enum import Enum
 
 
 class LogNames(Enum):
-    EVALUATION = 'eval'
+    EVALUATION = 'evaluation'
     ARENA = 'arena'
+    BUILD = 'build'
