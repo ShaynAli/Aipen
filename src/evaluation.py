@@ -2,8 +2,8 @@
 from math import ceil
 import numpy as np
 import logging
-from src import logger
-from src.constants import LogNames
+import logger
+from constants import LogNames
 
 _log = logger.log(LogNames.EVALUATION.value, level=logging.INFO)
 
