@@ -1,6 +1,6 @@
-import logger
-from constants import LogNames
-from testing import arena_tests, model_tests
+from src import logger
+from src.constants import LogNames
+from src.testing import arena_tests, model_tests
 
 # # TODO: Fix
 log = logger.log(LogNames.BUILD.value, console_logging=True)

@@ -2,11 +2,11 @@
 from itertools import count
 from random import choice
 
-import logger
-from constants import LogNames
-import evaluation
-import models.test_models as test_models
-from models.abstract_models import EvolutionaryModel
+from src import logger
+from src.constants import LogNames
+from src import evaluation
+import src.models.test_models as test_models
+from src.models.abstract_models import EvolutionaryModel
 
 log = logger.log(LogNames.ARENA.value)
 LISTEN_TO_EVAL_LOG = False
