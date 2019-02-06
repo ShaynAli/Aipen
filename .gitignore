@@ -10,8 +10,6 @@
 venv/
 Lib/
 Scripts/
-doc/
-src/
 pip-selfcheck.json
 pyvenv.cfg
 
