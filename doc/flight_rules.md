@@ -10,3 +10,13 @@
   * Be [Pythonic](https://docs.python-guide.org/writing/style/).
   * Be [Pythonic](https://docs.python-guide.org/writing/style/).
   * Be [Pythonic](https://docs.python-guide.org/writing/style/).
+  
+## Style Conventions
+
+This list will expand as needed.
+
+We mostly use standard Python conventions to make code consistent across the repository, making it easier to read, debug, and compare to other code at a glance.
+
+  1. When naming variables, it is better to be verbose than ambiguous.
+  1. Use underscores and lowercase for `file_names`, `function_names`, and `variable_names`.
+  1. Use camel case for `ClassNames`.
