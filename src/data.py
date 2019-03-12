@@ -1,4 +1,5 @@
 import numpy as np
+import pickle
 
 
 class Data:
@@ -18,7 +19,25 @@ class Data:
         self.data = data
         self.id = self.__hash__()
 
-        
+    def save_data(self):
+        pickle_out = open("data.pickle", "wb")
+        pickle.dump(self.data, pickle_out)
+        pickle_out.close()
+
+        pickle_out = open("id.pickle", "wb")
+        pickle.dump(self.id, pickle_out)
+        pickle_out.close()
+
+    def get_data(self):
+        pickle_in = open("data.pickle", "rb")
+        self.data = pickle.load(pickle_in)
+        pickle_in.close()
+
+        pickle_in = open("id.pickle", "rb")
+        self.id = pickle.load(pickle_in)
+        pickle_in.close()
+
+
 def random_data(amount, minimum, maximum):
     if minimum >= maximum:
             raise ValueError("Minimum must be less than maximum")
