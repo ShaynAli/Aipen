@@ -13,7 +13,7 @@ import pip
 pip.main(["install","scipy"]);
 df = quandl.get("WIKI/AMZN")
 df = df[['Adj. Close']]
-forecast_out = int(50) # predicting 30 days into future
+forecast_out = int(50) # predicting 50 days ahead
 df['Prediction'] = df[['Adj. Close']].shift(-forecast_out) #  label column with data shifted 50 units up
 X = np.array(df.drop(['Prediction'], 1))
 X = preprocessing.scale(X)
