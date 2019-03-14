@@ -1,6 +1,6 @@
 # How To Contribute
 
-  1. Run `pip install .` where `<src>` in Aipen's root folder.
+  1. Run `pip install ./src/` in Aipen's root folder.
   2. Create a branch off of master with a name describing the changes
   you intend to make.
   3. On the new branch, write code and relevant tests in the testing
