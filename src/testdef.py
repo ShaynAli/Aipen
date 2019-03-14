@@ -35,8 +35,15 @@ dynamic_model_003 = {
         'expected_result': 'e_val'
     }
 }
-# NOTE: instead of using dicts to encapsulate, consider storing a vector of used params
 
+# Model A
+# func_defines_model_004 = {
+#     test_f: 1
+# };
+
+# NOTE: instead of using dicts to encapsulate, consider storing a vector of used params
+def test_f():
+    return 1
 
 # EXECUTE: specified test function and compare to value stored in dict
 # TODO: DEFINE method to run tests from dict
