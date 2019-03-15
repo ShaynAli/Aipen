@@ -8,6 +8,10 @@
 
 # Virtual environment
 venv/
+Lib/
+Scripts/
+pip-selfcheck.json
+pyvenv.cfg
 
 # Models and logging
 log/
