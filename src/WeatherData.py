@@ -37,21 +37,37 @@
 # import pip
 # pip.main(['install','darkskylib'])
 # pip.main(['install','git+git://github.com/locustio/locust.git@master#egg=locustio'])
-from darksky import forecast
-from datetime import date, timedelta
+# from darksky import forecast
+# from datetime import date, timedelta
+#
+# CANADA = 42.9849, 81.2453
+#
+# weekday = date.today()
+# with forecast('0a99a407f5d24d060322e6d60996d95f', *CANADA) as canada:
+#     print(canada.daily.summary, end='\n---\n')
+#     for day in canada.daily:
+#         day = dict(day = date.strftime(weekday, '%a'),
+#                    sum = day.summary,
+#                    tempMin = day.temperatureMin,
+#                    tempMax = day.temperatureMax
+#                    )
+#         print('{day}: {sum} Temp range: {tempMin} - {tempMax}'.format(**day))
+#         weekday += timedelta(days=1)
+#         canada.refresh()
+#         print(canada.time, canada.temperature, len(canada.hourly))
+# ,error_bad_lines=False
+# encoding = "utf-8",error_bad_lines=False
 
-CANADA = 42.9849, 81.2453
-
-weekday = date.today()
-with forecast('0a99a407f5d24d060322e6d60996d95f', *CANADA) as canada:
-    print(canada.daily.summary, end='\n---\n')
-    for day in canada.daily:
-        day = dict(day = date.strftime(weekday, '%a'),
-                   sum = day.summary,
-                   tempMin = day.temperatureMin,
-                   tempMax = day.temperatureMax
-                   )
-        print('{day}: {sum} Temp range: {tempMin} - {tempMax}'.format(**day))
-        weekday += timedelta(days=1)
-        canada.refresh()
-        print(canada.time, canada.temperature, len(canada.hourly))
+# import csv
+#
+# with open('weatherHistory.csv', 'r') as csvFile:
+#     reader = csv.reader(csvFile)
+#     for row in reader:
+#         print(row)
+#
+# csvFile.close()
+import numpy as np
+import pandas as pd
+myfile = np.loadtxt('weatherHistory.csv', delimiter=',',dtype=object)
+# myfile = np.array(myfile[1:], dtype=object)
+print(myfile)
