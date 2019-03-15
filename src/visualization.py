@@ -1,6 +1,9 @@
-import data
+import data as dt
 
 from bokeh.plotting import figure, output_file, show
+
+testData = dt.Data()
+testData.set_linear(10, 2, -3)
 
 # prepare some data
 x = [1, 2, 3, 4, 5]
@@ -15,7 +18,7 @@ TOOLS = "hover"
 p = figure(tooltips=TOOLS, title="simple line example", x_axis_label='x', y_axis_label='y')
 
 # add a line renderer with legend and line thickness
-p.line(x, y, legend="Temp.", line_width=2)
+p.line(testData.data[:, 0], testData.data[:, 1], legend="Test", line_width=2)
 p.toolbar.logo = "grey"
 p.background_fill_color = "#dddddd"
 p.hover.tooltips = [

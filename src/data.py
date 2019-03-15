@@ -4,7 +4,7 @@ import pickle
 
 class Data:
     def __init__(self):
-        self.data = np.empty()
+        self.data = np.empty([2, 2])
         self.id = np.empty.__hash__()
 
     def set_random(self, amount, minimum, maximum):
