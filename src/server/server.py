@@ -22,6 +22,12 @@ def home_page():
         return f'Failed with exception {type(e)} {e}'
 
 
+@app.route('/style.css')
+def style():
+    with open(os.path.join(__location__, 'style.css')) as style_page:
+        return style_page.read()
+
+
 def render_home_page():
     try:
         with open(os.path.join(__location__, 'index.html')) as template_page:
