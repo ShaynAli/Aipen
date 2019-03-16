@@ -14,7 +14,6 @@ with open(os.path.join(__location__, 'assets', 'style.css')) as style_file:
 
 elements = {
     'style': style
-
 }
 
 
