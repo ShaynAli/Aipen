@@ -2,3 +2,4 @@ numpy
 bokeh
 scikit-learn
 pandas
+flask
