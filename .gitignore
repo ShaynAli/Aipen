@@ -20,3 +20,4 @@ dist/
 log/
 models/
 data/
+!src/data/
