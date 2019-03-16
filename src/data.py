@@ -60,3 +60,4 @@ def linear_noise(amount, slope, y_int):
             y[i] = y_int + slope*x[i] + noise[i]
 
     return np.array((x, y)).T
+
