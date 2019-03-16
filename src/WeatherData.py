@@ -68,6 +68,8 @@
 # csvFile.close()
 import numpy as np
 import pandas as pd
-myfile = np.loadtxt('weatherHistory.csv', delimiter=',',dtype=object)
+# myfile = np.loadtxt('JaipurFinalCleanData.csv', delimiter=',',dtype=object)
+df = pd.read_csv('JaipurFinalCleanData.csv').set_index('date')
 # myfile = np.array(myfile[1:], dtype=object)
-print(myfile)
+# print(myfile)
+print(df)
