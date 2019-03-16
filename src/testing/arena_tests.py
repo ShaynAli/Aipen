@@ -1,5 +1,5 @@
 # TODO: Add use of argv to parameterize
-from arena import Arena
+from arena.arena import Arena
 from models import test_models
 from numpy.random import uniform
 
