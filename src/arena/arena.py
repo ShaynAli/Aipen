@@ -5,8 +5,8 @@ from random import choice
 import logger
 from constants import LogNames
 import evaluation
-import data.test_models as test_models
-from data import EvolutionaryModel
+import models.test_models as test_models
+from models.abstract_models import EvolutionaryModel
 
 log = logger.log(LogNames.ARENA.value, level=logger.INFO)
 LISTEN_TO_EVAL_LOG = False
