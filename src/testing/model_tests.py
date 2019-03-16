@@ -1,4 +1,4 @@
-from models import abstract_models, test_models
+from data import abstract_models, test_models
 from numpy.random import uniform
 from os import remove
 from uuid import uuid4
