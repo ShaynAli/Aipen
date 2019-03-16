@@ -1,6 +1,3 @@
-# Gitkeeps
-!**.gitkeep  # TODO: Fix, currently gitkeeps do not work
-
 # IDE files
 .idea/
 .vs/
@@ -13,12 +10,13 @@ Scripts/
 pip-selfcheck.json
 pyvenv.cfg
 
-# Models and logging
-log/
-models/
-
 # Build files
 Aipen.egg-info/
 src/Aipen.egg-info/
 build/
 dist/
+
+# Repository files
+log/
+models/
+data/

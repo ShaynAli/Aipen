@@ -1,5 +1,5 @@
 # TODO: Add use of argv to parameterize
-from arena import Arena
+from arena.arena import Arena
 from models import test_models
 from numpy.random import uniform
 
@@ -21,4 +21,3 @@ def run_test_arena(n_models=10, n_tournaments=10, n_rows=10,
 
     for _ in range(n_tournaments):
         test_arena.compete(x_data, y_data)
-
