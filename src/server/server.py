@@ -4,35 +4,24 @@ import pdb
 
 app = Flask(__name__)
 
-html_elements = {
-    'test': 'test out'
-}
-
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 
-debug = False
+debug = True
+
+with open(os.path.join(__location__, 'assets', 'style.css')) as style_file:
+    style = style_file.read()
 
 
-@app.route('/', methods=['GET'])
-def home_page():
+elements = {
+    'style': style
+}
+
+
+@app.route('/')
+def home():
     try:
-        return render_home_page()
-    except Exception as e:
-        print(f'Encountered exception {type(e)} {e}')
-        return f'Failed with exception {type(e)} {e}'
-
-
-@app.route('/style.css')
-def style():
-    with open(os.path.join(__location__, 'style.css')) as style_page:
-        return style_page.read()
-
-
-def render_home_page():
-    try:
-        with open(os.path.join(__location__, 'index.html')) as template_page:
-            template_string = template_page.read()
-        return template_string.format(**html_elements)
+        with open(os.path.join(__location__, 'templates', 'index.html')) as template_page:
+            return template_page.read().format(**elements)
     except Exception as e:
         if not debug:
             raise e
@@ -40,5 +29,15 @@ def render_home_page():
         pdb.set_trace()
 
 
+@app.route('/assets/<asset_name>')
+def asset(asset_name):
+    try:
+        with open(os.path.join(__location__, 'assets', asset_name)) as asset:
+            return asset.read()
+    except FileNotFoundError:
+        print(f'Unable to locate asset {asset_name}')
+        return f'Unable to locate asset {asset_name}'
+
+
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=debug)
