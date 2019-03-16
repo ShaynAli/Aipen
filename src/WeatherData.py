@@ -69,7 +69,9 @@
 import numpy as np
 import pandas as pd
 # myfile = np.loadtxt('JaipurFinalCleanData.csv', delimiter=',',dtype=object)
-df = pd.read_csv('JaipurFinalCleanData.csv').set_index('date')
+df = pd.read_csv('weatherHistory.csv',delimiter=',')
+meantemp=df['Temperature (C)'].mean()
 # myfile = np.array(myfile[1:], dtype=object)
 # print(myfile)
 print(df)
+print ('Mean temp: ' + str(meantemp))
