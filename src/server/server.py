@@ -1,4 +1,7 @@
 from flask import Flask
+from bokeh.embed import components
+import data_utils.data as dt
+import data_utils.visualization as vs
 import os
 import pdb
 
@@ -11,9 +14,18 @@ debug = True
 with open(os.path.join(__location__, 'assets', 'style.css')) as style_file:
     style = style_file.read()
 
+# Test plot to see how it displays
+testData = dt.Data()
+testData.set_linear(50, 2, -50)
+testPlot = vs.plot_line(testData, "Generation", "Accuracy")
+
+# Separate the functionality and the view
+script, plot = components(testPlot)
 
 elements = {
-    'style': style
+    'style': style,
+    'script': script,
+    'plot': plot
 }
 
 

@@ -4,9 +4,6 @@ from bokeh.plotting import figure, output_file, show
 
 
 def plot_line(data_class, x_label, y_label):
-    # Output to static HTML file
-    output_file("lines.html")
-
     # Use hover tool
     tools = "hover"
 
@@ -22,14 +19,11 @@ def plot_line(data_class, x_label, y_label):
         (y_label, "@y")
     ]
 
-    # Display
-    show(p)
+    # Return the plot for display purposes
+    return p
 
 
 def plot_scatter(data_class, x_label, y_label):
-    # Output to static HTML file
-    output_file("scatter.html")
-
     # Use hover tool
     tools = "hover"
 
@@ -45,8 +39,8 @@ def plot_scatter(data_class, x_label, y_label):
         (y_label, "@y")
     ]
 
-    # Display
-    show(p)
+    # Return the plot for display purposes
+    return p
 
 
 # Test data for both types of plots
