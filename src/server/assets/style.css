@@ -10,18 +10,17 @@ body {
     margin: 0;
 }
 
-body * #plot {
-    background: white;
-}
-
-body * {
+.card {
     background: #2D334C;
     padding: 0;
     margin: 0.5vw;
+}
+
+#plot {
+    background: #FFFFFF;
 }
 
 h1 {
     font-weight: normal;
     font-size: 1em;
 }
-

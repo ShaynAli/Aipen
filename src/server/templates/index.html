@@ -3,16 +3,14 @@
 <html>
 
     <head>
-        <link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.css"
-    rel="stylesheet" type="text/css">
-<link
-    href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.css"
-    rel="stylesheet" type="text/css">
+        <link href="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.css" rel="stylesheet" type="text/css">
+        <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.css" rel="stylesheet" type="text/css">
 
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
-<script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
-    {script}
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
+
+        {script}
+
         <style> {style} </style>
 
         <link rel="icon" href="../favicon.png" />
@@ -21,31 +19,34 @@
 
     <body>
 
-        <div id="activities">
+        <div id="activities" class="card">
             <h1>ACTIVITIES</h1>
             <div></div>
         </div>
 
-        <div id="data">
-            <h1>DATA</h1>
-        </div>
-
-        <div id="models">
-            <h1>MODELS</h1>
-        </div>
-
-        <div id="statistics">
-            <h1>STATISTICS</h1>
-        </div>
-
-        <div id="preview">
+        <div id="preview" class="card">
             <h1>PREVIEW</h1>
-
             <div id="plot">{plot}</div>
         </div>
 
-        <div id="controls">
+        <div id="models" class="card">
+            <h1>MODELS</h1>
+            <div></div>
+        </div>
+
+        <div id="statistics" class="card">
+            <h1>STATISTICS</h1>
+            <div></div>
+        </div>
+
+        <div id="data" class="card">
+            <h1>DATA</h1>
+            <div></div>
+        </div>
+
+        <div id="controls" class="card">
             <h1>CONTROLS</h1>
+            <div></div>
         </div>
 
     </body>

@@ -19,6 +19,7 @@ testData = dt.Data()
 testData.set_linear(50, 2, -50)
 testPlot = vs.plot_line(testData, "Generation", "Accuracy")
 
+
 # Separate the functionality and the view
 script, plot = components(testPlot)
 

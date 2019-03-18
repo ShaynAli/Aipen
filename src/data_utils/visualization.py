@@ -1,5 +1,3 @@
-import data as dt
-
 from bokeh.plotting import figure, output_file, show
 
 
