@@ -16,7 +16,7 @@ body {
     margin: 0.5vw;
 }
 
-#plot {
+#statistics {
     margin: 1.5vw;
 }
 
@@ -26,9 +26,15 @@ h1 {
 }
 
 nav select {
-    height: vw;
-    width: 20vw;
+    height: 100%;
+    width: 95%;
     overflow: hidden;
     overflow-y: scroll;
     margin: 0.5vw
+}
+
+#models ul {
+  margin: 0;
+  list-style: none;
+  float: left;
 }
