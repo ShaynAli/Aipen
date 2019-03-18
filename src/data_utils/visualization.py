@@ -10,7 +10,10 @@ def plot_line(data_class, x_label, y_label):
 
     # Designate as line graph with given appearance properties
     p.line(data_class.data[:, 0], data_class.data[:, 1], line_width=2)
+    p.plot_height = 300
+    p.plot_width = 600
     p.toolbar.logo = "grey"
+    p.toolbar.autohide = True
     p.background_fill_color = "#dddddd"
     p.hover.tooltips = [
         (x_label, "@x"),
