@@ -18,7 +18,7 @@
         <title>Aipen</title>
     </head>
 
-    <body>
+    <body onload="dataHide()">
 
         <div class="card">
             <h1>ACTIVITIES</h1>
@@ -50,7 +50,7 @@
             <h1>DATA</h1>
             <div id="data">
                 <nav>
-                    <select>
+                    <select id="dataSelect">
                         <optgroup id="group1" label="Group 1">
                             <option>CIFAR-10</option>
                             <option>CIFAR-100</option>
@@ -72,10 +72,10 @@
             <h1>MODELS</h1>
             <div id="models">
                     <ul>
-                        <li><input type="checkbox"> checkbox 1</li>
-                        <li><input type="checkbox"> checkbox 2</li>
-                        <li><input type="checkbox"> checkbox 3</li>
-                        <li><input type="checkbox"> checkbox 4</li>
+                        <li><input id="model1" type="checkbox"> Model 1</li>
+                        <li><input id="model2" type="checkbox"> Model 2</li>
+                        <li><input id="model3" type="checkbox"> Model 3</li>
+                        <li><input id="model4" type="checkbox"> Model 4</li>
                     </ul>
             </div>
         </div>
