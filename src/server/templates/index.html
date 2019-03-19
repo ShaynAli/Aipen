@@ -52,6 +52,7 @@
                 <nav>
                     <select id="dataSelect">
                         <optgroup id="group1" label="Group 1">
+                            <option value="" selected disabled hidden >Select Data Set</option>
                             <option>CIFAR-10</option>
                             <option>CIFAR-100</option>
                         </optgroup>
@@ -82,7 +83,10 @@
 
         <div class="card">
             <h1>CONTROLS</h1>
-            <div id="controls"></div>
+            <div id="controls">
+                <button id="play-button" onclick="play()">&#9658</button>
+                <button id="pause-button" onclick="pause()" disabled>&#9724</button>
+            </div>
         </div>
 
     </body>

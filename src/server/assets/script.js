@@ -42,5 +42,11 @@ function play() {
         currentState.push("model4");
     }
 
+    console.log(currentState);
+    document.getElementById("play-button").disabled = true;
+    document.getElementById("pause-button").disabled = false;
+}
+
+function pause() {
 
 }

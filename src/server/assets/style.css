@@ -42,3 +42,7 @@ nav select {
 #data {
     visibility: hidden;
 }
+
+#pause-button {
+   text-align: center;
+}
