@@ -56,5 +56,15 @@ def asset(asset_name):
         return f'Unable to locate asset {asset_name}'
 
 
+# @app.route('/problems/<problem_id>')
+# def problem(problem_id):
+#     try:
+#         with open(os.path.join(__location__, 'problems', problem_id)) as problem:
+#             return problem.read()
+#     except FileNotFoundError:
+#         print(f'Unable to locate problem {problem_id}')
+#         return f'Unable to locate asset {problem_id}'
+
+
 if __name__ == "__main__":
     app.run(debug=debug)
