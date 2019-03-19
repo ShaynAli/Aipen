@@ -5,7 +5,6 @@ from uuid import uuid4
 
 
 def test_model_serialization(model_type=test_models.ZeroModel):
-    # TODO: Add logging
 
     saved_model = model_type()
 
