@@ -79,7 +79,6 @@ function createNewOption(newOption) {
 // Returns true if a given option is already part of a given list
 function checkOptions(checkedList, checkOption) {
     var options = checkedList.options;
-    console.log(options);
 
     if (options.length == 0)
         return false;

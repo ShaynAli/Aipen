@@ -45,10 +45,17 @@
             <h1>PREVIEW</h1>
             <div id="preview">
                 <nav>
-                    <select id="leaderboardSelector" onchange="leaderboardSelect()">
-
+                    <select id="leaderboardSelector" onchange="leaderboardSelect()" class="left">
                     </select>
                 </nav>
+
+                <table id="leaderboard">
+                  <thead>
+                    <th>Model</th>
+                    <th>Score</th>
+                  </thead>
+                  <tbody></tbody>
+                </table>
             </div>
         </div>
 
