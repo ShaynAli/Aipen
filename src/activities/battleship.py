@@ -15,6 +15,10 @@ class Location(Enum):
 class Battleship(Activity):
     n_players = 2
     n_rows = n_cols = 10
+    n_turns = 0
+    n_ships = 10
+    ship_length = 3
+    placement = True
 
     @staticmethod
     def new_grid():
@@ -49,7 +53,13 @@ class Battleship(Activity):
     def actions(self, agent):
         board = self.boards[agent]
         # TODO: Encapsulate state about ship placement and turns for placing ships
-        return [(row, col) for row, col in zip(enumerate(board), enumerate(board)) if board[row][col]]
+        if self.placement:
+            # self.act(self, self.current_player, self.Action.place_ship)
+            pass
+        else:
+            # self.act(self, self.current_player, self.Action.launch_missile)
+            return [(row, col) for row, col in zip(enumerate(board), enumerate(board))
+                    if board[row][col] == Location.UNKNOWN]
 
     def act(self, agent, *actions):
         if agent != self.current_player:
@@ -63,4 +73,12 @@ class Battleship(Activity):
 
         action = actions[0]
         if action.action_type == 'place':
+            # take some action a, then
+            self.n_turns += 1
+            self.n_ships -= 1
+            if self.n_ships <= 0:
+                self.placement = False
+
+        if action.action_type == 'missile':
+            # guess a new target and fire
             pass
