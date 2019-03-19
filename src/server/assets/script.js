@@ -13,12 +13,6 @@ function activitySelect() {
     }
 }
 
-//function dataHide() {
-//    document.getElementById("dataSelect").style.visibility = "hidden";
-//    document.getElementById("group1").disabled = true;
-//    document.getElementById("group2").disabled = true;
-//}
-
 function play() {
     var activity = document.getElementById("activity").value;
     var data = document.getElementById("dataSelect").value;
@@ -30,22 +24,34 @@ function play() {
 
     if (document.getElementById("model1").checked) {
         currentState.push("model1");
-        leaderboardSelector.add(createNewOption("model1"));
+        newOption = createNewOption("model1")
+
+        if (!checkOptions(leaderboardSelector, newOption))
+            leaderboardSelector.add(newOption);
     }
 
     if (document.getElementById("model2").checked) {
         currentState.push("model2");
-        leaderboardSelector.add(createNewOption("model2"));
+        newOption = createNewOption("model2")
+
+        if (!checkOptions(leaderboardSelector, newOption))
+            leaderboardSelector.add(newOption);
     }
 
     if (document.getElementById("model3").checked) {
         currentState.push("model3");
-        leaderboardSelector.add(createNewOption("model3"));
+        newOption = createNewOption("model3")
+
+        if (!checkOptions(leaderboardSelector, newOption))
+            leaderboardSelector.add(newOption);
     }
 
     if (document.getElementById("model4").checked) {
         currentState.push("model4");
-        leaderboardSelector.add(createNewOption("model4"));
+        newOption = createNewOption("model4")
+
+        if (!checkOptions(leaderboardSelector, newOption))
+            leaderboardSelector.add(newOption);
     }
 
     console.log(currentState);
@@ -58,7 +64,7 @@ function pause() {
     document.getElementById("pause-button").disabled = true;
 }
 
-// Takes selected model and displays the required leaderboard 
+// Takes selected model and displays the required leaderboard
 function leaderboardSelect() {
 }
 
@@ -68,4 +74,21 @@ function createNewOption(newOption) {
     option.text = newOption;
     option.value = newOption;
     return option;
+}
+
+// Returns true if a given option is already part of a given list
+function checkOptions(checkedList, checkOption) {
+    var options = checkedList.options;
+    console.log(options);
+
+    if (options.length == 0)
+        return false;
+
+    for (i = 0; i < options.length; i++) {
+        if (checkOption.value == options[i].value) {
+            return true;
+        }
+    }
+
+    return false;
 }
