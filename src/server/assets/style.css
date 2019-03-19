@@ -33,6 +33,10 @@ nav select {
     margin: 0.5vw;
 }
 
+#leaderboardSelector {
+    width: 50%
+}
+
 #models ul {
   margin: 0;
   list-style: none;
