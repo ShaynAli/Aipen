@@ -10,13 +10,31 @@ body {
     margin: 0;
 }
 
-body * {
+.card {
     background: #2D334C;
     padding: 0;
     margin: 0.5vw;
 }
 
+#statistics {
+    margin: 1.5vw;
+}
+
 h1 {
     font-weight: normal;
     font-size: 1em;
+}
+
+nav select {
+    height: 100%;
+    width: 95%;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin: 0.5vw;
+}
+
+#models ul {
+  margin: 0;
+  list-style: none;
+  float: left;
 }
