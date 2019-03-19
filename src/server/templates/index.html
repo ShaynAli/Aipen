@@ -9,7 +9,9 @@
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
 
-        {script}
+        <script>{functionScript}</script>
+
+        {plotScript}
 
         <style> {style} </style>
 
@@ -22,9 +24,9 @@
             <h1>ACTIVITIES</h1>
             <div id="activities">
                 <nav>
-                    <select size="10">
-                        <option>Test</option>
-                        <option>Test2</option>
+                    <select onchange="activitySelect()" id="activity" size="10">
+                        <option value="Test">Test</option>
+                        <option value="Test2">Test2</option>
                         <option>Test3</option>
                         <option>Test4</option>
                         <option>Test5</option>
@@ -49,9 +51,12 @@
             <div id="data">
                 <nav>
                     <select>
-                        <optgroup label="Image">
+                        <optgroup id="group1" label="Group 1">
                             <option>CIFAR-10</option>
                             <option>CIFAR-100</option>
+                        </optgroup>
+                        <optgroup id="group2" label="Group 2">
+                            <option>Test 2</option>
                         </optgroup>
                     </select>
                 </nav>
@@ -60,7 +65,7 @@
 
         <div class="card">
             <h1>STATISTICS</h1>
-            <div id="statistics"> {plot} </div>
+            <div id="statistics"> {plotView} </div>
         </div>
 
         <div class="card">

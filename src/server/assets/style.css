@@ -30,7 +30,7 @@ nav select {
     width: 95%;
     overflow: hidden;
     overflow-y: scroll;
-    margin: 0.5vw
+    margin: 0.5vw;
 }
 
 #models ul {
