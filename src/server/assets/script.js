@@ -12,11 +12,11 @@ function activitySelect() {
     }
 }
 
-function dataHide() {
-    document.getElementById("dataSelect").style.visibility = "hidden";
-    document.getElementById("group1").disabled = true;
-    document.getElementById("group2").disabled = true;
-}
+//function dataHide() {
+//    document.getElementById("dataSelect").style.visibility = "hidden";
+//    document.getElementById("group1").disabled = true;
+//    document.getElementById("group2").disabled = true;
+//}
 
 function play() {
     var activity = document.getElementById("activity").value;
@@ -42,5 +42,5 @@ function play() {
         currentState.push("model4");
     }
 
-    
+
 }

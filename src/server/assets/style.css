@@ -38,3 +38,7 @@ nav select {
   list-style: none;
   float: left;
 }
+
+#data {
+    visibility: hidden;
+}
