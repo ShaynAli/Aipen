@@ -53,8 +53,7 @@
         </div>
 
         <div class="card">
-            <div>
-            <h1>DATA</h1></div>
+            <h1>DATA</h1>
             <div id="data">
                 <nav>
                     <select id="dataSelect">
@@ -72,11 +71,14 @@
         </div>
 
         <div class="card">
-            <div>
-                <h1>STATISTICS</h1></div>
+            <h1>STATISTICS</h1>
             <div id="statistics" class="left">
-                {{plot_view|safe}}
-                {{plot_script|safe}}
+                <div id="plot">
+                    {{plot_script|safe}}
+                </div>
+                <div>
+                    {{plot_view|safe}}
+                </div>
             </div>
 
             <table id="leaderboard" class="right">

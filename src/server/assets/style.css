@@ -80,3 +80,8 @@ td {
 .right {
     float: right;
 }
+
+#plot * {
+    width: 50vw;
+    height: 30vw;
+}

@@ -48,12 +48,12 @@ def plot_scatter(data, x_label, y_label):
     return p
 
 
-def multi_line(data):
+def multi_line(data, x_label="X", y_label="Y"):
     # Use hover tool
     tools = "hover"
 
     # Create a plot with specified parameters
-    p = figure(tooltips=tools, x_axis_label="X", y_axis_label="Y")
+    p = figure(tooltips=tools, x_axis_label=x_label, y_axis_label=y_label)
 
     for k, v in data.items():
             generations = [e[0] for e in v]
@@ -84,14 +84,3 @@ def empty_plot():
     p.background_fill_color = "#dddddd"
 
     return p
-
-# Test data for both types of plots
-# testData = dt.Data()
-# testData.set_linear(50, 2, -50)
-#
-# plot_line(testData, "Generation", "Accuracy")
-#
-# testRandom = dt.Data()
-# testRandom.set_random(1000, -100, 100)
-#
-# plot_scatter(testRandom, "Generation", "Accuracy")
