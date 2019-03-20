@@ -16,14 +16,11 @@ function activitySelect() {
 function play() {
     var activity = document.getElementById("activity").value;
     var data = document.getElementById("dataSelect").value;
-    var currentState = []
+    var models = []
     var leaderboardSelector = document.getElementById("leaderboardSelector");
 
-    currentState.push(activity)
-    currentState.push(data)
-
     if (document.getElementById("model1").checked) {
-        currentState.push("model1");
+        models.push("model1");
         newOption = createNewOption("model1")
 
         if (!checkOptions(leaderboardSelector, newOption))
@@ -31,7 +28,7 @@ function play() {
     }
 
     if (document.getElementById("model2").checked) {
-        currentState.push("model2");
+        models.push("model2");
         newOption = createNewOption("model2")
 
         if (!checkOptions(leaderboardSelector, newOption))
@@ -39,7 +36,7 @@ function play() {
     }
 
     if (document.getElementById("model3").checked) {
-        currentState.push("model3");
+        models.push("model3");
         newOption = createNewOption("model3")
 
         if (!checkOptions(leaderboardSelector, newOption))
@@ -47,16 +44,32 @@ function play() {
     }
 
     if (document.getElementById("model4").checked) {
-        currentState.push("model4");
+        models.push("model4");
         newOption = createNewOption("model4")
 
         if (!checkOptions(leaderboardSelector, newOption))
             leaderboardSelector.add(newOption);
     }
 
-    console.log(currentState);
     document.getElementById("play-button").disabled = true;
     document.getElementById("pause-button").disabled = false;
+
+    var serverRequest = {
+        requests: {
+            "new_arena": {
+                "model_ids": models
+            }
+        },
+        webState:
+        {
+            "activity": activity,
+            "data": data,
+            "models": models
+        }
+    };
+
+
+    console.log(serverRequest);
 }
 
 function pause() {
@@ -90,4 +103,18 @@ function checkOptions(checkedList, checkOption) {
     }
 
     return false;
+}
+
+function post(path, params, method) {
+
+    var url = "/request" + path;
+
+    return fetch(url, {
+        method: "POST",
+        headers: new Headers({
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        })
+    })
+    .then(response => response.json());
 }

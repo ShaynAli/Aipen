@@ -46,6 +46,11 @@ def home():
         pdb.set_trace()
 
 
+@app.route('/request', methods=['POST'])
+def fulfill_request():
+    return
+
+
 @app.route('/assets/<asset_name>')
 def asset(asset_name):
     try:
