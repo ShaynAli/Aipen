@@ -1,1 +1,8 @@
 numpy
+bokeh
+quandl
+scikit-learn
+pandas
+pygame
+gym
+flask
