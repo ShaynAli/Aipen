@@ -8,11 +8,9 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
-        <script>{functionScript}</script>
 
-        {plotScript}
-
-        <style> {style} </style>
+        <script>{{functionScript|safe}}</script>
+        <style> {{style|safe}} </style>
 
         <title>Aipen</title>
     </head>
@@ -78,7 +76,10 @@
 
         <div class="card">
             <h1>STATISTICS</h1>
-            <div id="statistics"> {plotView} </div>
+            <div id="statistics">
+                {{plotView|safe}}
+                {{plotScript|safe}}
+            </div>
         </div>
 
         <div class="card">

@@ -70,6 +70,7 @@ function play() {
 
 
     console.log(serverRequest);
+    post("/request", serverRequest)
 }
 
 function pause() {
@@ -105,16 +106,21 @@ function checkOptions(checkedList, checkOption) {
     return false;
 }
 
-function post(path, params, method) {
+function post(path, params) {
 
-    var url = "/request" + path;
+    var url = path
 
     return fetch(url, {
         method: "POST",
+        body: JSON.stringify(params),
         headers: new Headers({
             "Accept": "application/json",
             "Content-Type": "application/json"
         })
     })
-    .then(response => response.json());
+    .then(response => response.json())
+    .then(function (json) {
+        document.getElementById('statistics').innerHtml = json['plot_view'];
+        document.getElementById('plotScript').innerHtml = json['plot_script'];
+    });
 }
