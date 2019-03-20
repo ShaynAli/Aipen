@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+
+<html>
+
+    <head>
+        <link href="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.css" rel="stylesheet" type="text/css">
+        <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.css" rel="stylesheet" type="text/css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
+        <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
+        <script>{functionScript}</script>
+
+        {plotScript}
+
+        <style> {style} </style>
+
+        <title>Aipen</title>
+    </head>
+
+    <body>
+
+        <div class="card">
+            <h1>ACTIVITIES</h1>
+            <div id="activities">
+                <nav>
+                    <select onchange="activitySelect()" id="activity" size="10">
+                        <option value="Test">Test</option>
+                        <option value="Test2">Test2</option>
+                        <option>Test3</option>
+                        <option>Test4</option>
+                        <option>Test5</option>
+                        <option>Test6</option>
+                        <option>Test7</option>
+                        <option>Test8</option>
+                        <option>Test9</option>
+                        <option>Test10</option>
+                        <option>Test11</option>
+                    </select>
+                </nav>
+            </div>
+        </div>
+
+        <div class="card">
+            <h1>PREVIEW</h1>
+            <div id="preview">
+                <nav>
+                    <select id="leaderboardSelector" onchange="leaderboardSelect()" class="left">
+                    </select>
+                </nav>
+
+                <table id="leaderboard">
+                  <thead>
+                    <th>Model</th>
+                    <th>Score</th>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="card">
+            <h1>DATA</h1>
+            <div id="data">
+                <nav>
+                    <select id="dataSelect">
+                        <optgroup id="group1" label="Group 1">
+                            <option value="" selected disabled hidden >Select Data Set</option>
+                            <option>CIFAR-10</option>
+                            <option>CIFAR-100</option>
+                        </optgroup>
+                        <optgroup id="group2" label="Group 2">
+                            <option>Test 2</option>
+                        </optgroup>
+                    </select>
+                </nav>
+            </div>
+        </div>
+
+        <div class="card">
+            <h1>STATISTICS</h1>
+            <div id="statistics"> {plotView} </div>
+        </div>
+
+        <div class="card">
+            <h1>MODELS</h1>
+            <div id="models">
+                    <ul>
+                        <li><input id="model1" type="checkbox"> Model 1</li>
+                        <li><input id="model2" type="checkbox"> Model 2</li>
+                        <li><input id="model3" type="checkbox"> Model 3</li>
+                        <li><input id="model4" type="checkbox"> Model 4</li>
+                    </ul>
+            </div>
+        </div>
+
+        <div class="card">
+            <h1>CONTROLS</h1>
+            <div id="controls">
+                <button id="play-button" onclick="play()">&#9658</button>
+                <button id="pause-button" onclick="pause()" disabled>&#9724</button>
+            </div>
+        </div>
+
+    </body>
+
+</html>
