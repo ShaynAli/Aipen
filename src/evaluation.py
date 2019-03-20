@@ -1,21 +1,14 @@
 """ evaluation.py - Evaluates AI and ML models """
 from math import ceil
 import numpy as np
-import logging
-import logger
-from constants import LogNames
-
-_log = logger.log(LogNames.EVALUATION.value, level=logging.INFO)
 
 # For ML models
 EVAL_BATCH_SIZE = 5
 N_EPOCHS = 1
 N_PRE_TRAINING = 1
 
-
 # region Mathematical functions
 
-# TODO: Allow for the create of distributions
 
 def gaussian(x, a=1, mu=0, sigma=1):
     return a*np.exp(-(((x - mu)/(2.*sigma))**2))
@@ -51,7 +44,7 @@ def mean_pct_error(predicted, actual):
 # endregion
 
 
-# region Score/accuracy functions
+# region Accuracy functions
 
 def tolerant_binary_accuracy(predicted, actual, tolerance=0.001):
     return np.mean(np.absolute(predicted - actual) <= tolerance*actual)
@@ -92,30 +85,27 @@ def score_ml_model(model, x_data, y_data,
     n_x = x_data.shape[0]  # Number of x entries
     n_y = y_data.shape[0]  # Number of y entries
     if n_x != n_y:
-        _log.warning('x and y data do not have the same number of entries')
+        print('WARNING: x and y data do not have the same number of entries')
     
     max_i = min(n_x, n_y)
     n_batches = int(ceil(max_i / batch_size))
     scores = np.zeros((n_epochs, n_batches))
 
     # Train one batch for shape
-    _log.info('Pre-training')
     for i in range(0, n_pre_training):
-        _log.info(str(i + 1) + '/' + str(n_pre_training))
+        # print('\tPre-training ' + str(i + 1) + '/' + str(n_pre_training))
         x = x_data[i]
         y = y_data[i]
         model.learn(x, y)
 
     for epoch_i in range(n_epochs):
-        _log.info('Epoch ' + str(epoch_i + 1) + '/' + str(n_epochs))
         data_i = n_pre_training if epoch_i == 0 else 0
         # Go through each batch, test, then train
         for batch_i in range(n_batches):
             batch_max_i = min(data_i + batch_size, max_i)
-            _log.info('Batch ' + str(batch_i + 1) + '/' + str(n_batches))
-            _log.info('Index range: ' + str([data_i, batch_max_i]))
+            print('\tBatch ' + str(batch_i + 1) + '/' + str(n_batches))
             # Test
-            _log.info('Testing')
+            print('\t\tTesting')
             batch_scores = np.zeros((batch_max_i-data_i,))
             for i in range(data_i, batch_max_i):
                 x = x_data[i]
@@ -123,37 +113,38 @@ def score_ml_model(model, x_data, y_data,
                 prediction = model.predict(x)
                 score = score_prediction(x, prediction, y, score_function=score_function)
                 batch_scores[i-data_i] = score
-                _log.info('x:' + str(x))
-                _log.info('y:' + str(y))
-                _log.info('Prediction: ' + str(prediction))
-                _log.info('Score: ' + str(score))
             batch_score = np.mean(batch_scores)
             scores[epoch_i][batch_i] = batch_score
-            _log.info('Average score:' + str(batch_score))
+            print('\t\t\tAverage score:' + str(batch_score))
             if train_after_testing:
                 # Train
-                _log.info('Training')
+                print('\t\tTraining')
                 for i in range(data_i, batch_max_i):
                     x = x_data[i]
                     y = y_data[i]
                     model.learn(x, y)
-                    _log.info('Trained on data at ' + str(i))
             data_i = data_i + batch_size
     return scores
 
 
-def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTION): # TODO: Parallel-ize
+def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTION):
     performance = {}
-    _log.info('Scoring models')
     for mdl in models:
-        _log.info('\tScoring model: ' + str(mdl))
+        print('Scoring model: ' + str(mdl))
         performance[mdl] = score_ml_model(mdl, x_data, y_data, score_function=score_function)
     scores = {mdl: np.mean(performance[mdl]) for mdl in performance.keys()}
-    _log.info('Scoring complete, model performances:')
+    print('Scoring complete, model performances:')
     for s in scores.items():
-        _log.info('\t' + str(s))
+        print('\t' + str(s))
     return scores
 
-# TODO (future): AI model evaluation
+
+def score(model, x, y, score_function=DEFAULT_SCORE_FUNCTION, train_after_testing=True):
+    model_scores = []
+    for x_i, y_i in zip(x, y):
+        model_scores.append(score_function(model.predict(x_i), y_i))
+        if train_after_testing:
+            model.train(x_i, y_i)
+    return np.mean(model_scores)
 
 # endregion
