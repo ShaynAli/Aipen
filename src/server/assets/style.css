@@ -20,40 +20,12 @@ body {
 
 
 #statistics {
-
     margin: 1.5vw;
 }
 
 h1 {
     font-weight: bold;
     font-size: 1em;
-}
-
-.fa{
-    /*float:left;*/
-    /*margin-left: 10px;*/
-    display:inline;
-    /*margin-right: 1em;*/
-    /* ... */
-}
-
-.far,h1{
-    /*float:left;*/
-    /*margin-left: 10px;*/
-    display:inline;
-    /*margin-right: 1em;*/
-
-    /* ... */
-}
-.fas fa-network-wired{
-    display:inline
-}
-.fas fa-play-circle{
-    display:inline
-}
-
-.value{
-    font-weight: bold
 }
 
 nav select {
