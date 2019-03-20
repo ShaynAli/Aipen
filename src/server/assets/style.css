@@ -26,6 +26,12 @@ h1 {
     font-weight: bold;
     font-size: 1em;
 }
+icon {
+  position: relative;
+  /* Adjust these values accordingly */
+  top: 5px;
+  left: 5px;
+}
 
 nav select {
     height: 95%;
