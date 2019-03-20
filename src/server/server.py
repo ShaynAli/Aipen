@@ -6,6 +6,7 @@ import os
 from arena.arena import MachineLearningArena
 from activities.activities import MachineLearningActivity
 from uuid import uuid4
+from activities.stock_prediction.stock_prediction import FrankfurtStockPrediction
 
 # model_ids[]
 #

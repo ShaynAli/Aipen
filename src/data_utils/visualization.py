@@ -28,7 +28,7 @@ def plot_line(data_class, x_label, y_label):
     return p
 
 
-def plot_scatter(data_class, x_label, y_label):
+def plot_scatter(data, x_label, y_label):
     # Use hover tool
     tools = "hover"
 
@@ -36,7 +36,7 @@ def plot_scatter(data_class, x_label, y_label):
     p = figure(tooltips=tools, x_axis_label=x_label, y_axis_label=y_label)
 
     # Designate as scatter and customize appearance
-    p.scatter(data_class._data[:, 0], data_class._data[:, 1], radius=0.2)
+    p.scatter(data[0], data[1], radius=0.2)
     p.toolbar.logo = "grey"
     p.background_fill_color = "#dddddd"
     p.hover.tooltips = [
