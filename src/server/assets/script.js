@@ -117,14 +117,16 @@ function leaderboardSelect() {
     leads = [lead1, lead2, lead3, lead4, lead5, lead6, lead7, lead8, lead9, lead10];
 
     leads.sort((aLeader, bLeader) => bLeader.score - aLeader.score);
-    leads.forEach((lead) => entries += '<tr><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
+    leads.forEach((lead) => entries += '<tr class="leaderRow"><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
     document.getElementById("leaderBody").innerHTML = entries;
     console.log(entries);
 }
 
-function Leader(id, score) {
-    this.id = id;
-    this.score = score;
+class Leader {
+    constructor(id, score) {
+        this.id = id;
+        this.score = score;
+    }
 }
 
 // Creates a new select option based on given string value
