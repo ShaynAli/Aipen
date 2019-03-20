@@ -11,8 +11,6 @@
       
         <script>{{functionScript|safe}}</script>
         <style> {{style|safe}} </style>
-  
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 
         <title>Aipen</title>
 
@@ -22,8 +20,8 @@
     <body onload="init()">
 
         <div class="card">
-            <i style="font-size:24px" class="fa">&#xf0ae;</i>
-            <h1>ACTIVITIES</h1>
+            <div>
+            <h1>ACTIVITIES</h1></div>
             <div id="activities">
                 <nav>
                     <select onchange="activitySelect()" id="activity" size="10">
@@ -44,8 +42,8 @@
         </div>
 
         <div class="card">
-            <i style='font-size:24px' class='far'>&#xf03e;</i>
-            <h1>PREVIEW</h1>
+            <div>
+            <h1>PREVIEW</h1></div>
             <div id="preview">
                 <nav>
                     <select id="leaderboardSelector" onchange="leaderboardSelect()" class="left">
@@ -55,8 +53,8 @@
         </div>
 
         <div class="card">
-            <i style="font-size:24px" class="fa">&#xf1c0;</i>
-            <h1>DATA</h1>
+            <div>
+            <h1>DATA</h1></div>
             <div id="data">
                 <nav>
                     <select id="dataSelect">
@@ -74,7 +72,8 @@
         </div>
 
         <div class="card">
-            <h1>STATISTICS</h1>
+            <div>
+                <h1>STATISTICS</h1></div>
             <div id="statistics" class="left">
                 {{plotView|safe}}
                 {{plotScript|safe}}
@@ -85,13 +84,13 @@
                 <th>Model ID</th>
                 <th>Score</th>
               </thead>
-              <tbody></tbody>
+              <tbody id="leaderBody"></tbody>
             </table>
         </div>
 
         <div class="card">
-            <i class="fas fa-network-wired"></i>
-            <h1>MODELS</h1>
+            <div>
+            <h1>MODELS</h1></div>
             <div id="models">
                     <ul>
                         <li><input id="model1" type="checkbox"> Model 1</li>
@@ -103,8 +102,8 @@
         </div>
 
         <div class="card">
-            <i class="fas fa-play-circle"></i>
-            <h1>CONTROLS</h1>
+            <div>
+            <h1>CONTROLS</h1></div>
             <div id="controls">
                 <button id="play-button" onclick="play()">&#9658 Start</button>
                 <button id="pause-button" onclick="stop()" disabled>&#9724 Stop</button>
