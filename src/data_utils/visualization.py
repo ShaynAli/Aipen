@@ -1,3 +1,4 @@
+import bokeh
 from bokeh.plotting import figure, output_file, show
 
 
@@ -43,6 +44,32 @@ def plot_scatter(data_class, x_label, y_label):
     # Return the plot for display purposes
     return p
 
+
+def multi_line(data):
+    # Use hover tool
+    tools = "hover"
+
+    # Create a plot with specified parameters
+    p = figure(tooltips=tools, x_axis_label="X", y_axis_label="Y")
+
+    for k, v in data.items():
+            generations = [e[0] for e in v]
+            scores = [e[1] for e in v]
+            p.line(generations, scores, line_width=2, legend=k)
+            p.legend.click_policy = "hide"
+
+    p.plot_height = 300
+    p.plot_width = 600
+    p.toolbar.logo = "grey"
+    p.toolbar.autohide = True
+    p.background_fill_color = "#dddddd"
+    p.hover.tooltips = [
+        ("X", "@x"),
+        ("Y", "@y")
+    ]
+
+    # Return the plot for display purposes
+    return p
 
 # Test data for both types of plots
 # testData = dt.Data()
