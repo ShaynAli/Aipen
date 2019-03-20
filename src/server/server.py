@@ -1,8 +1,9 @@
-from flask import Flask
+from flask import Flask, request, jsonify, render_template
 from bokeh.embed import components
 import data_utils.data as dt
 import data_utils.visualization as vs
 import os
+import json
 import pdb
 
 app = Flask(__name__)
@@ -36,19 +37,35 @@ elements = {
 
 @app.route('/')
 def home():
-    try:
-        with open(os.path.join(__location__, 'templates', 'index.html')) as template_page:
-            return template_page.read().format(**elements)
-    except Exception as e:
-        if not debug:
-            raise e
-        print(f'Encountered exception {type(e)} {e}')
-        pdb.set_trace()
+        return render_template('index.html', **elements)
 
 
 @app.route('/request', methods=['POST'])
 def fulfill_request():
-    return
+    testData.set_linear(100, 2, -50)
+    testPlotUpdate = vs.plot_line(testData, "Generation", "Accuracy")
+
+    # Separate the functionality and the view
+    plotScriptUpdate, plotViewUpdate = components(testPlotUpdate)
+
+    elements['plotScript'] = plotScriptUpdate
+    elements['plotView'] = plotViewUpdate
+
+    return render_template('plot.html', **elements)
+    # return jsonify(request.json)
+
+
+@app.route('/update_plot', methods=['POST'])
+def update_plot():
+    testData.set_linear(100, 2, -50)
+    testPlotUpdate = vs.plot_line(testData, "Generation", "Accuracy")
+
+    # Separate the functionality and the view
+    plotScriptUpdate, plotViewUpdate = components(testPlotUpdate)
+
+    elements['plotScript'] = plotScriptUpdate
+    elements['plotView'] = plotViewUpdate
+    return render_template('plot.html', plotScript=plotScriptUpdate, script_bok=plotViewUpdate)
 
 
 @app.route('/assets/<asset_name>')
