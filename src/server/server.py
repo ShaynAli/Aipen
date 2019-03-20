@@ -43,6 +43,12 @@ def home():
         return render_template('index.html', **elements)
 
 
+@app.route('/start_arena', methods=['POST'])
+def start_arena():
+    print(request.json)
+    return jsonify(request.json)
+
+
 @app.route('/request', methods=['POST'])
 def fulfill_request():
     print(request.json)
