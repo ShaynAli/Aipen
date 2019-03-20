@@ -8,16 +8,21 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
-
+      
         <script>{{functionScript|safe}}</script>
         <style> {{style|safe}} </style>
+  
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
 
         <title>Aipen</title>
+
+
     </head>
 
     <body>
 
         <div class="card">
+            <i style="font-size:24px" class="fa">&#xf0ae;</i>
             <h1>ACTIVITIES</h1>
             <div id="activities">
                 <nav>
@@ -39,6 +44,7 @@
         </div>
 
         <div class="card">
+            <i style='font-size:24px' class='far'>&#xf03e;</i>
             <h1>PREVIEW</h1>
             <div id="preview">
                 <nav>
@@ -57,6 +63,7 @@
         </div>
 
         <div class="card">
+            <i style="font-size:24px" class="fa">&#xf1c0;</i>
             <h1>DATA</h1>
             <div id="data">
                 <nav>
@@ -83,6 +90,7 @@
         </div>
 
         <div class="card">
+            <i class="fas fa-network-wired"></i>
             <h1>MODELS</h1>
             <div id="models">
                     <ul>
@@ -95,6 +103,7 @@
         </div>
 
         <div class="card">
+            <i class="fas fa-play-circle"></i>
             <h1>CONTROLS</h1>
             <div id="controls">
                 <button id="play-button" onclick="play()">&#9658</button>
