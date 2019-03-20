@@ -66,23 +66,27 @@ class RandomAgent(Activity.Agent):
 
 class MachineLearningActivity(metaclass=ABCMeta):
 
-    @abstractmethod
     @property
+    @abstractmethod
     def x_shape(self):
         pass
 
-    @abstractmethod
     @property
+    @abstractmethod
     def y_shape(self):
+        pass
+
+    @abstractmethod
+    def next_data(self):
         pass
 
     class Model(metaclass=ABCMeta):
 
-        def __init__(self):
+        def __init__(self, x_shape, y_shape):
             pass
 
         @abstractmethod
-        def learn(self, x, y):
+        def train(self, x, y):
             pass
 
         @abstractmethod

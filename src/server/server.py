@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 from bokeh.embed import components
 import data_utils.data as dt
 import data_utils.visualization as vs
@@ -18,8 +18,7 @@ with open(os.path.join(__location__, 'assets' '/script.js')) as functionality_sc
     functionScript = functionality_script.read()
 
 # Test plot to see how it displays
-testData = dt.Data()
-testData.set_linear(50, 2, -50)
+testData = dt.Data(data=dt.linear_noise_data(50, 100))
 testPlot = vs.plot_line(testData, "Generation", "Accuracy")
 
 

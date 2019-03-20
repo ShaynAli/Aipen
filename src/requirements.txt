@@ -3,3 +3,4 @@ bokeh
 scikit-learn
 pandas
 flask
+quandl

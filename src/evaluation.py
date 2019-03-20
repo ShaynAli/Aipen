@@ -138,6 +138,13 @@ def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTIO
         print('\t' + str(s))
     return scores
 
-# TODO (future): AI model evaluation
+
+def score(model, x, y, score_function=DEFAULT_SCORE_FUNCTION, train_after_testing=True):
+    model_scores = []
+    for x_i, y_i in zip(x, y):
+        model_scores.append(score_function(model.predict(x_i), y_i))
+        if train_after_testing:
+            model.train(x_i, y_i)
+    return np.mean(model_scores)
 
 # endregion
