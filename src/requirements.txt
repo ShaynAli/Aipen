@@ -3,3 +3,5 @@ bokeh
 quandl
 scikit-learn
 pandas
+pygame
+gym
