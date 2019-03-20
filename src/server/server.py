@@ -3,25 +3,6 @@ from bokeh.embed import components
 import data_utils.data as dt
 import data_utils.visualization as vs
 import os
-from arena.arena import MachineLearningArena
-from activities.activities import MachineLearningActivity
-from uuid import uuid4
-from activities.stock_prediction.stock_prediction import FrankfurtStockPrediction
-
-# model_ids[]
-#
-# model_names[]
-#
-#
-#
-# model_ids = {
-#     2823420934:
-# }
-
-# arena = MachineLearningArena(activity=)
-
-import json
-import pdb
 
 app = Flask(__name__)
 
@@ -33,7 +14,7 @@ with open(os.path.join(__location__, 'assets', 'style.css')) as style_file:
     style = style_file.read()
 
 with open(os.path.join(__location__, 'assets' '/script.js')) as functionality_script:
-    functionScript = functionality_script.read()
+    frontend = functionality_script.read()
 
 # Test plot to see how it displays
 data = {
@@ -42,16 +23,16 @@ data = {
     "model3": [(0, 10), (1, 15), (2, 20), (3, 20)]
 }
 
-testPlot = vs.empty_plot()
+test_plot = vs.empty_plot()
 
 # Separate the functionality and the view
-plotScript, plotView = components(testPlot)
+plot_script, plot_view = components(test_plot)
 
 elements = {
     'style': style,
-    'plotScript': plotView,
-    'plotView': plotScript,
-    'functionScript': functionScript
+    'plot_script': plot_view,
+    'plot_view': plot_script,
+    'frontend': frontend
 }
 
 
