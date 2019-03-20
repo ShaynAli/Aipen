@@ -6,13 +6,13 @@ class MachineLearningArena:
 
     def __init__(self, model_pool, activity, generation_size=10):
         self.model_pool = model_pool
-        self.activity = activity
-        self.models = self.new_models(n_models=generation_size)
+        self.activity = activity()
+        self.models = list(self.new_models(n_models=generation_size))
         self.score_history = []
 
     def new_model(self):
         from random import choice
-        return choice(self.model_pool)(x_shape=self.activity.x_shape, y_shape=self.activity.y_shape)
+        return choice(self.model_pool)(self.activity)
 
     def new_models(self, n_models):
         return (self.new_model() for _ in range(n_models))

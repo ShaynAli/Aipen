@@ -61,90 +61,31 @@ def complement_err_acc(predicted, actual, error=rms_error):
 def simple_gauss_acc(predicted, actual, error=mean_abs_error):
     return simple_gaussian(error(predicted, actual))
 
+
+def complement_mean_pct_error(predicted, actual):
+    return 1 - mean_pct_error(predicted, actual)
+
 # endregion
 
 
 # region Model scoring
 
-DEFAULT_SCORE_FUNCTION = complement_err_acc
+DEFAULT_SCORE_FUNCTION = inv_norm_err
 DEFAULT_ERROR_FUNCTION = rms_error
 DEFAULT_TRACK_FUNCTION = rms_error
 
 
-def score_prediction(x, y_predicted, y_actual, score_function=DEFAULT_SCORE_FUNCTION, rounding=False):
-    if y_predicted.shape != y_actual.shape:
-        raise RuntimeError('Shape mismatch, predicted had shape {predicted_shape} while actual had shape {actual_shape}'
-                           .format(predicted_shape=y_predicted.shape, actual_shape=y_actual.shape))
-    return score_function((np.round(y_predicted) if rounding else y_predicted), y_actual)
-
-
-def score_ml_model(model, x_data, y_data,
-                   batch_size=EVAL_BATCH_SIZE, n_epochs=N_EPOCHS, n_pre_training=N_PRE_TRAINING,
-                   score_function=DEFAULT_SCORE_FUNCTION, train_after_testing=True):
-
-    n_x = x_data.shape[0]  # Number of x entries
-    n_y = y_data.shape[0]  # Number of y entries
-    if n_x != n_y:
-        print('WARNING: x and y data do not have the same number of entries')
-    
-    max_i = min(n_x, n_y)
-    n_batches = int(ceil(max_i / batch_size))
-    scores = np.zeros((n_epochs, n_batches))
-
-    # Train one batch for shape
-    for i in range(0, n_pre_training):
-        # print('\tPre-training ' + str(i + 1) + '/' + str(n_pre_training))
-        x = x_data[i]
-        y = y_data[i]
-        model.learn(x, y)
-
-    for epoch_i in range(n_epochs):
-        data_i = n_pre_training if epoch_i == 0 else 0
-        # Go through each batch, test, then train
-        for batch_i in range(n_batches):
-            batch_max_i = min(data_i + batch_size, max_i)
-            print('\tBatch ' + str(batch_i + 1) + '/' + str(n_batches))
-            # Test
-            print('\t\tTesting')
-            batch_scores = np.zeros((batch_max_i-data_i,))
-            for i in range(data_i, batch_max_i):
-                x = x_data[i]
-                y = y_data[i]
-                prediction = model.predict(x)
-                score = score_prediction(x, prediction, y, score_function=score_function)
-                batch_scores[i-data_i] = score
-            batch_score = np.mean(batch_scores)
-            scores[epoch_i][batch_i] = batch_score
-            print('\t\t\tAverage score:' + str(batch_score))
-            if train_after_testing:
-                # Train
-                print('\t\tTraining')
-                for i in range(data_i, batch_max_i):
-                    x = x_data[i]
-                    y = y_data[i]
-                    model.learn(x, y)
-            data_i = data_i + batch_size
-    return scores
-
-
-def score_ml_models(models, x_data, y_data, score_function=DEFAULT_SCORE_FUNCTION):
-    performance = {}
-    for mdl in models:
-        print('Scoring model: ' + str(mdl))
-        performance[mdl] = score_ml_model(mdl, x_data, y_data, score_function=score_function)
-    scores = {mdl: np.mean(performance[mdl]) for mdl in performance.keys()}
-    print('Scoring complete, model performances:')
-    for s in scores.items():
-        print('\t' + str(s))
-    return scores
-
-
 def score(model, x, y, score_function=DEFAULT_SCORE_FUNCTION, train_after_testing=True):
-    model_scores = []
-    for x_i, y_i in zip(x, y):
-        model_scores.append(score_function(model.predict(x_i), y_i))
+    try:
+        model_score = score_function(model.predict(x), y)
+    except BaseException as e:
+        print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during scoring')
+        model_score = 0
+    try:
         if train_after_testing:
-            model.train(x_i, y_i)
-    return np.mean(model_scores)
+            model.train(x, y)
+    except BaseException as e:
+        print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during training')
+    return model_score
 
 # endregion

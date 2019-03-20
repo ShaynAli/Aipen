@@ -1,4 +1,4 @@
-from activities import MachineLearningActivity
+from activities.activities import MachineLearningActivity
 import quandl
 from _datetime import date, timedelta
 import pdb
@@ -180,8 +180,9 @@ fse_tickers = [
 
 class FrankfurtStockPrediction(MachineLearningActivity):
 
-    years = [year for year in range(2000, 2020)]
+    years = [year for year in range(2000, 2019)]
     months = [month for month in range(1, 13)]
+    days = [18]
 
     default_tickers = [
         'AIXA_X',
@@ -201,9 +202,11 @@ class FrankfurtStockPrediction(MachineLearningActivity):
         self.tickers = tickers
         self.guess_tickers = guess_tickers
 
+    @property
     def x_shape(self):
         return len(self.tickers), None
 
+    @property
     def y_shape(self):
         return len(self.guess_tickers), None
 
@@ -211,7 +214,7 @@ class FrankfurtStockPrediction(MachineLearningActivity):
         from random import choice
         year = choice(FrankfurtStockPrediction.years)
         month = choice(FrankfurtStockPrediction.months)
-        day = 18
+        day = choice(FrankfurtStockPrediction.days)
         date_format = '%Y-%m-%d'
         start_date = date(year=year, month=month, day=day)
         end_date = start_date + relativedelta(months=1)
@@ -228,8 +231,11 @@ class FrankfurtStockPrediction(MachineLearningActivity):
             print(f'Getting stock data for {ticker}')
             guess_ticker_data.append(self.get_ticker(ticker, start_date=start_date_str, end_date=end_date_str))
 
-        tickers = np.vstack(ticker_data)
-        guess_tickers = np.vstack(guess_ticker_data)
+        try:
+            tickers = np.vstack(ticker_data)
+            guess_tickers = np.vstack(guess_ticker_data)
+        except ValueError:
+            return self.next_data()
 
         return tickers, guess_tickers
 

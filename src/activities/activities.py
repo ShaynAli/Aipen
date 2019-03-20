@@ -82,8 +82,9 @@ class MachineLearningActivity(metaclass=ABCMeta):
 
     class Model(metaclass=ABCMeta):
 
-        def __init__(self, x_shape, y_shape):
-            pass
+        def __init__(self, activity):
+            self.x_shape = activity.x_shape
+            self.y_shape = activity.y_shape
 
         @abstractmethod
         def train(self, x, y):
