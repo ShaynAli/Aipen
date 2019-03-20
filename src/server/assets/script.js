@@ -14,7 +14,7 @@ function activitySelect() {
 }
 
 function init() {
-    setInterval(update, 10000)
+    setInterval(update, 1000)
 }
 
 function update() {
@@ -81,7 +81,7 @@ function play() {
     };
 
     console.log(JSON.stringify(serverRequest));
-    (post("/request", serverRequest).then(function(data) {
+    (post("/start_arena", serverRequest).then(function(data) {
         console.log(data)
     }))
 
