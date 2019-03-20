@@ -9,8 +9,11 @@ def plot_line(data_class, x_label, y_label):
     # Create a plot with specified parameters
     p = figure(tooltips=tools, x_axis_label=x_label, y_axis_label=y_label)
 
+    # Get data from data class
+    data = data_class.data
+
     # Designate as line graph with given appearance properties
-    p.line(data_class.data[:, 0], data_class.data[:, 1], line_width=2)
+    p.line(data[0], data[1], line_width=2)
     p.plot_height = 300
     p.plot_width = 600
     p.toolbar.logo = "grey"
@@ -33,7 +36,7 @@ def plot_scatter(data_class, x_label, y_label):
     p = figure(tooltips=tools, x_axis_label=x_label, y_axis_label=y_label)
 
     # Designate as scatter and customize appearance
-    p.scatter(data_class.data[:, 0], data_class.data[:, 1], radius=0.2)
+    p.scatter(data_class._data[:, 0], data_class._data[:, 1], radius=0.2)
     p.toolbar.logo = "grey"
     p.background_fill_color = "#dddddd"
     p.hover.tooltips = [
@@ -69,6 +72,17 @@ def multi_line(data):
     ]
 
     # Return the plot for display purposes
+    return p
+
+
+def empty_plot():
+    p = figure()
+    p.plot_height = 300
+    p.plot_width = 600
+    p.toolbar.logo = "grey"
+    p.toolbar.autohide = True
+    p.background_fill_color = "#dddddd"
+
     return p
 
 # Test data for both types of plots

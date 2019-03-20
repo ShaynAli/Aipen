@@ -3,6 +3,22 @@ from bokeh.embed import components
 import data_utils.data as dt
 import data_utils.visualization as vs
 import os
+from arena.arena import MachineLearningArena
+from activities.activities import MachineLearningActivity
+from uuid import uuid4
+
+# model_ids[]
+#
+# model_names[]
+#
+#
+#
+# model_ids = {
+#     2823420934:
+# }
+
+# arena = MachineLearningArena(activity=)
+
 import json
 import pdb
 
@@ -25,15 +41,15 @@ data = {
     "model3": [(0, 10), (1, 15), (2, 20), (3, 20)]
 }
 
-testPlot = vs.multi_line(data)
+testPlot = vs.empty_plot()
 
 # Separate the functionality and the view
 plotScript, plotView = components(testPlot)
 
 elements = {
     'style': style,
-    'plotScript': plotScript,
-    'plotView': plotView,
+    'plotScript': plotView,
+    'plotView': plotScript,
     'functionScript': functionScript
 }
 
@@ -57,8 +73,7 @@ def fulfill_request():
 
 @app.route('/update_plot', methods=['POST'])
 def update_plot():
-    test_data = dt.Data()
-    test_data.set_linear(100, 2, -50)
+    test_data = dt.Data(data=dt.indexed_linear_noise_data(50, 100))
     test_plot_update = vs.plot_line(test_data, "Generation", "Accuracy")
 
     # Separate the functionality and the view
