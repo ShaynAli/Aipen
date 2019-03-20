@@ -2,4 +2,4 @@ sudo: true
 language: python
 python: "3.6"
 install: pip install -e ./src/
-script: python ./src/activities/stock_arena.py
+script: python ./src/activities/stock_prediction/stock_arena.py
