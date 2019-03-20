@@ -3,6 +3,7 @@ from bokeh.embed import components
 import data_utils.data as dt
 import data_utils.visualization as vs
 import os
+import json
 import pdb
 
 app = Flask(__name__)
@@ -36,14 +37,7 @@ elements = {
 
 @app.route('/')
 def home():
-    try:
         return render_template('index.html', **elements)
-
-    except Exception as e:
-        if not debug:
-            raise e
-        print(f'Encountered exception {type(e)} {e}')
-        pdb.set_trace()
 
 
 @app.route('/request', methods=['POST'])
@@ -56,11 +50,8 @@ def fulfill_request():
 
     elements['plotScript'] = plotScriptUpdate
     elements['plotView'] = plotViewUpdate
-    update_elements = {
-        'plot_script': plotScriptUpdate,
-        'plot_view': plotViewUpdate
-    }
-    return jsonify(update_elements)
+
+    return render_template('plot.html', **elements)
     # return jsonify(request.json)
 
 

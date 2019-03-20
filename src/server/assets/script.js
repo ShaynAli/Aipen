@@ -70,7 +70,10 @@ function play() {
 
 
     console.log(serverRequest);
-    post("/request", serverRequest)
+    post("/request", serverRequest).then(function (newPlot) {
+         console.log(newPlot);
+        document.getElementById("statistics").innerHTML = newPlot;
+    });
 }
 
 function pause() {
@@ -118,9 +121,25 @@ function post(path, params) {
             "Content-Type": "application/json"
         })
     })
-    .then(response => response.json())
-    .then(function (json) {
-        document.getElementById('statistics').innerHtml = json['plot_view'];
-        document.getElementById('plotScript').innerHtml = json['plot_script'];
+    .then(function(response) {
+        return response;
     });
 }
+
+$(document).ready(function(){
+        $('#play-button').on('click', function(e){
+          // prevent page being reset, we are going to update only
+          // one part of the page.
+          e.preventDefault()
+          $.ajax({
+            url:'./request',
+            type:'post',
+            success : function(data){
+              // server returns rendered "update_content.html"
+              // which is just pure html, use this to replace the existing
+              // html within the "plot content" div
+              $('#statistics').html(data)
+            }
+          })
+        });
+      });
