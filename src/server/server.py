@@ -42,30 +42,22 @@ def home():
 
 @app.route('/request', methods=['POST'])
 def fulfill_request():
-    testData.set_linear(100, 2, -50)
-    testPlotUpdate = vs.plot_line(testData, "Generation", "Accuracy")
-
-    # Separate the functionality and the view
-    plotScriptUpdate, plotViewUpdate = components(testPlotUpdate)
-
-    elements['plotScript'] = plotScriptUpdate
-    elements['plotView'] = plotViewUpdate
-
-    return render_template('plot.html', **elements)
-    # return jsonify(request.json)
+    print(request.json)
+    return jsonify(request.json)
 
 
 @app.route('/update_plot', methods=['POST'])
 def update_plot():
     testData.set_linear(100, 2, -50)
-    testPlotUpdate = vs.plot_line(testData, "Generation", "Accuracy")
+    test_plot_update = vs.plot_line(testData, "Generation", "Accuracy")
 
     # Separate the functionality and the view
-    plotScriptUpdate, plotViewUpdate = components(testPlotUpdate)
+    plot_script_update, plot_view_update = components(test_plot_update)
 
-    elements['plotScript'] = plotScriptUpdate
-    elements['plotView'] = plotViewUpdate
-    return render_template('plot.html', plotScript=plotScriptUpdate, script_bok=plotViewUpdate)
+    elements['plotScript'] = plot_script_update
+    elements['plotView'] = plot_view_update
+
+    return render_template('plot.html', **elements)
 
 
 @app.route('/assets/<asset_name>')

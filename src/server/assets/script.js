@@ -13,6 +13,16 @@ function activitySelect() {
     }
 }
 
+function init() {
+    setInterval(update, 10000)
+}
+
+function update() {
+    if (document.getElementById("play-button").disabled) {
+        var x = 1; // Fetch
+    }
+}
+
 function play() {
     var activity = document.getElementById("activity").value;
     var data = document.getElementById("dataSelect").value;
@@ -53,6 +63,8 @@ function play() {
 
     document.getElementById("play-button").disabled = true;
     document.getElementById("pause-button").disabled = false;
+    document.getElementById("next-gen").disabled = false;
+    document.getElementById("prev-gen").disabled = false;
 
     var serverRequest = {
         requests: {
@@ -68,17 +80,17 @@ function play() {
         }
     };
 
+    console.log(JSON.stringify(serverRequest));
+    (post("/request", serverRequest).then(function(data) {
+        console.log(data)
+    }))
 
-    console.log(serverRequest);
-    post("/request", serverRequest).then(function (newPlot) {
-         console.log(newPlot);
-        document.getElementById("statistics").innerHTML = newPlot;
-    });
 }
 
-function pause() {
-    document.getElementById("play-button").disabled = false;
+function stop() {
     document.getElementById("pause-button").disabled = true;
+    document.getElementById("next-gen").disabled = true;
+    document.getElementById("prev-gen").disabled = true;
 }
 
 // Takes selected model and displays the required leaderboard
@@ -121,25 +133,19 @@ function post(path, params) {
             "Content-Type": "application/json"
         })
     })
-    .then(function(response) {
-        return response;
-    });
+    .then(response => response.json());
 }
 
+// POST request when play button is clicked.
 $(document).ready(function(){
-        $('#play-button').on('click', function(e){
-          // prevent page being reset, we are going to update only
-          // one part of the page.
-          e.preventDefault()
-          $.ajax({
-            url:'./request',
-            type:'post',
-            success : function(data){
-              // server returns rendered "update_content.html"
-              // which is just pure html, use this to replace the existing
-              // html within the "plot content" div
-              $('#statistics').html(data)
-            }
-          })
-        });
-      });
+    $('#play-button').on('click', function(e){
+      e.preventDefault()
+      $.ajax({
+        url:'./update_plot',
+        type:'post',
+        success : function(data){
+          $('#statistics').html(data)
+        }
+      })
+    });
+});
