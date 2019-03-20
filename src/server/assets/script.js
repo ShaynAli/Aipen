@@ -95,6 +95,25 @@ function stop() {
 
 // Takes selected model and displays the required leaderboard
 function leaderboardSelect() {
+    // Selection from here populates leads[] in table with elements and scores
+    entries = '';
+    document.getElementById("leaderBody").innerHTML = entries;
+
+    lead1 = new Leader(001, 45);
+    lead2 = new Leader(002, 77);
+    lead3 = new Leader(003, 13);
+
+    leads = [lead1, lead2, lead3];
+
+    leads.sort((aLeader, bLeader) => aLeader.score - bLeader.score);
+    leads.forEach((lead) => entries += '<tr><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
+    document.getElementById("leaderBody").innerHTML = entries;
+    console.log(entries);
+}
+
+function Leader(id, score) {
+    this.id = id;
+    this.score = score;
 }
 
 // Creates a new select option based on given string value
