@@ -99,13 +99,24 @@ function leaderboardSelect() {
     entries = '';
     document.getElementById("leaderBody").innerHTML = entries;
 
-    lead1 = new Leader(001, 45);
-    lead2 = new Leader(002, 77);
-    lead3 = new Leader(003, 13);
+    modelGroup = leaderboardSelector.value;
 
-    leads = [lead1, lead2, lead3];
+    lead1 = new Leader(1, 45);
+    lead2 = new Leader(2, 77);
+    lead3 = new Leader(3, 13);
+    lead4 = new Leader(4, 23);
+    lead5 = new Leader(5, 92);
+    lead6 = new Leader(6, 18);
+    lead7 = new Leader(7, 03);
+    lead8 = new Leader(8, 92);
+    lead9 = new Leader(9, 18);
+    lead10 = new Leader(10, 03);
 
-    leads.sort((aLeader, bLeader) => aLeader.score - bLeader.score);
+    
+
+    leads = [lead1, lead2, lead3, lead4, lead5, lead6, lead7, lead8, lead9, lead10];
+
+    leads.sort((aLeader, bLeader) => bLeader.score - aLeader.score);
     leads.forEach((lead) => entries += '<tr><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
     document.getElementById("leaderBody").innerHTML = entries;
     console.log(entries);
