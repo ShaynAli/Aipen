@@ -15,7 +15,9 @@ body {
     background: #2D334C;
     padding: 0;
     margin: 0.5vw;
+    font-weight:bold
 }
+
 
 #statistics {
 
@@ -26,13 +28,32 @@ h1 {
     font-weight: bold;
     font-size: 1em;
 }
-icon {
-  position: relative;
-  /* Adjust these values accordingly */
-  top: 5px;
-  left: 5px;
+.fa{
+    /*float:left;*/
+    /*margin-left: 10px;*/
+    display:inline
+    /*margin-right: 1em;*/
+    /* ... */
 }
+.far,h1{
+    /*float:left;*/
+    /*margin-left: 10px;*/
+    display:inline
+    /*margin-right: 1em;*/
 
+    /* ... */
+}
+.fas fa-network-wired{
+
+display:inline
+}
+.fas fa-play-circle{
+display:inline
+}
+.value{
+font-weight: bold
+
+}
 nav select {
     height: 95%;
     width: 95%;
