@@ -1,0 +1,73 @@
+body {
+    background: #23283C;
+    color: #FFFFFF;
+    font-family: 'Ubuntu', sans-serif;
+    width: 98vw;
+    height: 98vh;
+    display: inline-grid;
+    grid-template-columns: 33vw 66vw;
+    padding: 0.5vw;
+    margin: 0;
+}
+
+.card {
+    background: #2D334C;
+    padding: 0;
+    margin: 0.5vw;
+}
+
+#statistics {
+    margin: 1.5vw;
+}
+
+h1 {
+    font-weight: normal;
+    font-size: 1em;
+}
+
+nav select {
+    height: 95%;
+    width: 95%;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin: 0.3vw;
+}
+
+#leaderboard {
+    width: 49%
+}
+
+#models ul {
+  margin: 0;
+  list-style: none;
+  float: left;
+}
+
+#data {
+    visibility: hidden;
+}
+
+#pause-button {
+   text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  border: 1px solid #aaa;
+  padding: 5px;
+  text-align: center;
+}
+
+td {
+  border: 1px solid #aaa;
+  padding: 5px;
+  text-align: left;
+}
+
+.left {
+    width: 49%;
+    float: left;
+}
