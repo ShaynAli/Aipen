@@ -55,6 +55,11 @@ class Battleship(Activity):
         # TODO: Encapsulate state about ship placement and turns for placing ships
         if self.placement:
             # self.act(self, self.current_player, self.Action.place_ship)
+            # FROM own.board, return (row i, col j) for i e 0..9, j e 1..8
+            # EXCEPT where SHIP exists, defined by center point
+            # DEF 1) Ships are defined by a central point, have length 3, and can only be placed horizontally
+                # initially, all points except for the far columns are valid
+                # once a ship has been placed, mark off the spaces taken up by it
             pass
         else:
             # self.act(self, self.current_player, self.Action.launch_missile)
@@ -73,7 +78,9 @@ class Battleship(Activity):
 
         action = actions[0]
         if action.action_type == 'place':
-            # take some action a, then
+            # from list of actions, choose a valid move, selecting a point X
+            # once X is selected, mark off (1) the left and right spaces
+            # mark X as Location.HIT or Location.MISS if it collides with a ship
             self.n_turns += 1
             self.n_ships -= 1
             if self.n_ships <= 0:

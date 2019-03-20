@@ -1,6 +1,7 @@
 # IDE files
 .idea/
 .vs/
+.vscode/
 **/__pycache__/
 
 # Virtual environment
