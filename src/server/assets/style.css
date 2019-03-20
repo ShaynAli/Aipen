@@ -5,7 +5,7 @@ body {
     width: 98vw;
     height: 98vh;
     display: inline-grid;
-    grid-template-columns: 33vw 66vw;
+    grid-template-columns: 20vw 78vw;
     padding: 0.5vw;
     margin: 0;
 }
@@ -34,7 +34,7 @@ nav select {
 }
 
 #leaderboard {
-    width: 49%
+    width: 30vw
 }
 
 #models ul {
@@ -57,17 +57,23 @@ table {
 
 th {
   border: 1px solid #aaa;
-  padding: 5px;
+  padding: 1vw;
+  margin: 1vw;
   text-align: center;
 }
 
 td {
   border: 1px solid #aaa;
-  padding: 5px;
+  padding: 1vw;
+  margin: 1vw;
   text-align: left;
 }
 
 .left {
     width: 49%;
     float: left;
+}
+
+.right {
+    float: right;
 }

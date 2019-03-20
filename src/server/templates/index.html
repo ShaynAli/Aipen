@@ -45,14 +45,6 @@
                     <select id="leaderboardSelector" onchange="leaderboardSelect()" class="left">
                     </select>
                 </nav>
-
-                <table id="leaderboard">
-                  <thead>
-                    <th>Model ID</th>
-                    <th>Score</th>
-                  </thead>
-                  <tbody></tbody>
-                </table>
             </div>
         </div>
 
@@ -76,10 +68,18 @@
 
         <div class="card">
             <h1>STATISTICS</h1>
-            <div id="statistics">
+            <div id="statistics" class="left">
                 {{plotView|safe}}
                 {{plotScript|safe}}
             </div>
+
+            <table id="leaderboard" class="right">
+              <thead>
+                <th>Model ID</th>
+                <th>Score</th>
+              </thead>
+              <tbody></tbody>
+            </table>
         </div>
 
         <div class="card">

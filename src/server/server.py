@@ -19,10 +19,13 @@ with open(os.path.join(__location__, 'assets' '/script.js')) as functionality_sc
     functionScript = functionality_script.read()
 
 # Test plot to see how it displays
-testData = dt.Data()
-testData.set_linear(50, 2, -50)
-testPlot = vs.plot_line(testData, "Generation", "Accuracy")
+data = {
+    "model1": [(0, 1), (1, 2), (2, 4)],
+    "model2": [(0, 4), (1, 5), (2, 6)],
+    "model3": [(0, 10), (1, 15), (2, 20), (3, 20)]
+}
 
+testPlot = vs.multi_line(data)
 
 # Separate the functionality and the view
 plotScript, plotView = components(testPlot)
@@ -48,8 +51,9 @@ def fulfill_request():
 
 @app.route('/update_plot', methods=['POST'])
 def update_plot():
-    testData.set_linear(100, 2, -50)
-    test_plot_update = vs.plot_line(testData, "Generation", "Accuracy")
+    test_data = dt.Data()
+    test_data.set_linear(100, 2, -50)
+    test_plot_update = vs.plot_line(test_data, "Generation", "Accuracy")
 
     # Separate the functionality and the view
     plot_script_update, plot_view_update = components(test_plot_update)
