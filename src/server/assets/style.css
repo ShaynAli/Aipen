@@ -2,10 +2,11 @@ body {
     background: #23283C;
     color: #FFFFFF;
     font-family: 'Ubuntu', sans-serif;
+
     width: 98vw;
     height: 98vh;
     display: inline-grid;
-    grid-template-columns: 33vw 66vw;
+    grid-template-columns: 20vw 78vw;
     padding: 0.5vw;
     margin: 0;
 }
@@ -14,27 +15,68 @@ body {
     background: #2D334C;
     padding: 0;
     margin: 0.5vw;
+    font-weight:bold
 }
+
 
 #statistics {
     margin: 1.5vw;
 }
 
 h1 {
-    font-weight: normal;
+    font-weight: bold;
     font-size: 1em;
 }
 
 nav select {
-    height: 100%;
+    height: 95%;
     width: 95%;
     overflow: hidden;
     overflow-y: scroll;
-    margin: 0.5vw;
+    margin: 0.3vw;
+}
+
+#leaderboard {
+    width: 30vw
 }
 
 #models ul {
   margin: 0;
   list-style: none;
   float: left;
+}
+
+#data {
+    visibility: hidden;
+}
+
+#pause-button {
+   text-align: center;
+}
+
+table {
+  border-collapse: collapse;
+}
+
+th {
+  border: 1px solid #aaa;
+  padding: 1vw;
+  margin: 1vw;
+  text-align: center;
+}
+
+td {
+  border: 1px solid #aaa;
+  padding: 1vw;
+  margin: 1vw;
+  text-align: left;
+}
+
+.left {
+    width: 49%;
+    float: left;
+}
+
+.right {
+    float: right;
 }

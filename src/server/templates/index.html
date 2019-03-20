@@ -5,23 +5,23 @@
     <head>
         <link href="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.css" rel="stylesheet" type="text/css">
         <link href="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.css" rel="stylesheet" type="text/css">
-
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
-
-        <script>{functionScript}</script>
-
-        {plotScript}
-
-        <style> {style} </style>
+      
+        <script>{{functionScript|safe}}</script>
+        <style> {{style|safe}} </style>
 
         <title>Aipen</title>
+
+
     </head>
 
-    <body>
+    <body onload="init()">
 
         <div class="card">
-            <h1>ACTIVITIES</h1>
+            <div>
+            <h1>ACTIVITIES</h1></div>
             <div id="activities">
                 <nav>
                     <select onchange="activitySelect()" id="activity" size="10">
@@ -42,16 +42,24 @@
         </div>
 
         <div class="card">
-            <h1>PREVIEW</h1>
-            <div id="preview"></div>
+            <div>
+            <h1>PREVIEW</h1></div>
+            <div id="preview">
+                <nav>
+                    <select id="leaderboardSelector" onchange="leaderboardSelect()" class="left">
+                    </select>
+                </nav>
+            </div>
         </div>
 
         <div class="card">
-            <h1>DATA</h1>
+            <div>
+            <h1>DATA</h1></div>
             <div id="data">
                 <nav>
-                    <select>
+                    <select id="dataSelect">
                         <optgroup id="group1" label="Group 1">
+                            <option value="" selected disabled hidden >Select Data Set</option>
                             <option>CIFAR-10</option>
                             <option>CIFAR-100</option>
                         </optgroup>
@@ -64,25 +72,44 @@
         </div>
 
         <div class="card">
-            <h1>STATISTICS</h1>
-            <div id="statistics"> {plotView} </div>
+            <div>
+                <h1>STATISTICS</h1></div>
+            <div id="statistics" class="left">
+                {{plotView|safe}}
+                {{plotScript|safe}}
+            </div>
+
+            <table id="leaderboard" class="right">
+              <thead>
+                <th>Model ID</th>
+                <th>Score</th>
+              </thead>
+              <tbody id="leaderBody"></tbody>
+            </table>
         </div>
 
         <div class="card">
-            <h1>MODELS</h1>
+            <div>
+            <h1>MODELS</h1></div>
             <div id="models">
                     <ul>
-                        <li><input type="checkbox"> checkbox 1</li>
-                        <li><input type="checkbox"> checkbox 2</li>
-                        <li><input type="checkbox"> checkbox 3</li>
-                        <li><input type="checkbox"> checkbox 4</li>
+                        <li><input id="model1" type="checkbox"> Model 1</li>
+                        <li><input id="model2" type="checkbox"> Model 2</li>
+                        <li><input id="model3" type="checkbox"> Model 3</li>
+                        <li><input id="model4" type="checkbox"> Model 4</li>
                     </ul>
             </div>
         </div>
 
         <div class="card">
-            <h1>CONTROLS</h1>
-            <div id="controls"></div>
+            <div>
+            <h1>CONTROLS</h1></div>
+            <div id="controls">
+                <button id="play-button" onclick="play()">&#9658 Start</button>
+                <button id="pause-button" onclick="stop()" disabled>&#9724 Stop</button>
+                <button id="next-gen" onclick="nextGen()" disabled>&#9650 Next Generation</button>
+                <button id="prev-gen" onclick="prevGen()" disabled>&#9660 Previous Generation</button>
+            </div>
         </div>
 
     </body>

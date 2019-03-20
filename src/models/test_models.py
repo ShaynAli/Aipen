@@ -1,4 +1,4 @@
-''' test_models.py Simple models for testing '''
+""" test_models.py Simple models for testing """
 import numpy as np
 from models.abstract_models import MLModel
 
