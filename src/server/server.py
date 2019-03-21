@@ -78,6 +78,7 @@ def get_arenas():
 
 @app.route('/arena/new_arena', methods=http_methods)
 def new_arena():
+    print(request.json)
     model_ids = request.json['models']
     models = [id_to_model[model_id] for model_id in model_ids]
 
