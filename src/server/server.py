@@ -47,10 +47,10 @@ activities_to_models = {
 }
 
 # Static dicts
-id_to_activity = {uuid4(): activity for activity in activities_to_models}
+id_to_activity = {str(uuid4()): activity for activity in activities_to_models}
 activity_to_id = {activity: activity_id for activity_id, activity in id_to_activity.items()}
 
-id_to_model = {uuid4(): model for model_list in activities_to_models.values() for model in model_list}
+id_to_model = {str(uuid4()): model for model_list in activities_to_models.values() for model in model_list}
 model_to_id = {model: model_id for model_id, model in id_to_model.items()}
 
 # Dynamic dicts
