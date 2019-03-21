@@ -2,7 +2,12 @@ from flask import Flask, request, jsonify, render_template
 from bokeh.embed import components
 import data_utils.data as dt
 import data_utils.visualization as vs
+import arena.arena as arena
 import os
+from uuid import uuid4
+from activities.stock_prediction.stock_prediction import FrankfurtStockPrediction
+from activities.stock_prediction.stock_prediction_models import RandomRangePredictor
+from arena.arena import MachineLearningArena
 
 app = Flask(__name__)
 
@@ -29,6 +34,15 @@ elements = {
     'frontend': frontend
 }
 
+id_to_activity = {uuid4(): activity for activity in [FrankfurtStockPrediction]}
+activity_to_id = {activity: activity_id for activity_id, activity in id_to_activity.items()}
+
+id_to_model = {uuid4(): model for model in [RandomRangePredictor]}
+model_to_id = {model: model_id for model_id, model in id_to_model.items()}
+
+id_to_arena = {}
+arena_to_id = {}
+
 # region Homepage
 
 
@@ -41,14 +55,34 @@ def home():
 # region Arena routes
 
 
+@app.route('/arena')
+def get_arenas():
+    pass
+    return [activity_id for activity_id in id_to_activity.keys()]
+    # Return all ids of arenas (and optionally their names)
+#     ids: [ 942039, 2348923 ]
+
+
 @app.route('/arena/new_arena')
 def new_arena():
-    pass
+
+    requests = {
+        'activity': "activity_id",
+        'models': ["IDs"]
+    }
+
+    n_arena = arena.MachineLearningArena(model_pool=requests['models'], activity=requests['activity'])
+    arena_id = uuid4()
+    id_to_arena[arena_id] = n_arena
+    arena_to_id[n_arena] = arena_id
+    
+    return jsonify(arena_id=arena_id)
 
 
 @app.route('/arena/<arena_id>')
 def arena(arena_id):
     pass
+    # Return name of arena + other info
 
 
 @app.route('/arena/<arena_id>/start')
