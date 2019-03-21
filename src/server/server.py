@@ -33,7 +33,15 @@ elements = {
     'frontend_script': frontend_script
 }
 
-# Configuration dict
+# Configuration dicts
+activity_names = {
+    FrankfurtStockPrediction: 'Frankfurt Stock Prediction'
+}
+
+model_names = {
+    RandomRangePredictor: 'Random Range Predictor'
+}
+
 activities_to_models = {
     FrankfurtStockPrediction: [RandomRangePredictor]
 }
@@ -64,8 +72,7 @@ def home():
 
 @app.route('/arena', methods=http_methods)
 def get_arenas():
-    return jsonify(arena_names=[arena.__class__.__name__ for arena in arena_to_id],
-                   arena_ids=[arena_id for arena_id in id_to_arena])
+    return jsonify(arena_ids=[arena_id for arena_id in id_to_arena])
 
 
 @app.route('/arena/new_arena', methods=http_methods)
@@ -86,32 +93,32 @@ def new_arena():
     return jsonify(arena_id=arena_id)
 
 
-@app.route('/arena/<arena_id>')
-def get_arena(arena_id, methods=http_methods):
-    return jsonify(arena_name=id_to_arena[arena_id].__class__.__name__)
+@app.route('/arena/<arena_id>', methods=http_methods)
+def get_arena(arena_id):
+    return jsonify(id_to_arena[arena_id])
 
 
-@app.route('/arena/<arena_id>/start')
-def start_arena(arena_id, methods=http_methods):
+@app.route('/arena/<arena_id>/start', methods=http_methods)
+def start_arena(arena_id):
     arena_id_started[arena_id] = True
     arena = id_to_arena[arena_id]
     while arena_id_started[arena_id]:
         arena.auto_compete()
 
 
-@app.route('/arena/<arena_id>/stop')
-def stop_arena(arena_id, methods=http_methods):
+@app.route('/arena/<arena_id>/stop', methods=http_methods)
+def stop_arena(arena_id,):
     arena_id_started[arena_id] = False
 
 
-@app.route('/arena/<arena_id>/generation/<generation_number>')
-def arena_generation_score(arena_id, generation_number, methods=http_methods):
+@app.route('/arena/<arena_id>/generation/<generation_number>', methods=http_methods)
+def arena_generation_score(arena_id, generation_number):
     arena = id_to_arena[arena_id]
     return jsonify(scores=arena.score_history[generation_number])
 
 
-@app.route('/arena/<arena_id>/set_models')
-def set_models(arena_id, methods=http_methods):
+@app.route('/arena/<arena_id>/set_models', methods=http_methods)
+def set_models(arena_id):
     arena = id_to_arena[arena_id]
     arena.model_pool = [id_to_model[model_id] for model_id in request.json]
 
@@ -121,8 +128,8 @@ def set_models(arena_id, methods=http_methods):
 # region Model routes
 
 
-@app.route('/model/<model_id>')
-def get_model(model_id, methods=http_methods):
+@app.route('/model/<model_id>', methods=http_methods)
+def get_model(model_id):
     return jsonify(model_name=id_to_model[model_id])
 
 # endregion
@@ -130,18 +137,18 @@ def get_model(model_id, methods=http_methods):
 
 # region Activities routes
 
-@app.route('/activity')
-def get_activities(methods=http_methods):
+@app.route('/activity', methods=http_methods)
+def get_activities():
     return jsonify(activity_ids=[activity_id for activity_id in id_to_activity],
-                   activity_names=[activity.__class__.__name__ for activity in activity_to_id])
+                   activity_names=[activity_names[activity] for activity in activity_to_id])
 
 
-@app.route('/activity/<activity_id>/models')
-def get_models(activity_id, methods=http_methods):
+@app.route('/activity/<activity_id>/models', methods=http_methods)
+def get_models(activity_id):
     activity = id_to_activity[activity_id]
     models = activities_to_models[activity]
     return jsonify(model_ids=[model_to_id[model] for model in models],
-                   model_names=[model.__class__.__name__ for model in models])
+                   model_names=[model_names[model] for model in models])
 
 # endregion
 
