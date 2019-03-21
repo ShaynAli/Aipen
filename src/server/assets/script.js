@@ -33,23 +33,14 @@ $(document).ready(function(){
 
 function activitySelect() {
     let x = document.getElementById("activity-selection").value;
+    $("#model-table tr").remove();
+    document.getElementById("model-header").innerHTML = `
+        <th>Enable</th> <th>Model Name</th>`;
     get_models(x).then(function(data) {
         console.log(data);
-        $("#model-table tr").remove(); 
         document.getElementById("model-table").appendChild(string_to_html(
             build_model_pool(data)));
     });
-    if (x === "Test") {
-        document.getElementById("group1").hidden = false;
-        document.getElementById("group2").hidden = true;
-        document.getElementById("dataSelect").style.visibility = "visible";
-    }
-
-    if (x === "Test2") {
-        document.getElementById("group1").hidden = true;
-        document.getElementById("group2").hidden = false;
-        document.getElementById("dataSelect").style.visibility = "visible";
-    }
 }
 
 function build_model_pool(data) {
@@ -78,8 +69,7 @@ function play() {
 
 function stop() {
     document.getElementById("pause-button").disabled = true;
-    document.getElementById("next-gen").disabled = true;
-    document.getElementById("prev-gen").disabled = true;
+    document.getElementById("get-generation").disabled = true;
 }
 
 function post(path, params,) {
@@ -134,7 +124,6 @@ function set_arena(id) {
 function start_arena(id) {
     console.log("Starting arena:" + id);
     post("/arena/" + id + "/start_arena");
-    // NOTE: (1) does the id need to be specified? or use current_arena
 }
 
 // Stop the current arena
