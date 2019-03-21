@@ -78,7 +78,6 @@ def get_arenas():
 
 @app.route('/arena/new_arena', methods=http_methods)
 def new_arena():
-    print(request.json)
     model_ids = request.json['models']
     models = [id_to_model[model_id] for model_id in model_ids]
 
@@ -86,7 +85,7 @@ def new_arena():
     activity = id_to_activity[activity_id]
 
     arena = MachineLearningArena(model_pool=models, activity=activity)
-    arena_id = uuid4()
+    arena_id = str(uuid4())
 
     id_to_arena[arena_id] = arena
     arena_to_id[arena] = arena_id
@@ -102,7 +101,13 @@ def get_arena(arena_id):
 
 @app.route('/arena/<arena_id>/start', methods=http_methods)
 def start_arena(arena_id):
+    print(arena_id)
+    print(id_to_arena)
+    print(arena_id_started)
+
     arena_id_started[arena_id] = True
+    print(arena_id_started)
+    print(id_to_arena[arena_id])
     arena = id_to_arena[arena_id]
     while arena_id_started[arena_id]:
         arena.auto_compete()

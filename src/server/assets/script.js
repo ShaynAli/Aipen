@@ -146,19 +146,20 @@ function new_arena() {
         console.log("Generated new arena with id: " + arena_id);
         arena_list.push(arena_id);
         set_arena(arena_id);
+        start_arena(arena_list);
     });
 }
 
 // Set the current arena instance
 function set_arena(id) {
-    console.log("Updating current arena to id:" + id);
+    console.log("Updating current arena to id: " + id);
     current_arena = id;
 }
 
 // Start the current arena
 function start_arena(id) {
     console.log("Starting arena:" + id);
-    post("/arena/" + id + "/start_arena");
+    post("/arena/" + id + "/start");
     arena_running = true;
 }
 
