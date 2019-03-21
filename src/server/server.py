@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, render_template
 from bokeh.embed import components
 import data_utils.data as dt
 import data_utils.visualization as vs
-import arena.arena as arena
+import arena.arena as aipen
 import os
 from uuid import uuid4
 from activities.stock_prediction.stock_prediction import FrankfurtStockPrediction
@@ -59,7 +59,8 @@ def home():
 
 @app.route('/arena')
 def get_arenas():
-    return jsonify([arena_id for arena_id in id_to_arena])
+    return jsonify(arena_names=[n_arena for n_arena in arena_to_id],
+                   arena_ids=[arena_id for arena_id in id_to_arena])
     # Return all ids of arenas (and optionally their names)
 #     ids: [ 942039, 2348923 ]
 
@@ -72,7 +73,7 @@ def new_arena():
         'models': ["IDs"]
     }
 
-    n_arena = arena.MachineLearningArena(model_pool=requests['models'], activity=requests['activity'])
+    n_arena = aipen.MachineLearningArena(model_pool=requests['models'], activity=requests['activity'])
 
     arena_id = uuid4()
     id_to_arena[arena_id] = n_arena
@@ -85,16 +86,16 @@ def new_arena():
 
 @app.route('/arena/<arena_id>')
 def arena(arena_id):
-    pass
+    return jsonify(arena_name=id_to_arena[arena_id])
     # Return name of arena + other info
 
 
 @app.route('/arena/<arena_id>/start')
 def start_arena(arena_id):
     arena_started[arena_id] = True
-    arena = id_to_arena[arena_id]
+    _arena = id_to_arena[arena_id]
     while arena_started[arena_id]:
-        arena.auto_compete()
+        _arena.auto_compete()
 
 
 @app.route('/arena/<arena_id>/stop')
@@ -104,12 +105,14 @@ def stop_arena(arena_id):
 
 @app.route('/arena/<arena_id>/generation/<generation_number>')
 def arena_generation_score(arena_id, generation_number):
-    pass
+    _arena = id_to_arena[arena_id]
+    return jsonify(scores=_arena.score_history[generation_number])
 
 
 @app.route('/arena/<arena_id>/set_models')
 def set_models(arena_id):
-    pass
+    _arena = id_to_arena[arena_id]
+    _arena.model_pool = [id_to_model[model_id] for model_id in request.json]
 
 
 # endregion
@@ -119,7 +122,17 @@ def set_models(arena_id):
 
 @app.route('/model/<model_id>')
 def model(model_id):
-    pass
+    return jsonify(model_name=id_to_model[model_id])
+
+# endregion
+
+
+# region Activities routes
+
+@app.route('/activity')
+def get_activities():
+    return jsonify(activity_names=[activity for activity in activity_to_id],
+                   activity_ids=[activity_id for activity_id in id_to_activity])
 
 # endregion
 
