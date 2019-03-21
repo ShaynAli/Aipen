@@ -57,8 +57,7 @@ def home():
 
 @app.route('/arena')
 def get_arenas():
-    pass
-    return [activity_id for activity_id in id_to_activity.keys()]
+    return jsonify([arena_id for arena_id in id_to_arena])
     # Return all ids of arenas (and optionally their names)
 #     ids: [ 942039, 2348923 ]
 
@@ -75,7 +74,7 @@ def new_arena():
     arena_id = uuid4()
     id_to_arena[arena_id] = n_arena
     arena_to_id[n_arena] = arena_id
-    
+
     return jsonify(arena_id=arena_id)
 
 
