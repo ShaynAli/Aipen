@@ -43,6 +43,8 @@ model_to_id = {model: model_id for model_id, model in id_to_model.items()}
 id_to_arena = {}
 arena_to_id = {}
 
+arena_started = {}
+
 # region Homepage
 
 
@@ -71,9 +73,12 @@ def new_arena():
     }
 
     n_arena = arena.MachineLearningArena(model_pool=requests['models'], activity=requests['activity'])
+
     arena_id = uuid4()
     id_to_arena[arena_id] = n_arena
     arena_to_id[n_arena] = arena_id
+
+    arena_started[arena_id] = False
 
     return jsonify(arena_id=arena_id)
 
@@ -86,12 +91,15 @@ def arena(arena_id):
 
 @app.route('/arena/<arena_id>/start')
 def start_arena(arena_id):
-    pass
+    arena_started[arena_id] = True
+    arena = id_to_arena[arena_id]
+    while arena_started[arena_id]:
+        arena.auto_compete()
 
 
 @app.route('/arena/<arena_id>/stop')
 def stop_arena(arena_id):
-    pass
+    arena_started[arena_id] = False
 
 
 @app.route('/arena/<arena_id>/generation/<generation_number>')
