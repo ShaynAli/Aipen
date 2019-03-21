@@ -33,7 +33,6 @@ function play() {
     var activity = document.getElementById("activity").value;
     var data = document.getElementById("dataSelect").value;
     var models = []
-    var leaderboardSelector = document.getElementById("leaderboardSelector");
 
     if (document.getElementById("model1").checked) {
         models.push("model1");
@@ -95,8 +94,7 @@ function play() {
 
 function stop() {
     document.getElementById("pause-button").disabled = true;
-    document.getElementById("next-gen").disabled = true;
-    document.getElementById("prev-gen").disabled = true;
+    document.getElementById("get-generation").disabled = true;
 }
 
 // Takes selected model and displays the required leaderboard
@@ -242,18 +240,16 @@ function set_arena(id) {
 // Start the current arena
 function start_arena(id) {
     console.log("Starting arena:" + id);
-    post("/arena/" + id + "/start_arena");
+    post("/arena/" + id + "/start");
     // NOTE: (1) does the id need to be specified? or use current_arena
 }
 
 // Stop the current arena
 function stop_arena(id) {
     console.log("Stopping arena:" + id);
-    post("/arena/" + id + "/stop_arena");
+    post("/arena/" + id + "/stop");
     // NOTE: v.s. (1)
 }
-
-// Generation Routes
 
 // Retrieve a specified generation, or the last if num is -1
 function get_generation(num) {
@@ -262,7 +258,10 @@ function get_generation(num) {
     });
 }
 
-// Model Routes
+// Defines model pool based on entries from an (the current?) arena
+function set_models(arena_id) {
+
+}
 
 // Get model by id
 function get_model(id) {
