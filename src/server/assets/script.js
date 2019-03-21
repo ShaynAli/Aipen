@@ -1,9 +1,8 @@
-let current_arena = -1;
+let current_activity_id = null;
+let current_arena_id = null;
 let arena_list = [];
 let arena_running = false;
-
-let activity
-let models = []
+let models = [];
 
 function string_to_html(html_string) {
     let template = document.createElement("template");
@@ -21,9 +20,9 @@ function init() {
     setInterval(update, 1000);
 }
 
-// POST request when play button is clicked.
+// POST request when start button is clicked.
 //$(document).ready(function(){
-//    $('#play-button').on('click', function(e){
+//    $('#start-button').on('click', function(e){
 //      e.preventDefault();
 //      $.ajax({
 //        url:'./update_plot',
@@ -41,14 +40,13 @@ function activitySelect() {
     document.getElementById("model-header").innerHTML = `
         <th>Enable</th> <th>Model Name</th>`;
     get_models(x).then(function(data) {
-        console.log(data);
         document.getElementById("model-table").appendChild(string_to_html(
             build_model_pool(data)));
     });
 }
 
 function build_model_pool(data) {
-    model_str = '';
+    let model_str = '';
     
     for (let i = 0; i < data.model_ids.length; i++) {
         var m_id = data.model_ids[i];
@@ -64,7 +62,7 @@ function build_model_pool(data) {
 }
 
 function model_select(checkbox) {
-    var model_id = checkbox.id;
+    let model_id = checkbox.id;
     if (checkbox.checked) {
             
         if (!models.includes(model_id)) {
@@ -75,36 +73,37 @@ function model_select(checkbox) {
     
     else {
         if (models.includes(model_id)) {
-            console.log("deselecting model " + model_id);
+            console.log("Deselecting model " + model_id);
             models.splice(models.indexOf(model_id), 1);
         }
     }
-    console.log(models);
+    console.log("Current models: " + models);
 }
 
 
 function update() {
-    if (document.getElementById("play-button").disabled) {
+
+    if (document.getElementById("start-button").disabled) {
         let x = 1; // Fetch
     }
-    model_select
+    let model_select;
 }
 
-function play() {
-    // if (current_arena != null && !arena_running) {
-    //     start_arena(current_arena);
-    // }
-    new_arena();
+function start() {
     document.getElementById("stop-button").disabled = false;
-    document.getElementById("play-button").disabled = true;
-    console.log(arena_list);
+    document.getElementById("start-button").disabled = true;
+    if (current_arena_id !== null && !arena_running) {
+        start_arena(current_arena_id);
+        return;
+    }
+    new_arena();
 }
 
 function stop() {
-    stop_arena(current_arena)
+    stop_arena(current_arena_id);
     document.getElementById("stop-button").disabled = true;
     document.getElementById("get-generation").disabled = true;
-    document.getElementById("play-button").disabled = false;
+    document.getElementById("start-button").disabled = false;
 }
 
 function post(path, params,) {
@@ -154,7 +153,7 @@ function new_arena() {
 // Set the current arena instance
 function set_arena(id) {
     console.log("Updating current arena to id: " + id);
-    current_arena = id;
+    current_arena_id = id;
 }
 
 // Start the current arena
@@ -175,8 +174,8 @@ function stop_arena(id) {
 
 // Retrieve a specified generation, or the last if num is -1
 function get_generation(arena_id, num) {
-    if (arena_id == -1 || arena_id == '' || arena_id == null) {
-        arena_id = current_arena;
+    if (arena_id === -1 || arena_id === '' || arena_id == null) {
+        arena_id = current_arena_id;
     }
     get("/arena/" + arena_id + "/generation/" + num, function(response) {
         

@@ -1,12 +1,12 @@
 from flask import Flask, request, jsonify, render_template
 from bokeh.embed import components
-from bokeh.plotting import figure
 import data_utils.visualization as vs
 import os
 from uuid import uuid4
 from activities.stock_prediction.stock_prediction import FrankfurtStockPrediction
 from activities.stock_prediction.stock_prediction_models import RandomRangePredictor
 from arena.arena import MachineLearningArena
+import pdb
 
 app = Flask(__name__)
 http_methods = ['POST', 'GET']
@@ -47,11 +47,16 @@ activities_to_models = {
     FrankfurtStockPrediction: [RandomRangePredictor]
 }
 
+
+def new_uuid():
+    return str(uuid4())
+
+
 # Static dicts
-id_to_activity = {str(uuid4()): activity for activity in activities_to_models}
+id_to_activity = {new_uuid(): activity for activity in activities_to_models}
 activity_to_id = {activity: activity_id for activity_id, activity in id_to_activity.items()}
 
-id_to_model = {str(uuid4()): model for model_list in activities_to_models.values() for model in model_list}
+id_to_model = {new_uuid(): model for model_list in activities_to_models.values() for model in model_list}
 model_to_id = {model: model_id for model_id, model in id_to_model.items()}
 
 # Dynamic dicts
@@ -81,11 +86,13 @@ def new_arena():
     model_ids = request.json['models']
     models = [id_to_model[model_id] for model_id in model_ids]
 
+    # pdb.set_trace()
+
     activity_id = request.json['activity']
     activity = id_to_activity[activity_id]
 
     arena = MachineLearningArena(model_pool=models, activity=activity)
-    arena_id = str(uuid4())
+    arena_id = new_uuid()
 
     id_to_arena[arena_id] = arena
     arena_to_id[arena] = arena_id
