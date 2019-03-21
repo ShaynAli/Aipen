@@ -4,9 +4,9 @@ var arena_list = [];
 
 function init() {
     get_activities().then( function(data) {
-        console.log(data)
-        console.log(data.activity_ids)
-        console.log(data.activity_names)
+        // Set activities list
+        document.getElementById("activity-1").value = data.activity_ids[0]
+        document.getElementById("activity-1").text = data.activity_names[0]
     })
 
     setInterval(update, 1000);
@@ -15,7 +15,7 @@ function init() {
 
 
 function activitySelect() {
-    var x = document.getElementById("activity").value;
+    var x = document.getElementById("activity-selection").value;
     if (x == "Test") {
         document.getElementById("group1").hidden = false;
         document.getElementById("group2").hidden = true;
