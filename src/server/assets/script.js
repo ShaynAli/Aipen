@@ -35,6 +35,11 @@ function activitySelect() {
     let x = document.getElementById("activity-selection").value;
     get_models(x).then(function(data) {
         console.log(data)
+        document.getElementById("model-table").appendChild(string_to_html(`
+              <tr>
+                  <td><input id="" type="checkbox"></td><td>Model 2</td>
+              </tr>
+         `));
     });
     if (x === "Test") {
         document.getElementById("group1").hidden = false;
