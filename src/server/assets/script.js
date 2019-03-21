@@ -5,6 +5,8 @@ var arena_list = [];
 function init() {
     get_activities().then( function(data) {
         console.log(data)
+        console.log(data.activity_ids)
+        console.log(data.activity_names)
     })
 
     setInterval(update, 1000);
