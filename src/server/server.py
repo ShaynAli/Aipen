@@ -45,6 +45,10 @@ arena_to_id = {}
 
 arena_started = {}
 
+arena_to_models = {
+    FrankfurtStockPrediction: RandomRangePredictor
+}
+
 # region Homepage
 
 
@@ -65,15 +69,21 @@ def get_arenas():
 #     ids: [ 942039, 2348923 ]
 
 
-@app.route('/arena/new_arena')
+@app.route('/arena/new_arena', methods=['POST'])
 def new_arena():
 
-    requests = {
-        'activity': "activity_id",
-        'models': ["IDs"]
-    }
+    # requests = {
+    #     'activity': "activity_id",
+    #     'models': ["IDs"]
+    # }
+    print(request.json)
+    model_ids = request.json['models']
+    _models = [id_to_model[model_id] for model_id in model_ids]
 
-    n_arena = aipen.MachineLearningArena(model_pool=requests['models'], activity=requests['activity'])
+    activity_id = request.json['activity']
+    activity = id_to_activity[activity_id]
+
+    n_arena = aipen.MachineLearningArena(model_pool=_models, activity=activity)
 
     arena_id = uuid4()
     id_to_arena[arena_id] = n_arena
@@ -101,6 +111,13 @@ def start_arena(arena_id):
 @app.route('/arena/<arena_id>/stop')
 def stop_arena(arena_id):
     arena_started[arena_id] = False
+
+
+@app.route('/arena/<arena_id>/models')
+def models(arena_id):
+    _arena = id_to_arena[arena_id]
+    _models = arena_to_models[_arena]
+    return jsonify(model_id=model_to_id[_models])
 
 
 @app.route('/arena/<arena_id>/generation/<generation_number>')

@@ -30,66 +30,67 @@ function update() {
 }
 
 function play() {
-    var activity = document.getElementById("activity").value;
-    var data = document.getElementById("dataSelect").value;
-    var models = []
-    var leaderboardSelector = document.getElementById("leaderboardSelector");
+    //var activity = document.getElementById("activity").value;
+    //var data = document.getElementById("dataSelect").value;
+//    var models = []
+//    var leaderboardSelector = document.getElementById("leaderboardSelector");
+//
+//    if (document.getElementById("model1").checked) {
+//        models.push("model1");
+//        newOption = createNewOption("model1")
+//
+//        if (!checkOptions(leaderboardSelector, newOption))
+//            leaderboardSelector.add(newOption);
+//    }
+//
+//    if (document.getElementById("model2").checked) {
+//        models.push("model2");
+//        newOption = createNewOption("model2")
+//
+//        if (!checkOptions(leaderboardSelector, newOption))
+//            leaderboardSelector.add(newOption);
+//    }
+//
+//    if (document.getElementById("model3").checked) {
+//        models.push("model3");
+//        newOption = createNewOption("model3")
+//
+//        if (!checkOptions(leaderboardSelector, newOption))
+//            leaderboardSelector.add(newOption);
+//    }
+//
+//    if (document.getElementById("model4").checked) {
+//        models.push("model4");
+//        newOption = createNewOption("model4")
+//
+//        if (!checkOptions(leaderboardSelector, newOption))
+//            leaderboardSelector.add(newOption);
+//    }
+//
+//    document.getElementById("play-button").disabled = true;
+//    document.getElementById("pause-button").disabled = false;
+//    document.getElementById("next-gen").disabled = false;
+//    document.getElementById("prev-gen").disabled = false;
+//
+//    var serverRequest = {
+//        requests: {
+//            "new_arena": {
+//                "model_ids": models
+//            }
+//        },
+//        webState:
+//        {
+//            "activity": activity,
+//            "data": data,
+//            "models": models
+//        }
+//    };
 
-    if (document.getElementById("model1").checked) {
-        models.push("model1");
-        newOption = createNewOption("model1")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
-    }
-
-    if (document.getElementById("model2").checked) {
-        models.push("model2");
-        newOption = createNewOption("model2")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
-    }
-
-    if (document.getElementById("model3").checked) {
-        models.push("model3");
-        newOption = createNewOption("model3")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
-    }
-
-    if (document.getElementById("model4").checked) {
-        models.push("model4");
-        newOption = createNewOption("model4")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
-    }
-
-    document.getElementById("play-button").disabled = true;
-    document.getElementById("pause-button").disabled = false;
-    document.getElementById("next-gen").disabled = false;
-    document.getElementById("prev-gen").disabled = false;
-
-    var serverRequest = {
-        requests: {
-            "new_arena": {
-                "model_ids": models
-            }
-        },
-        webState:
-        {
-            "activity": activity,
-            "data": data,
-            "models": models
-        }
-    };
-
-    console.log(JSON.stringify(serverRequest));
-    (post("/start_arena", serverRequest).then(function(data) {
-        console.log(data)
-    }))
+    new_arena();
+//    console.log(JSON.stringify(serverRequest));
+//    (post("/start_arena", serverRequest).then(function(data) {
+//        console.log(data)
+//    }))
 
 }
 
@@ -198,7 +199,13 @@ $(document).ready(function(){
 // Create new arena and return the new id
 function new_arena() {
     console.log("Creating new arena...");
-    post("/arena/new_arena").then(function (response) {
+
+    post("/arena/new_arena",
+    {
+        'models': [],
+        'activity': 312
+    }
+    ).then(function (response) {
         var arena_id = response["arena_id"];
         console.log("Generated new arena with id: " + arena_id);
         arena_list
