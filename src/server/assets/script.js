@@ -271,6 +271,15 @@ function get_model(id) {
     });
 }
 
+// Get all activities
+function get_activity() {
+    console.log("Retrieving activities" + id);
+    get("/activity/", function(response) {
+        // TODO
+    });
+}
+
+// Retrieve asset by name
 function get_asset(asset_name) {
     console.log("Retrieving asset with name: " + asset_name);
     get("/asset/" + asset_name, function(response) {
