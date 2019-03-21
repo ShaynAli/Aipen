@@ -2,17 +2,21 @@ let current_arena = -1;
 let arena_list = [];
 
 function init() {
-    get_activities().then( function(data) {
-        console.log(data)
+    get_activities().then(function(data) {
+        // Set activities list
+        document.getElementById("activity-1").value = data.activity_ids[0];
+        document.getElementById("activity-1").text = data.activity_names[0];
     });
 
     setInterval(update, 1000);
-    
 }
 
 
 function activitySelect() {
-    let x = document.getElementById("activity").value;
+    let x = document.getElementById("activity-selection").value;
+    get_models(x).then(function(data) {
+        console.log(data)
+    });
     if (x === "Test") {
         document.getElementById("group1").hidden = false;
         document.getElementById("group2").hidden = true;
@@ -116,7 +120,6 @@ function start_arena(id) {
 function stop_arena(id) {
     console.log("Stopping arena:" + id);
     post("/arena/" + id + "/stop_arena");
-    // NOTE: v.s. (1)
 }
 
 // Generation Routes
@@ -133,4 +136,9 @@ function get_generation(num) {
 function get_activities() {
     console.log("Retrieving activities");
     return post("/activity")
+}
+
+function get_models(activity_id) {
+    console.log("Retrieving models for activity " + activity_id);
+    return post("/activity/" + activity_id + "/models");
 }
