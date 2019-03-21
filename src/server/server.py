@@ -1,6 +1,5 @@
 from flask import Flask, request, jsonify, render_template
 from bokeh.embed import components
-import data_utils.data as dt
 import data_utils.visualization as vs
 import arena.arena as aipen
 import os
@@ -65,17 +64,10 @@ def home():
 def get_arenas():
     return jsonify(arena_names=[n_arena for n_arena in arena_to_id],
                    arena_ids=[arena_id for arena_id in id_to_arena])
-    # Return all ids of arenas (and optionally their names)
-#     ids: [ 942039, 2348923 ]
 
 
 @app.route('/arena/new_arena', methods=['POST'])
 def new_arena():
-
-    # requests = {
-    #     'activity': "activity_id",
-    #     'models': ["IDs"]
-    # }
     print(request.json)
     model_ids = request.json['models']
     _models = [id_to_model[model_id] for model_id in model_ids]
