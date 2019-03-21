@@ -10,7 +10,7 @@ def weatherData():
     print(df)
     print("----------Bangladesh----------")
     print(df2)
-
+    print(df.columns)
 
 
 
