@@ -11,6 +11,7 @@ function string_to_html(html_string) {
 }
 
 function init() {
+    document.getElementById("start-button").disabled = true;
     get_activities().then(function(data) {
         // Set activities list
         document.getElementById("activity-1").value = data.activity_ids[0];
@@ -68,11 +69,16 @@ function model_select(checkbox) {
         if (!models.includes(model_id)) {
             console.log("selecting model " + model_id);
             models.push(model_id);
+            document.getElementById("start-button").disabled = false;
         }
     } else {
         if (models.includes(model_id)) {
             console.log("Deselecting model " + model_id);
             models.splice(models.indexOf(model_id), 1);
+
+            if (models.length === 0) {
+                document.getElementById("start-button").disabled = true;
+            }
         }
     }
     console.log("Current models: " + models);
