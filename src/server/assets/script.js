@@ -51,9 +51,11 @@ function build_model_pool(data) {
     model_str = '';
     
     for (let i = 0; i < data.model_ids.length; i++) {
+        var m_id = data.model_ids[i];
         model_str += `
         <tr>
-            <td><input id="" type="checkbox"></td><td>`+ data.model_names[i] + `</td>
+            <td><input type="checkbox" onchange="model_select(this)" "id="` + 
+            m_id + `"></td><td>`+ data.model_names[i] + `</td>
         </tr>
         `
     }
@@ -61,10 +63,30 @@ function build_model_pool(data) {
     return model_str;
 }
 
+function model_select(checkbox) {
+    var model_id = checkbox.getAttribute("id");
+    console.log(checkbox);
+    if (checkbox.checked) {
+            
+        if (!models.includes(model_id)) {
+            console.log("selecting model " + model_id);
+            models.push(model_id);
+        }
+    } else {
+        if (models.includes(model_id)) {
+            console.log("deselecting model " + model_id);
+            models.splice(models.indexOf(model_id), 1);
+        }
+    }
+    console.log(models);
+}
+
+
 function update() {
     if (document.getElementById("play-button").disabled) {
         let x = 1; // Fetch
     }
+    model_select
 }
 
 function play() {
