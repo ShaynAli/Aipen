@@ -1,3 +1,13 @@
+// Script.js
+var current_arena = -1;
+var arena_list = [];
+
+function init() {
+    setInterval(update, 1000);
+    
+}
+
+
 function activitySelect() {
     var x = document.getElementById("activity").value;
     if (x == "Test") {
@@ -11,10 +21,6 @@ function activitySelect() {
         document.getElementById("group2").hidden = false;
         document.getElementById("dataSelect").style.visibility = "visible";
     }
-}
-
-function init() {
-    setInterval(update, 1000)
 }
 
 function update() {
@@ -107,14 +113,8 @@ function leaderboardSelect() {
     lead4 = new Leader(4, 23);
     lead5 = new Leader(5, 92);
     lead6 = new Leader(6, 18);
-    lead7 = new Leader(7, 03);
-    lead8 = new Leader(8, 92);
-    lead9 = new Leader(9, 18);
-    lead10 = new Leader(10, 03);
 
-    
-
-    leads = [lead1, lead2, lead3, lead4, lead5, lead6, lead7, lead8, lead9, lead10];
+    leads = [lead1, lead2, lead3, lead4, lead5, lead6];
 
     leads.sort((aLeader, bLeader) => bLeader.score - aLeader.score);
     leads.forEach((lead) => entries += '<tr class="leaderRow"><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
@@ -168,6 +168,17 @@ function post(path, params) {
     .then(response => response.json());
 }
 
+function get(path, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", path, true);
+        xmlHttp.send(null);
+    }
+}
+
 // POST request when play button is clicked.
 $(document).ready(function(){
     $('#play-button').on('click', function(e){
@@ -181,3 +192,98 @@ $(document).ready(function(){
       })
     });
 });
+
+// ARENA Routes
+
+// Create new arena and return the new id
+function new_arena() {
+    console.log("Creating new arena...");
+    post("/arena/new_arena").then(function (response) {
+        var arena_id = response["arena_id"];
+        console.log("Generated new arena with id: " + arena_id);
+        arena_list
+        set_arena(id);
+    });
+}
+
+// Get arena by request id. If id empty, get all
+function get_arena(id) {
+    if (id == "")
+        return get_all_arena();
+    console.log("Retrieving arena with id: " + id);
+    get("/arena/" + id, function (response) {
+        if (response != null) {
+            console.log(response);
+            var response = JSON.parse(response);
+            set_arena(id);
+        }
+    });
+}
+
+// Get a list of all known arenas
+function get_all_arena() {
+    console.log("Retrieving arenas...");
+    arena_data = [];
+    for (let i = 0; i < arena_list.length; i++) {
+        const arena = arena_list[i];
+        if (arena != null || arena != "")
+            arena_data[i] = get_arena(arena);
+    }
+    console.log(arena_data);
+    return arena_data;
+}
+
+// Set the current arena instance
+function set_arena(id) {
+    console.log("Updating current arena to id:" + id);
+    current_arena(id);
+}
+
+// Start the current arena
+function start_arena(id) {
+    console.log("Starting arena:" + id);
+    post("/arena/" + id + "/start_arena");
+    // NOTE: (1) does the id need to be specified? or use current_arena
+}
+
+// Stop the current arena
+function stop_arena(id) {
+    console.log("Stopping arena:" + id);
+    post("/arena/" + id + "/stop_arena");
+    // NOTE: v.s. (1)
+}
+
+// Generation Routes
+
+// Retrieve a specified generation, or the last if num is -1
+function get_generation(num) {
+    get("/arena/" + id + "/generation/" + num, function(response) {
+        // TODO
+    });
+}
+
+// Model Routes
+
+// Get model by id
+function get_model(id) {
+    console.log("Retrieving model with id: " + id);
+    get("/model/" + id, function(response) {
+        // TODO
+    });
+}
+
+// Get all activities
+function get_activity() {
+    console.log("Retrieving activities" + id);
+    get("/activity/", function(response) {
+        // TODO
+    });
+}
+
+// Retrieve asset by name
+function get_asset(asset_name) {
+    console.log("Retrieving asset with name: " + asset_name);
+    get("/asset/" + asset_name, function(response) {
+        // TODO
+    });
+}
