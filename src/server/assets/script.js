@@ -17,6 +17,19 @@ function init() {
     setInterval(update, 1000);
 }
 
+// POST request when play button is clicked.
+$(document).ready(function(){
+    $('#play-button').on('click', function(e){
+      e.preventDefault();
+      $.ajax({
+        url:'./update_plot',
+        type:'post',
+        success : function(data){
+          $('#statistics').html(data)
+        }
+      })
+    });
+});
 
 function activitySelect() {
     let x = document.getElementById("activity-selection").value;
@@ -52,8 +65,7 @@ function stop() {
     document.getElementById("prev-gen").disabled = true;
 }
 
-function post(path, params) {
-
+function post(path, params,) {
     return fetch(path, {
         method: "POST",
         body: JSON.stringify(params),
@@ -75,20 +87,6 @@ function get(path, callback) {
         xmlHttp.send(null);
     }
 }
-
-// POST request when play button is clicked.
-$(document).ready(function(){
-    $('#play-button').on('click', function(e){
-      e.preventDefault();
-      $.ajax({
-        url:'./update_plot',
-        type:'post',
-        success : function(data){
-          $('#statistics').html(data)
-        }
-      })
-    });
-});
 
 // Arena Routes
 
