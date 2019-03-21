@@ -83,17 +83,15 @@ def get_arenas():
 
 @app.route('/arena/new_arena', methods=http_methods)
 def new_arena():
+
     model_ids = request.json['models']
     models = [id_to_model[model_id] for model_id in model_ids]
-
-    # pdb.set_trace()
-
     activity_id = request.json['activity']
     activity = id_to_activity[activity_id]
 
     arena = MachineLearningArena(model_pool=models, activity=activity)
-    arena_id = new_uuid()
 
+    arena_id = new_uuid()
     id_to_arena[arena_id] = arena
     arena_to_id[arena] = arena_id
     arena_id_started[arena_id] = False
@@ -103,12 +101,14 @@ def new_arena():
 
 @app.route('/arena/<arena_id>', methods=http_methods)
 def get_arena(arena_id):
-    return jsonify(success=True)
+    print(f'Returning arena {arena_id}')
+    if arena_id in id_to_arena:
+        return jsonify(success=True)
+    return jsonify(success=False)
 
 
 @app.route('/arena/<arena_id>/start', methods=http_methods)
 def start_arena(arena_id):
-
     arena_id_started[arena_id] = True
     arena = id_to_arena[arena_id]
     print(f'Staring arena {arena_id}')
@@ -120,12 +120,14 @@ def start_arena(arena_id):
 
 @app.route('/arena/<arena_id>/stop', methods=http_methods)
 def stop_arena(arena_id,):
+    print(f'Stopping arena {arena_id}')
     arena_id_started[arena_id] = False
     return jsonify(success=True)
 
 
 @app.route('/arena/<arena_id>/generation/<generation_number>', methods=http_methods)
 def arena_generation_score(arena_id, generation_number):
+    print(f'Returning generation {generation_number} results for {arena_id}')
     arena = id_to_arena[arena_id]
     if not -1 <= generation_number < len(arena.score_history):
         return jsonify(success=False)
@@ -135,7 +137,12 @@ def arena_generation_score(arena_id, generation_number):
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)
 def set_models(arena_id):
     arena = id_to_arena[arena_id]
-    arena.model_pool = [id_to_model[model_id] for model_id in request.json]
+    new_model_pool = [id_to_model[model_id] for model_id in request.json]
+    if not new_model_pool:
+        print(f'Refused to set model pool of {arena_id} to empty')
+        return jsonify(success=False)
+    arena.model_pool = new_model_pool
+    print(f'Set model pool of {arena_id} to {new_model_pool}')
     return jsonify(success=True)
 
 
@@ -146,6 +153,7 @@ def set_models(arena_id):
 
 @app.route('/model/<model_id>', methods=http_methods)
 def get_model(model_id):
+    print(f'Returning model {model_id}')
     return jsonify(success=True, model_name=id_to_model[model_id])
 
 # endregion
@@ -155,12 +163,14 @@ def get_model(model_id):
 
 @app.route('/activity', methods=http_methods)
 def get_activities():
+    print(f'Returning all activities')
     return jsonify(activity_ids=[activity_id for activity_id in id_to_activity],
                    activity_names=[activity_names[activity] for activity in activity_to_id])
 
 
 @app.route('/activity/<activity_id>/models', methods=http_methods)
 def get_models(activity_id):
+    print(f'Returning models for activity {activity_id}')
     activity = id_to_activity[activity_id]
     models = activities_to_models[activity]
     return jsonify(model_ids=[model_to_id[model] for model in models],
