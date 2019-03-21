@@ -2,6 +2,12 @@
 var current_arena = -1;
 var arena_list = [];
 
+function init() {
+    setInterval(update, 1000);
+    
+}
+
+
 function activitySelect() {
     var x = document.getElementById("activity").value;
     if (x == "Test") {
@@ -15,11 +21,6 @@ function activitySelect() {
         document.getElementById("group2").hidden = false;
         document.getElementById("dataSelect").style.visibility = "visible";
     }
-}
-
-function init() {
-    setInterval(update, 1000);
-    
 }
 
 function update() {
