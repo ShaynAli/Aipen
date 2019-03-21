@@ -107,7 +107,6 @@ function start() {
 function stop() {
     stop_arena(current_arena_id);
     document.getElementById("stop-button").disabled = true;
-    document.getElementById("get-generation").disabled = true;
     document.getElementById("start-button").disabled = false;
 }
 
@@ -180,7 +179,7 @@ function stop_arena(id) {
 function get_generation() {
     let num = document.getElementById('generation-entry').value
 
-    get("/arena/" + current_arena_id + "/generation/" + num, function(response) {
+    post("/arena/" + current_arena_id + "/generation/" + num).then( function(response) {
         console.log(response);
     });
 }
