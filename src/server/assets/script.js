@@ -3,7 +3,7 @@ var current_arena = -1;
 var arena_list = [];
 
 function init() {
-    get_activities().then( function(data) {
+    get_activities().then(function(data) {
         // Set activities list
         document.getElementById("activity-1").value = data.activity_ids[0]
         document.getElementById("activity-1").text = data.activity_names[0]
@@ -16,6 +16,9 @@ function init() {
 
 function activitySelect() {
     var x = document.getElementById("activity-selection").value;
+    get_models(x).then(function(data) {
+        console.log(data)
+    })
     if (x == "Test") {
         document.getElementById("group1").hidden = false;
         document.getElementById("group2").hidden = true;
@@ -296,4 +299,9 @@ function get_asset(asset_name) {
 function get_activities() {
     console.log("Retrieving activities");
     return post("/activity")
+}
+
+function get_models(activity_id) {
+    console.log("Retrieving models for activity " + activity_id);
+    return post("/activity/" + activity_id + "/models");
 }
