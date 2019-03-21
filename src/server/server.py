@@ -10,22 +10,16 @@ __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file
 
 debug = True
 
-with open(os.path.join(__location__, 'assets', 'style.css')) as style_file:
-    style = style_file.read()
 
-with open(os.path.join(__location__, 'assets' '/script.js')) as functionality_script:
-    frontend = functionality_script.read()
+def asset(asset_name):
+    with open(os.path.join(__location__, 'assets', asset_name)) as asset_file:
+        return asset_file.read()
 
-# Test plot to see how it displays
-data = {
-    "model1": [(0, 1), (1, 2), (2, 4)],
-    "model2": [(0, 4), (1, 5), (2, 6)],
-    "model3": [(0, 10), (1, 15), (2, 20), (3, 20)]
-}
+
+style = asset('style.css')
+frontend = asset('script.js')
 
 test_plot = vs.empty_plot()
-
-# Separate the functionality and the view
 plot_script, plot_view = components(test_plot)
 
 elements = {
@@ -35,46 +29,58 @@ elements = {
     'frontend': frontend
 }
 
+# region Homepage
+
 
 @app.route('/')
 def home():
         return render_template('index.html', **elements)
 
+# endregion
 
-@app.route('/start_arena', methods=['POST'])
-def start_arena():
-    print(request.json)
-    return jsonify(request.json)
+# region Arena routes
 
 
-@app.route('/request', methods=['POST'])
-def fulfill_request():
-    print(request.json)
-    return jsonify(request.json)
+@app.route('/arena/new_arena')
+def new_arena():
+    pass
 
 
-@app.route('/update_plot', methods=['POST'])
-def update_plot():
-    test_data = dt.Data(data=dt.indexed_linear_noise_data(50, 100))
-    test_plot_update = vs.plot_line(test_data, "Generation", "Accuracy")
-
-    # Separate the functionality and the view
-    plot_script_update, plot_view_update = components(test_plot_update)
-
-    elements['plotScript'] = plot_script_update
-    elements['plotView'] = plot_view_update
-
-    return render_template('plot.html', **elements)
+@app.route('/arena/<arena_id>')
+def arena(arena_id):
+    pass
 
 
-@app.route('/assets/<asset_name>')
-def asset(asset_name):
-    try:
-        with open(os.path.join(__location__, 'assets', asset_name)) as asset:
-            return asset.read()
-    except FileNotFoundError:
-        print(f'Unable to locate asset {asset_name}')
-        return f'Unable to locate asset {asset_name}'
+@app.route('/arena/<arena_id>/start')
+def start_arena(arena_id):
+    pass
+
+
+@app.route('/arena/<arena_id>/stop')
+def stop_arena(arena_id):
+    pass
+
+
+@app.route('/arena/<arena_id>/generation/<generation_number>')
+def arena_generation_score(arena_id, generation_number):
+    pass
+
+
+@app.route('/arena/<arena_id>/set_models')
+def set_models(arena_id):
+    pass
+
+
+# endregion
+
+# region Model routes
+
+
+@app.route('/model/<model_id>')
+def model(model_id):
+    pass
+
+# endregion
 
 
 if __name__ == "__main__":
