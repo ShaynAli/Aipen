@@ -1,6 +1,9 @@
 let current_arena = -1;
 let arena_list = [];
 
+let activity
+let models = []
+
 function string_to_html(html_string) {
     let template = document.createElement("template");
     template.innerHTML = html_string.trim();
@@ -18,18 +21,18 @@ function init() {
 }
 
 // POST request when play button is clicked.
-$(document).ready(function(){
-    $('#play-button').on('click', function(e){
-      e.preventDefault();
-      $.ajax({
-        url:'./update_plot',
-        type:'post',
-        success : function(data){
-          $('#statistics').html(data)
-        }
-      })
-    });
-});
+//$(document).ready(function(){
+//    $('#play-button').on('click', function(e){
+//      e.preventDefault();
+//      $.ajax({
+//        url:'./update_plot',
+//        type:'post',
+//        success : function(data){
+//          $('#statistics').html(data)
+//        }
+//      })
+//    });
+//});
 
 function activitySelect() {
     let x = document.getElementById("activity-selection").value;
@@ -104,7 +107,7 @@ function new_arena() {
     post("/arena/new_arena",
     {
         'models': [],
-        'activity': 312
+        'activity': document.getElementById('activity-selection').value
     }
     ).then(function (response) {
         let arena_id = response["arena_id"];
