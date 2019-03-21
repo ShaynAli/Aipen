@@ -113,7 +113,7 @@ def start_arena(arena_id):
     arena = id_to_arena[arena_id]
     print(f'Staring arena {arena_id}')
     while arena_id_started[arena_id]:
-        print(f'Running another round for arena {arena_id}')
+        print(f'Running a round for arena {arena_id}')
         arena.auto_compete()
     return jsonify(success=True)
 
@@ -127,11 +127,15 @@ def stop_arena(arena_id,):
 
 @app.route('/arena/<arena_id>/generation/<generation_number>', methods=http_methods)
 def arena_generation_score(arena_id, generation_number):
-    print(f'Returning generation {generation_number} results for {arena_id}')
-    arena = id_to_arena[arena_id]
-    if not -1 <= generation_number < len(arena.score_history):
+    try:
+        generation_number = int(generation_number)
+        arena = id_to_arena[arena_id]
+        scores = arena.score_history[generation_number]
+    except (ValueError, IndexError):
+        print(f'Invalid generation number {generation_number} for arena {arena_id}')
         return jsonify(success=False)
-    return jsonify(success=True, scores=arena.score_history[generation_number])
+    print(f'Returning generation {generation_number} results for arena {arena_id}')
+    return jsonify(success=True, scores=scores)
 
 
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)
