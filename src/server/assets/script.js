@@ -1,5 +1,6 @@
 let current_arena = -1;
 let arena_list = [];
+let arena_running = false;
 
 function string_to_html(html_string) {
     let template = document.createElement("template");
@@ -64,12 +65,19 @@ function update() {
 }
 
 function play() {
+    // if (current_arena != null && !arena_running) {
+    //     start_arena(current_arena);
+    // }
     new_arena();
+    console.log(arena_list);
 }
 
 function stop() {
     document.getElementById("pause-button").disabled = true;
     document.getElementById("get-generation").disabled = true;
+    document.getElementById("pause-button").disabled = false;
+    stop_arena(current_arena);
+
 }
 
 function post(path, params,) {
@@ -100,10 +108,11 @@ function get(path, callback) {
 // Create new arena and return the new id
 function new_arena() {
     console.log("Creating new arena");
+    //console.log(get_activities());
 
     post("/arena/new_arena",
     {
-        'models': [],
+        'models': "75d7ac1d-424f-4389-a1a1-6e8f741abc3f",
         'activity': 312
     }
     ).then(function (response) {
@@ -117,27 +126,32 @@ function new_arena() {
 // Set the current arena instance
 function set_arena(id) {
     console.log("Updating current arena to id:" + id);
-    current_arena(id);
+    current_arena = id;
 }
 
 // Start the current arena
 function start_arena(id) {
     console.log("Starting arena:" + id);
     post("/arena/" + id + "/start_arena");
+    arena_running = true;
 }
 
 // Stop the current arena
 function stop_arena(id) {
     console.log("Stopping arena:" + id);
     post("/arena/" + id + "/stop_arena");
+    arena_running = false;
 }
 
 // Generation Routes
 
 // Retrieve a specified generation, or the last if num is -1
-function get_generation(num) {
-    get("/arena/" + id + "/generation/" + num, function(response) {
-        // TODO
+function get_generation(arena_id, num) {
+    if (arena_id == -1 || arena_id == '' || arena_id == null) {
+        arena_id = current_arena;
+    }
+    get("/arena/" + arena_id + "/generation/" + num, function(response) {
+        
     });
 }
 

@@ -1,5 +1,6 @@
 from flask import Flask, request, jsonify, render_template
 from bokeh.embed import components
+from bokeh.plotting import figure
 import data_utils.visualization as vs
 import os
 from uuid import uuid4
