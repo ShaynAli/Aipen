@@ -53,7 +53,7 @@ function build_model_pool(data) {
         var m_id = data.model_ids[i];
         model_str += `
         <tr>
-            <td><input type="checkbox" onchange="model_select(this)" "id="` + 
+            <td><input type="checkbox" onchange="model_select(this)" id="` +
             m_id + `"></td><td>`+ data.model_names[i] + `</td>
         </tr>
         `
@@ -96,6 +96,7 @@ function update() {
 function start() {
     document.getElementById("stop-button").disabled = false;
     document.getElementById("start-button").disabled = true;
+    document.getElementById("get-generation").disabled = false;
     if (current_arena_id !== null && !arena_running) {
         start_arena(current_arena_id);
         return;
@@ -133,7 +134,6 @@ function get(path, callback) {
     }
 }
 
-// Arena Routes
 
 // Create new arena and return the new id
 function new_arena() {
@@ -142,14 +142,15 @@ function new_arena() {
 
     post("/arena/new_arena",
     {
-        'models': [],
+        'models': models,
         'activity': document.getElementById('activity-selection').value
     }
     ).then(function (response) {
         let arena_id = response["arena_id"];
         console.log("Generated new arena with id: " + arena_id);
         arena_list.push(arena_id);
-        set_arena(id);
+        set_arena(arena_id);
+        start_arena(arena_id);
     });
 }
 
@@ -176,12 +177,11 @@ function stop_arena(id) {
 // Generation Routes
 
 // Retrieve a specified generation, or the last if num is -1
-function get_generation(arena_id, num) {
-    if (arena_id === -1 || arena_id === '' || arena_id == null) {
-        arena_id = current_arena_id;
-    }
-    get("/arena/" + arena_id + "/generation/" + num, function(response) {
-        
+function get_generation() {
+    let num = document.getElementById('generation-entry').value
+
+    get("/arena/" + current_arena_id + "/generation/" + num, function(response) {
+        console.log(response);
     });
 }
 
