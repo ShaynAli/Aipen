@@ -28,29 +28,35 @@ h1 {
 }
 
 body div div {
-    margin: 0.25vw;
+    margin: 0;
     width: calc(100% - 2 * 0.25vw);
-    height: calc(100% - 2 * 0.25vw - 5px);
+    height: calc(100% - 2 * 0.25vw - 5px - 1em * 2);
     /*background-color: aqua;  !* TODO: rm *!;*/
-    outline: 5px solid blueviolet;
+    /*outline: 5px solid blueviolet; !* TODO: rm *!*/
 }
 
-body div div * {
-    margin: 0;
+body div div div {
+    height: 100%;
+    margin: 0.5vw;;
     padding: 0;
 }
 
-body div div * * {
+body div div div * {
+    height: auto;
     margin: 0;
     padding: 0;
 }
 
 .left {
-    width: 74%;
+    margin: 0;
+    padding: 0;
+    width: 75%;
     float: left;
 }
 
 .right {
+    margin: 0;
+    padding: 0;
     width: 25%;
     float: right;
 }
@@ -68,11 +74,11 @@ body div div * * {
 
 
 select {
-    height: 95%;
-    width: 95%;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     overflow-y: scroll;
-    margin: 2.5%;
+    /*margin: 2.5%;*/
 }
 
 table {
