@@ -1,7 +1,7 @@
 import bokeh
 from bokeh.plotting import figure, output_file, show
 
-plot_dimensions = (1235, 610)
+plot_dimensions = (1225, 600)
 
 
 def plot_line(data_class, x_label, y_label):

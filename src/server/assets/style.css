@@ -18,6 +18,10 @@ body {
     font-weight:bold
 }
 
+#controls-card {
+    grid-column: 1 / span 2;
+}
+
 h1 {
     font-weight: bold;
     font-size: 1em;
@@ -31,8 +35,6 @@ body div div {
     margin: 0;
     width: calc(100% - 2 * 0.25vw);
     height: calc(100% - 2 * 0.25vw - 5px - 1em * 2);
-    /*background-color: aqua;  !* TODO: rm *!;*/
-    /*outline: 5px solid blueviolet; !* TODO: rm *!*/
 }
 
 body div div div {
@@ -43,14 +45,14 @@ body div div div {
 
 body div div div * {
     height: auto;
-    margin: 0;
-    padding: 0;
+    margin: auto;
+    padding: auto;
 }
 
 .left {
     margin: 0;
     padding: 0;
-    width: 75%;
+    width: 70%;
     float: left;
 }
 
@@ -61,17 +63,17 @@ body div div div * {
     float: right;
 }
 
-#plot-script {
-    width: 0;
-    height: 0;
+#plot {
+    margin: 0.5vw;
+}
+
+#plot * {
     margin: 0;
-    padding: 0;
 }
 
-#controls-card {
-    grid-column: 1 / span 2;
+#plot-script {
+    visibility: hidden;
 }
-
 
 select {
     height: 100%;
