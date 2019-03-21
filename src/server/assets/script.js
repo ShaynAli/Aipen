@@ -1,6 +1,12 @@
 let current_arena = -1;
 let arena_list = [];
 
+function string_to_html(html_string) {
+    let template = document.createElement("template");
+    template.innerHTML = html_string.trim();
+    return template.content.cloneNode(true);
+}
+
 function init() {
     get_activities().then(function(data) {
         // Set activities list
