@@ -46,7 +46,7 @@ arena_to_id = {}
 arena_started = {}
 
 activities_to_models = {
-    FrankfurtStockPrediction: RandomRangePredictor
+    FrankfurtStockPrediction: [RandomRangePredictor]
 }
 
 # region Homepage
@@ -149,7 +149,7 @@ def get_activities():
 def get_models(activity_id):
     _activity = id_to_activity[activity_id]
     _models = activities_to_models[_activity]
-    return jsonify(model_id=model_to_id[_models])
+    return jsonify(model_ids=[model_to_id[model] for model in _models])
 
 # endregion
 
