@@ -33,7 +33,15 @@ elements = {
     'frontend_script': frontend_script
 }
 
-# Configuration dict
+# Configuration dicts
+activity_names = {
+    FrankfurtStockPrediction: 'Frankfurt Stock Prediction'
+}
+
+model_names = {
+    RandomRangePredictor: 'Random Range Predictor'
+}
+
 activities_to_models = {
     FrankfurtStockPrediction: [RandomRangePredictor]
 }
@@ -64,8 +72,7 @@ def home():
 
 @app.route('/arena', methods=http_methods)
 def get_arenas():
-    return jsonify(arena_names=[arena.__class__.__name__ for arena in arena_to_id],
-                   arena_ids=[arena_id for arena_id in id_to_arena])
+    return jsonify(arena_ids=[arena_id for arena_id in id_to_arena])
 
 
 @app.route('/arena/new_arena', methods=http_methods)
@@ -88,7 +95,7 @@ def new_arena():
 
 @app.route('/arena/<arena_id>', methods=http_methods)
 def get_arena(arena_id):
-    return jsonify(arena_name=id_to_arena[arena_id].__class__.__name__)
+    return jsonify(id_to_arena[arena_id])
 
 
 @app.route('/arena/<arena_id>/start', methods=http_methods)
@@ -133,7 +140,7 @@ def get_model(model_id):
 @app.route('/activity', methods=http_methods)
 def get_activities():
     return jsonify(activity_ids=[activity_id for activity_id in id_to_activity],
-                   activity_names=[activity.__class__.__name__ for activity in activity_to_id])
+                   activity_names=[activity_names[activity] for activity in activity_to_id])
 
 
 @app.route('/activity/<activity_id>/models', methods=http_methods)
@@ -141,7 +148,7 @@ def get_models(activity_id):
     activity = id_to_activity[activity_id]
     models = activities_to_models[activity]
     return jsonify(model_ids=[model_to_id[model] for model in models],
-                   model_names=[model.__class__.__name__ for model in models])
+                   model_names=[model_names[model] for model in models])
 
 # endregion
 
