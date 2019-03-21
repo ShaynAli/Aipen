@@ -45,7 +45,7 @@ arena_to_id = {}
 
 arena_started = {}
 
-arena_to_models = {
+activities_to_models = {
     FrankfurtStockPrediction: RandomRangePredictor
 }
 
@@ -113,13 +113,6 @@ def stop_arena(arena_id):
     arena_started[arena_id] = False
 
 
-@app.route('/arena/<arena_id>/models')
-def models(arena_id):
-    _arena = id_to_arena[arena_id]
-    _models = arena_to_models[_arena]
-    return jsonify(model_id=model_to_id[_models])
-
-
 @app.route('/arena/<arena_id>/generation/<generation_number>')
 def arena_generation_score(arena_id, generation_number):
     _arena = id_to_arena[arena_id]
@@ -150,6 +143,13 @@ def model(model_id):
 def get_activities():
     return jsonify(activity_names=[activity for activity in activity_to_id],
                    activity_ids=[activity_id for activity_id in id_to_activity])
+
+
+@app.route('/activity/<activity_id>/models')
+def get_models(activity_id):
+    _activity = id_to_activity[activity_id]
+    _models = activities_to_models[_activity]
+    return jsonify(model_id=model_to_id[_models])
 
 # endregion
 
