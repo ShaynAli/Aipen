@@ -1,3 +1,7 @@
+// Script.js
+var current_arena = -1;
+var arena_list = [];
+
 function activitySelect() {
     var x = document.getElementById("activity").value;
     if (x == "Test") {
@@ -14,7 +18,8 @@ function activitySelect() {
 }
 
 function init() {
-    setInterval(update, 1000)
+    setInterval(update, 1000);
+    
 }
 
 function update() {
@@ -191,20 +196,23 @@ $(document).ready(function(){
 
 // Create new arena and return the new id
 function new_arena() {
-    console.log("Creating new arena");
+    console.log("Creating new arena...");
     post("/arena/new_arena").then(function (response) {
         var arena_id = response["arena_id"];
         console.log("Generated new arena with id: " + arena_id);
+        arena_list
+        set_arena(id);
     });
 }
 
-// Get arena by request id
+// Get arena by request id. If id empty, get all
 function get_arena(id) {
+    if (id == "")
+        return get_all_arena();
     console.log("Retrieving arena with id: " + id);
     get("/arena/" + id, function (response) {
         if (response != null) {
             console.log(response);
-            // TODO: Parse info when format known
             var response = JSON.parse(response);
             set_arena(id);
         }
@@ -213,6 +221,59 @@ function get_arena(id) {
 
 // Get a list of all known arenas
 function get_all_arena() {
-    console.log("Retrieving arenas");
-    
+    console.log("Retrieving arenas...");
+    arena_data = [];
+    for (let i = 0; i < arena_list.length; i++) {
+        const arena = arena_list[i];
+        if (arena != null || arena != "")
+            arena_data[i] = get_arena(arena);
+    }
+    console.log(arena_data);
+    return arena_data;
+}
+
+// Set the current arena instance
+function set_arena(id) {
+    console.log("Updating current arena to id:" + id);
+    current_arena(id);
+}
+
+// Start the current arena
+function start_arena(id) {
+    console.log("Starting arena:" + id);
+    post("/arena/" + id + "/start_arena");
+    // NOTE: (1) does the id need to be specified? or use current_arena
+}
+
+// Stop the current arena
+function stop_arena(id) {
+    console.log("Stopping arena:" + id);
+    post("/arena/" + id + "/stop_arena");
+    // NOTE: v.s. (1)
+}
+
+// Generation Routes
+
+// Retrieve a specified generation, or the last if num is -1
+function get_generation(num) {
+    get("/arena/" + id + "/generation/" + num, function(response) {
+        // TODO
+    });
+}
+
+// Model Routes
+
+// Get model by id
+function get_model(id) {
+    console.log("Retrieving model with id: " + id);
+    get("/model/" + id, function(response) {
+        // TODO
+    });
+}
+
+function get_asset(asset_name) {
+    console.log("Retrieving asset with name: " + asset_name);
+    get("/asset/" + asset_name, function(response) {
+        // TODO
+    });
 }
