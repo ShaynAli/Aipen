@@ -6,6 +6,7 @@ from uuid import uuid4
 from activities.stock_prediction.stock_prediction import FrankfurtStockPrediction
 from activities.stock_prediction.stock_prediction_models import RandomRangePredictor
 from arena.arena import MachineLearningArena
+from collections import defaultdict
 import pdb
 
 app = Flask(__name__)
@@ -63,6 +64,8 @@ model_to_id = {model: model_id for model_id, model in id_to_model.items()}
 id_to_arena = {}
 arena_to_id = {}
 arena_id_started = {}
+model_instance_id = defaultdict(new_uuid)
+
 
 # region Homepage
 
@@ -135,7 +138,7 @@ def arena_generation_score(arena_id, generation_number):
         generation_number = int(generation_number)
         arena = id_to_arena[arena_id]
         model_scores = arena.score_history[generation_number]
-        model_id_to_score = {model_to_id[model]: score for model, score in model_scores.items()}
+        model_id_to_score = {model_instance_id[model]: score for model, score in model_scores.items()}
     except (ValueError, IndexError):
         print(f'Invalid generation number {generation_number} for arena {arena_id}')
         return jsonify(success=False)
