@@ -110,16 +110,16 @@ function leaderboardSelect() {
     entries = '';
     document.getElementById("leaderBody").innerHTML = entries;
 
-    modelGroup = leaderboardSelector.value;
+    // modelGroup = leaderboardSelector.value;
 
-    lead1 = new Leader(1, 45);
-    lead2 = new Leader(2, 77);
-    lead3 = new Leader(3, 13);
-    lead4 = new Leader(4, 23);
-    lead5 = new Leader(5, 92);
-    lead6 = new Leader(6, 18);
+    // lead1 = new Leader(1, 45);
+    // lead2 = new Leader(2, 77);
+    // lead3 = new Leader(3, 13);
+    // lead4 = new Leader(4, 23);
+    // lead5 = new Leader(5, 92);
+    // lead6 = new Leader(6, 18);
 
-    leads = [lead1, lead2, lead3, lead4, lead5, lead6];
+    // leads = [lead1, lead2, lead3, lead4, lead5, lead6];
 
     leads.sort((aLeader, bLeader) => bLeader.score - aLeader.score);
     leads.forEach((lead) => entries += '<tr class="leaderRow"><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
@@ -212,7 +212,7 @@ function new_arena() {
     ).then(function (response) {
         var arena_id = response["arena_id"];
         console.log("Generated new arena with id: " + arena_id);
-        arena_list
+        arena_list.push(arena_id);
         set_arena(id);
     });
 }
