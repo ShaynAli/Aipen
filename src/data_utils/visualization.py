@@ -1,6 +1,8 @@
 import bokeh
 from bokeh.plotting import figure, output_file, show
 
+plot_dimensions = (1235, 610)
+
 
 def plot_line(data_class, x_label, y_label):
     # Use hover tool
@@ -14,8 +16,7 @@ def plot_line(data_class, x_label, y_label):
 
     # Designate as line graph with given appearance properties
     p.line(data[0], data[1], line_width=2)
-    p.plot_height = 300
-    p.plot_width = 600
+    p.plot_width, p.plot_height = plot_dimensions
     p.toolbar.logo = "grey"
     p.toolbar.autohide = True
     p.background_fill_color = "#dddddd"
@@ -61,8 +62,7 @@ def multi_line(data, x_label="X", y_label="Y"):
             p.line(generations, scores, line_width=2, legend=k)
             p.legend.click_policy = "hide"
 
-    p.plot_height = 300
-    p.plot_width = 600
+    p.plot_width, p.plot_height = plot_dimensions
     p.toolbar.logo = "grey"
     p.toolbar.autohide = True
     p.background_fill_color = "#dddddd"
@@ -77,8 +77,7 @@ def multi_line(data, x_label="X", y_label="Y"):
 
 def empty_plot():
     p = figure()
-    p.plot_height = 300
-    p.plot_width = 600
+    p.plot_width, p.plot_height = plot_dimensions
     p.toolbar.logo = "grey"
     p.toolbar.autohide = True
     p.background_fill_color = "#dddddd"
