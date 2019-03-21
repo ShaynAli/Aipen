@@ -107,14 +107,8 @@ function leaderboardSelect() {
     lead4 = new Leader(4, 23);
     lead5 = new Leader(5, 92);
     lead6 = new Leader(6, 18);
-    lead7 = new Leader(7, 03);
-    lead8 = new Leader(8, 92);
-    lead9 = new Leader(9, 18);
-    lead10 = new Leader(10, 03);
 
-    
-
-    leads = [lead1, lead2, lead3, lead4, lead5, lead6, lead7, lead8, lead9, lead10];
+    leads = [lead1, lead2, lead3, lead4, lead5, lead6];
 
     leads.sort((aLeader, bLeader) => bLeader.score - aLeader.score);
     leads.forEach((lead) => entries += '<tr class="leaderRow"><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
@@ -168,6 +162,17 @@ function post(path, params) {
     .then(response => response.json());
 }
 
+function get(path, callback) {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() {
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200) {
+            callback(xmlHttp.responseText);
+        }
+        xmlHttp.open("GET", path, true);
+        xmlHttp.send(null);
+    }
+}
+
 // POST request when play button is clicked.
 $(document).ready(function(){
     $('#play-button').on('click', function(e){
@@ -181,3 +186,33 @@ $(document).ready(function(){
       })
     });
 });
+
+// ARENA Routes
+
+// Create new arena and return the new id
+function new_arena() {
+    console.log("Creating new arena");
+    post("/arena/new_arena").then(function (response) {
+        var arena_id = response["arena_id"];
+        console.log("Generated new arena with id: " + arena_id);
+    });
+}
+
+// Get arena by request id
+function get_arena(id) {
+    console.log("Retrieving arena with id: " + id);
+    get("/arena/" + id, function (response) {
+        if (response != null) {
+            console.log(response);
+            // TODO: Parse info when format known
+            var response = JSON.parse(response);
+            set_arena(id);
+        }
+    });
+}
+
+// Get a list of all known arenas
+function get_all_arena() {
+    console.log("Retrieving arenas");
+    
+}
