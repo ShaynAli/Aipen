@@ -119,9 +119,13 @@ def start_arena(arena_id):
 
 
 @app.route('/arena/<arena_id>/stop', methods=http_methods)
-def stop_arena(arena_id,):
+def stop_arena(arena_id):
+    try:
+        arena_id_started[arena_id] = False
+    except KeyError:
+        print(f'Could not stop arena {arena_id} since this id is unrecognized')
+        return jsonify(success=False)
     print(f'Stopping arena {arena_id}')
-    arena_id_started[arena_id] = False
     return jsonify(success=True)
 
 
@@ -130,12 +134,13 @@ def arena_generation_score(arena_id, generation_number):
     try:
         generation_number = int(generation_number)
         arena = id_to_arena[arena_id]
-        scores = arena.score_history[generation_number]
+        model_scores = arena.score_history[generation_number]
+        model_id_to_score = {model_to_id[model]: score for model, score in model_scores.items()}
     except (ValueError, IndexError):
         print(f'Invalid generation number {generation_number} for arena {arena_id}')
         return jsonify(success=False)
     print(f'Returning generation {generation_number} results for arena {arena_id}')
-    return jsonify(success=True, scores=scores)
+    return jsonify(success=True, scores=model_id_to_score)
 
 
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)
