@@ -3,6 +3,10 @@ var current_arena = -1;
 var arena_list = [];
 
 function init() {
+    get_activities().then( function(data) {
+        console.log(data)
+    })
+
     setInterval(update, 1000);
     
 }
@@ -279,18 +283,15 @@ function get_model(id) {
     });
 }
 
-// Get all activities
-function get_activity() {
-    console.log("Retrieving activities" + id);
-    get("/activity/", function(response) {
-        // TODO
-    });
-}
-
 // Retrieve asset by name
 function get_asset(asset_name) {
     console.log("Retrieving asset with name: " + asset_name);
     get("/asset/" + asset_name, function(response) {
         // TODO
     });
+}
+
+function get_activities() {
+    console.log("Retrieving activities");
+    return post("/activity")
 }
