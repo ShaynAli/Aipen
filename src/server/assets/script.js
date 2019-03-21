@@ -11,6 +11,7 @@ function string_to_html(html_string) {
 }
 
 function init() {
+    document.getElementById("start-button").disabled = true;
     get_activities().then(function(data) {
         // Set activities list
         document.getElementById("activity-1").value = data.activity_ids[0];
@@ -52,7 +53,7 @@ function build_model_pool(data) {
         var m_id = data.model_ids[i];
         model_str += `
         <tr>
-            <td><input type="checkbox" onchange="model_select(this)" id="` + 
+            <td><input type="checkbox" onchange="model_select(this)" "id="` + 
             m_id + `"></td><td>`+ data.model_names[i] + `</td>
         </tr>
         `
@@ -68,13 +69,16 @@ function model_select(checkbox) {
         if (!models.includes(model_id)) {
             console.log("selecting model " + model_id);
             models.push(model_id);
+            document.getElementById("start-button").disabled = false;
         }
-    } 
-    
-    else {
+    } else {
         if (models.includes(model_id)) {
             console.log("Deselecting model " + model_id);
             models.splice(models.indexOf(model_id), 1);
+
+            if (models.length === 0) {
+                document.getElementById("start-button").disabled = true;
+            }
         }
     }
     console.log("Current models: " + models);
@@ -138,15 +142,14 @@ function new_arena() {
 
     post("/arena/new_arena",
     {
-        'models': models,
+        'models': [],
         'activity': document.getElementById('activity-selection').value
     }
     ).then(function (response) {
         let arena_id = response["arena_id"];
         console.log("Generated new arena with id: " + arena_id);
         arena_list.push(arena_id);
-        set_arena(arena_id);
-        start_arena(arena_list);
+        set_arena(id);
     });
 }
 
