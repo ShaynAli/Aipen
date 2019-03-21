@@ -6,7 +6,7 @@ body {
     width: 98vw;
     height: 98vh;
     display: inline-grid;
-    grid-template-columns: 20vw 78vw;
+    grid-template-columns: 20vw 79vw;
     padding: 0.5vw;
     margin: 0;
 }
@@ -18,70 +18,69 @@ body {
     font-weight:bold
 }
 
-
-#statistics {
-    margin: 1.5vw;
-}
-
 h1 {
     font-weight: bold;
     font-size: 1em;
+    padding: 0.5em;
+    margin: 0;
+    border-bottom: 5px solid #23283C;
+    background-image: linear-gradient(to right, #2D334C, #23283C);
 }
 
-nav select {
-    height: 95%;
-    width: 95%;
-    overflow: hidden;
-    overflow-y: scroll;
-    margin: 0.3vw;
+body div div {
+    margin: 0.25vw;
+    width: calc(100% - 2 * 0.25vw);
+    height: calc(100% - 2 * 0.25vw - 5px);
+    /*background-color: aqua;  !* TODO: rm *!;*/
+    outline: 5px solid blueviolet;
 }
 
-#leaderboard {
-    width: 30vw
+body div div * {
+    margin: 0;
+    padding: 0;
 }
 
-#models ul {
-  margin: 0;
-  list-style: none;
-  float: left;
-}
-
-#data {
-    visibility: hidden;
-}
-
-#pause-button {
-   text-align: center;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-th {
-  border: 1px solid #aaa;
-  padding: 1vw;
-  margin: 1vw;
-  text-align: center;
-}
-
-td {
-  border: 1px solid #aaa;
-  padding: 1vw;
-  margin: 1vw;
-  text-align: left;
+body div div * * {
+    margin: 0;
+    padding: 0;
 }
 
 .left {
-    width: 49%;
+    width: 74%;
     float: left;
 }
 
 .right {
+    width: 25%;
     float: right;
 }
 
-#plot * {
-    width: 50vw;
-    height: 30vw;
+#plot-script {
+    width: 0;
+    height: 0;
+    margin: 0;
+    padding: 0;
+}
+
+#controls-card {
+    grid-column: 1 / span 2;
+}
+
+
+select {
+    height: 95%;
+    width: 95%;
+    overflow: hidden;
+    overflow-y: scroll;
+    margin: 2.5%;
+}
+
+table {
+    width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+table tr:nth-child(even) {
+    background: #23283C;
 }
