@@ -34,12 +34,10 @@ $(document).ready(function(){
 function activitySelect() {
     let x = document.getElementById("activity-selection").value;
     get_models(x).then(function(data) {
-        console.log(data)
-        document.getElementById("model-table").appendChild(string_to_html(`
-              <tr>
-                  <td><input id="" type="checkbox"></td><td>Model 2</td>
-              </tr>
-         `));
+        console.log(data);
+        $("#model-table tr").remove(); 
+        document.getElementById("model-table").appendChild(string_to_html(
+            build_model_pool(data)));
     });
     if (x === "Test") {
         document.getElementById("group1").hidden = false;
@@ -52,6 +50,20 @@ function activitySelect() {
         document.getElementById("group2").hidden = false;
         document.getElementById("dataSelect").style.visibility = "visible";
     }
+}
+
+function build_model_pool(data) {
+    model_str = '';
+    
+    for (let i = 0; i < data.model_ids.length; i++) {
+        model_str += `
+        <tr>
+            <td><input id="" type="checkbox"></td><td>`+ data.model_names[i] + `</td>
+        </tr>
+        `
+    }
+    
+    return model_str;
 }
 
 function update() {
