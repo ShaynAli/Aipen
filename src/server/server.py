@@ -78,7 +78,7 @@ def home():
 
 @app.route('/arena', methods=http_methods)
 def get_arenas():
-    return jsonify(arena_ids=[arena_id for arena_id in id_to_arena])
+    return jsonify(success=True, arena_ids=[arena_id for arena_id in id_to_arena])
 
 
 @app.route('/arena/new_arena', methods=http_methods)
@@ -98,12 +98,12 @@ def new_arena():
     arena_to_id[arena] = arena_id
     arena_id_started[arena_id] = False
 
-    return jsonify(arena_id=arena_id)
+    return jsonify(success=True, arena_id=arena_id)
 
 
 @app.route('/arena/<arena_id>', methods=http_methods)
 def get_arena(arena_id):
-    return jsonify(id_to_arena[arena_id])
+    return jsonify(success=True)
 
 
 @app.route('/arena/<arena_id>/start', methods=http_methods)
@@ -127,7 +127,9 @@ def stop_arena(arena_id,):
 @app.route('/arena/<arena_id>/generation/<generation_number>', methods=http_methods)
 def arena_generation_score(arena_id, generation_number):
     arena = id_to_arena[arena_id]
-    return jsonify(scores=arena.score_history[generation_number])
+    if not -1 <= generation_number < len(arena.score_history):
+        return jsonify(success=False)
+    return jsonify(success=True, scores=arena.score_history[generation_number])
 
 
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)
@@ -144,7 +146,7 @@ def set_models(arena_id):
 
 @app.route('/model/<model_id>', methods=http_methods)
 def get_model(model_id):
-    return jsonify(model_name=id_to_model[model_id])
+    return jsonify(success=True, model_name=id_to_model[model_id])
 
 # endregion
 

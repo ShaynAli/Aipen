@@ -1,5 +1,6 @@
 """ arena.py - Where ML and AI bots go to face off """
 import evaluation
+from random import choice
 
 
 class MachineLearningArena:
@@ -11,7 +12,6 @@ class MachineLearningArena:
         self.score_history = []
 
     def new_model(self):
-        from random import choice
         return choice(self.model_pool)(self.activity)
 
     def new_models(self, n_models):
