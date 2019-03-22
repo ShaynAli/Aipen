@@ -201,6 +201,11 @@ function get_model_preview(trow) {
     console.log("Retrieving model preview for " + _id)
     post("/model/" + _id).then(function(data) {
         console.log(data);
+        code = data['preview'];
+        code = code.replace(/\n/ig, '<br>');
+        code = code.replace(" ", "&nbsp;");
+        document.getElementById('primary-preview').innerHTML = code;
+        document.getElementById('secondary-preview').innerHTML = data['secondary_preview'];
     })
 }
 
