@@ -86,9 +86,11 @@ function model_select(checkbox) {
 
 
 function update() {
-
+    console.log("In update");
     if (current_arena_id !== null) {
-        if (document.getElementById("start-button").disabled) {
+        console.log("Arena ID not null");
+        if (arena_running) {
+            console.log("Start button disabled");
             get_generations().then(function(response) {
                 console.log(response);
             })
@@ -190,10 +192,8 @@ function get_generation() {
 function get_generations() {
     let start = "START";
     let end = "END";
-
-    post("/arena/" + current_arena_id + "/generations/" + start + "/" + end).then(function(response) {
-        console.log(response);
-    });
+    console.log("Get all generations");
+    return post("/arena/" + current_arena_id + "/generations/" + start + "/" + end);
 }
 // Model Routes
 

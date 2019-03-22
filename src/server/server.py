@@ -163,7 +163,6 @@ def arena_generations_scores(arena_id, start, end):
         for model, score in generation.items():
             model_id = model_instance_id[model]
             models_scores[model_id].append((generation_no, score))
-    pdb.set_trace()
     return jsonify(success=False, generation_scores=models_scores)
 
 
