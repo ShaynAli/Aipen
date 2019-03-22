@@ -167,6 +167,7 @@ function get_generation() {
 
     post("/arena/" + current_arena_id + "/generation/" + num).then(function(data) {
         let leaderboard = data['leaderboard'];
+        document.getElementById('leader-board').hidden = false;
 
         for (var i=0; i < 10; i++) {
             document.getElementById('type-' + (i+1)).innerHTML = leaderboard[i][0];
