@@ -66,6 +66,7 @@ def multi_line(data, x_label="X", y_label="Y"):
     p.plot_width, p.plot_height = plot_dimensions
     p.toolbar.logo = "grey"
     p.toolbar.autohide = True
+    p.legend.location = "top_left"
     p.background_fill_color = "#dddddd"
     p.hover.tooltips = [
         (x_label, "@x"),
