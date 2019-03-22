@@ -3,8 +3,8 @@ from bokeh.embed import components
 import data_utils.visualization as vs
 import os
 from uuid import uuid4
-from activities.stock_prediction.stock_prediction import FrankfurtStockPrediction
-from activities.stock_prediction.stock_prediction_models import RandomRangePredictor
+from activities.stock_prediction.stock_prediction import *
+from activities.stock_prediction.stock_prediction_models import *
 from arena.arena import MachineLearningArena
 from collections import defaultdict
 from itertools import count, chain
@@ -18,18 +18,21 @@ activity_names = {
 }
 
 activity_descriptions = {
-    FrankfurtStockPrediction: '''
-        Use the opening price of a few stocks from the Frankfurt Exchange to anticipate the price of a few other
-        stocks.\n
-    '''
+    FrankfurtStockPrediction: "Use the opening price of a few stocks from the Frankfurt Exchange to anticipate the "
+                              "price of a few other stocks.\n"
 }
 
 activities_to_models = {
-    FrankfurtStockPrediction: [RandomRangePredictor]
+    FrankfurtStockPrediction: [RandomRangePredictor, MeanPredictor, MeanRowPredictor, ShallowNeuralNetworkPredictor,
+                               RandomDepthNeuralNetworkPredictor]
 }
 
 model_names = {
-    RandomRangePredictor: 'Random Range Predictor'
+    RandomRangePredictor: 'Random Range Model',
+    MeanPredictor: 'Mean Model',
+    MeanRowPredictor: 'Mean Row Model',
+    ShallowNeuralNetworkPredictor: 'Shallow Neural Network',
+    RandomDepthNeuralNetworkPredictor: 'Random Depth Neural Network'
 }
 
 # endregion
@@ -104,7 +107,7 @@ def new_arena():
     activity_id = request.json['activity']
     activity = id_to_activity[activity_id]
 
-    arena = MachineLearningArena(model_pool=models, activity=activity)
+    arena = MachineLearningArena(model_pool=models, activity=activity, generation_size=20)
 
     arena_id = new_uuid()
     id_to_arena[arena_id] = arena
@@ -176,16 +179,16 @@ def arena_generation_plot_update(arena_id, start, end):
         start = 0
     if end == 'end' or end == 'END':
         end = len(arena.score_history)
-    models_scores = defaultdict(list)
+    plot_dict = defaultdict(list)
     for generation_no, generation in zip(count(start), arena.score_history[start:end]):
         for model, score in generation.items():
             model_id = model_instance_id[model]
-            models_scores[model_id].append((generation_no, score))
+            plot_dict[f'{model.__class__.__name__}-{model_id[:8]}'].append((generation_no, score))
 
-    if not models_scores.keys():
+    if not plot_dict.keys():
         return render_template('plot.html', **elements)
 
-    new_plot = vs.multi_line(models_scores, "Generation", "Score")
+    new_plot = vs.multi_line(plot_dict, "Generation", "Score")
 
     new_script, new_view = components(new_plot)
 

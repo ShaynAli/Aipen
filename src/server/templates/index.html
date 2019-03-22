@@ -16,6 +16,7 @@
         <style> {{style|safe}} </style>
 
         <title>Aipen</title>
+        <link rel="icon" href="https://i.imgur.com/wLQLQpC.png">
     </head>
 
     <body onload="init()">
@@ -24,15 +25,14 @@
             <h1>ACTIVITIES</h1>
             <div>
                  <div id="activities">
-                    <select id="activity-selection" size="10" onchange="activity_select()">
-                        <option value="Test" id="activity-1"></option>
+                    <select id="activity-selection" size="16" onchange="activity_select()">
+                        <option id="activity-1"></option>
                         <option>Battleship</option>
                         <option>Weather Forecast</option>
                         <option>Sports Prediction</option>
                         <option>Mario</option>
                         <option>Racing</option>
-                        <option>File Carving (NYI)</option>
-                        <option>..................................................................</option>
+                        <option>File Carving</option>
                         <option>More Coming Soon!</option>
 
                     </select>
@@ -83,8 +83,7 @@
                     <button id="start-button" onclick="start()">&#9658 Start</button>
                     <button id="stop-button" onclick="stop()" disabled>&#9724 Stop</button>
                     <button id="get-generation" onclick="get_generation()" disabled>Get Generation</button>
-                    <input id="generation-entry" type="text" onfocus="this.value=''" value="Enter the generation number">
-                    <br>
+                    <input id="generation-entry" type="text" onfocus="this.value=''" value="Enter generation number">
                     <br>
                     <br>
                     <table id="leader-table" hidden>
