@@ -79,13 +79,14 @@ def score(model, x, y, score_function=DEFAULT_SCORE_FUNCTION, train_after_testin
     try:
         model_score = score_function(model.predict(x), y)
     except BaseException as e:
-        print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during scoring')
+        # print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during scoring')
         model_score = 0
     try:
         if train_after_testing:
             model.train(x, y)
     except BaseException as e:
-        print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during training')
+        pass
+        # print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during training')
     return model_score
 
 # endregion

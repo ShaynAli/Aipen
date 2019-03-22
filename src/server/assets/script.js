@@ -91,12 +91,20 @@ function update() {
         console.log("Arena ID not null");
         if (arena_running) {
             console.log("Start button disabled");
-            get_generations().then(function(response) {
-                console.log(response);
+//            get_generations().then(function(response) {
+//                console.log(response);
+//            })
+            $(document).ready(function(){
+                $.ajax({
+                        url:'./arena/' + current_arena_id + "/generation_plot/START/END",
+                        type:'post',
+                        success : function(data){
+                          $('#statistics').html(data)
+                        }
+                })
             })
         }
     }
-
     let model_select;
 }
 

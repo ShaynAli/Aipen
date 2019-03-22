@@ -31,8 +31,8 @@ plot_script, plot_view = components(test_plot)
 
 elements = {
     'style': style,
-    'plot_script': plot_view,
-    'plot_view': plot_script,
+    'plot_script': plot_script,
+    'plot_view': plot_view,
     'frontend_script': frontend_script
 }
 
@@ -163,8 +163,21 @@ def arena_generation_plot_update(arena_id, start, end):
         for model, score in generation.items():
             model_id = model_instance_id[model]
             models_scores[model_id].append((generation_no, score))
-    # TODO
-    return jsonify(success=True)
+
+    if not models_scores.keys():
+        return render_template('plot.html', **elements)
+
+    # Temp
+    model = list(models_scores.keys())[0]
+
+    new_plot = vs.multi_line({model: models_scores[model]}, "Generation", "Score")
+
+    new_script, new_view = components(new_plot)
+
+    elements['plot_script'] = new_script
+    elements['plot_view'] = new_view
+
+    return render_template('plot.html', **elements)
 
 
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)
