@@ -35,7 +35,7 @@ function init() {
 //    });
 //});
 
-function activitySelect() {
+function activity_select() {
     let x = document.getElementById("activity-selection").value;
     $("#model-table tr").remove();
     document.getElementById("model-header").innerHTML = `
@@ -129,17 +129,6 @@ function post(path, params,) {
     .then(response => response.json());
 }
 
-function get(path, callback) {
-    let xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
-        if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
-            callback(xmlHttp.responseText);
-        }
-        xmlHttp.open("GET", path, true);
-        xmlHttp.send(null);
-    }
-}
-
 
 // Create new arena and return the new id
 function new_arena() {
@@ -205,5 +194,9 @@ function get_activities() {
 function get_models(activity_id) {
     console.log("Retrieving models for activity " + activity_id);
     return post("/activity/" + activity_id + "/models");
+}
+
+function update_leaderboard() {
+
 }
 

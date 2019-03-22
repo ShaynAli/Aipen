@@ -15,7 +15,6 @@ body {
     background: #2D334C;
     padding: 0;
     margin: 0.5vw;
-    font-weight:bold
 }
 
 #controls-card {
@@ -39,7 +38,7 @@ body div div {
 
 body div div div {
     height: 100%;
-    margin: 0.5vw;;
+    margin: 10px;
     padding: 0;
 }
 
@@ -89,6 +88,11 @@ table {
     overflow-y: scroll;
 }
 
+table tr {
+    text-align: center;
+}
+
 table tr:nth-child(even) {
     background: #23283C;
 }
+
