@@ -203,7 +203,7 @@ function get_model_preview(trow) {
         console.log(data);
         code = data['preview'];
         code = code.replace(/\n/ig, '<br>');
-        code = code.replace(" ", "&nbsp;");
+        code = code.split(" ").join("&nbsp;");
         document.getElementById('primary-preview').innerHTML = code;
         document.getElementById('secondary-preview').innerHTML = data['secondary_preview'];
     })
