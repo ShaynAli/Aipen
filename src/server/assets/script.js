@@ -52,7 +52,7 @@ function build_model_pool(data) {
     for (let i = 0; i < data.model_ids.length; i++) {
         var m_id = data.model_ids[i];
         model_str += `
-        <tr>
+        <tr id="model-` + m_id + `" onclick="get_model_preview(this)">
             <td><input type="checkbox" onchange="model_select(this)" id="` +
             m_id + `"></td><td>`+ data.model_names[i] + `</td>
         </tr>
@@ -212,7 +212,13 @@ function get_models(activity_id) {
     return post("/activity/" + activity_id + "/models");
 }
 
-function update_leaderboard() {
+function get_model_preview(trow) {
+    let _id = trow.id;
+    _id = _id.substring(6);
 
+    console.log("Retrieving model preview for " + _id)
+    post("/model/" + _id).then(function(data) {
+        console.log(data);
+    })
 }
 
