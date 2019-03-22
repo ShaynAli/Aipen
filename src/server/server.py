@@ -146,7 +146,7 @@ def arena_generation_scores(arena_id, generation_number):
             model_id = model_instance_id[model]
             model_score = model_id_to_score[model_id]
             leaderboard.append((model_name, model_id, model_score))
-        leaderboard.sort(key=lambda e: e[2])
+        leaderboard.sort(key=lambda e: e[2], reverse=True)
     except (ValueError, IndexError):
         print(f'Invalid generation number {generation_number} for arena {arena_id}')
         return jsonify(success=False)
