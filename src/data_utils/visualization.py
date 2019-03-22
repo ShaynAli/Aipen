@@ -68,8 +68,8 @@ def multi_line(data, x_label="X", y_label="Y"):
     p.toolbar.autohide = True
     p.background_fill_color = "#dddddd"
     p.hover.tooltips = [
-        ("X", "@x"),
-        ("Y", "@y")
+        (x_label, "@x"),
+        (y_label, "@y")
     ]
 
     # Return the plot for display purposes

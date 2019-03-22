@@ -18,7 +18,7 @@ function init() {
         document.getElementById("activity-1").text = data.activity_names[0];
     });
 
-    setInterval(update, 1000);
+    setInterval(update, 5000);
 }
 
 // POST request when start button is clicked.
@@ -183,7 +183,15 @@ function stop_arena(id) {
 function get_generation() {
     let num = document.getElementById('generation-entry').value;
 
-    post("/arena/" + current_arena_id + "/generation/" + num);
+    post("/arena/" + current_arena_id + "/generation/" + num).then(function(data) {
+        let leaderboard = data['leaderboard'];
+
+        for (var i=0; i < 10; i++) {
+            document.getElementById('type-' + (i+1)).innerHTML = leaderboard[i][0];
+            document.getElementById('tid-' + (i+1)).innerHTML = leaderboard[i][1];
+            document.getElementById('score-' + (i+1)).innerHTML = leaderboard[i][2];
+        }
+    });
 }
 
 function get_generations() {
