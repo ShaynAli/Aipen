@@ -30,6 +30,10 @@ function activity_select() {
         document.getElementById("model-table").appendChild(string_to_html(
             build_model_pool(data)));
     });
+
+    post('/activity/' + x).then(function(data) {
+        console.log(data);
+    })
 }
 
 function build_model_pool(data) {
@@ -167,7 +171,7 @@ function get_generation() {
 
     post("/arena/" + current_arena_id + "/generation/" + num).then(function(data) {
         let leaderboard = data['leaderboard'];
-        document.getElementById('leader-board').hidden = false;
+        document.getElementById('leader-table').hidden = false;
 
         for (var i=0; i < 10; i++) {
             document.getElementById('type-' + (i+1)).innerHTML = leaderboard[i][0];
