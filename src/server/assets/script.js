@@ -34,7 +34,7 @@ function activity_select() {
 
     post('/activity/' + x).then(function(data) {
         console.log(data);
-        document.getElementById('primary-preview').innerHTML = data['']
+        document.getElementById('primary-preview').innerHTML = data['preview'];
     })
 }
 
