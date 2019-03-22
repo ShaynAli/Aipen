@@ -17,5 +17,5 @@ class RandomRangePredictor(FrankfurtStockPrediction.Model):
         return np.random.uniform(size=(self.y_shape[0], x.shape[1]))
 
     @staticmethod
-    def description(self):
+    def description():
         return '''Predicts within a range range, which is updated base on y data.'''

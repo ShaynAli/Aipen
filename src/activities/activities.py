@@ -95,7 +95,7 @@ class MachineLearningActivity(metaclass=ABCMeta):
             pass
 
         @staticmethod
-        def description(self):
+        def description():
             return '''A machine learning model.'''
 
 
