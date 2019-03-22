@@ -1,150 +1,121 @@
-function activitySelect() {
-    var x = document.getElementById("activity").value;
-    if (x == "Test") {
-        document.getElementById("group1").hidden = false;
-        document.getElementById("group2").hidden = true;
-        document.getElementById("dataSelect").style.visibility = "visible";
-    }
+let current_activity_id = null;
+let current_arena_id = null;
+let arena_list = [];
+let arena_running = false;
+let models = [];
 
-    if (x == "Test2") {
-        document.getElementById("group1").hidden = true;
-        document.getElementById("group2").hidden = false;
-        document.getElementById("dataSelect").style.visibility = "visible";
-    }
+function string_to_html(html_string) {
+    let template = document.createElement("template");
+    template.innerHTML = html_string.trim();
+    return template.content.cloneNode(true);
 }
 
 function init() {
-    setInterval(update, 1000)
+    document.getElementById("start-button").disabled = true;
+    get_activities().then(function(data) {
+        // Set activities list
+        document.getElementById("activity-1").value = data.activity_ids[0];
+        document.getElementById("activity-1").text = data.activity_names[0];
+    });
+
+    setInterval(update, 5000);
 }
+
+function activity_select() {
+    let x = document.getElementById("activity-selection").value;
+    document.getElementById('model-table').hidden = false;
+    $("#model-table tr").remove();
+    document.getElementById("model-header").innerHTML = `
+        <th>Enable</th> <th>Model Name</th>`;
+    get_models(x).then(function(data) {
+        document.getElementById("model-table").appendChild(string_to_html(
+            build_model_pool(data)));
+    });
+
+    post('/activity/' + x).then(function(data) {
+        console.log(data);
+        document.getElementById('primary-preview').innerHTML = data['preview'];
+    })
+}
+
+function build_model_pool(data) {
+    let model_str = '';
+    
+    for (let i = 0; i < data.model_ids.length; i++) {
+        var m_id = data.model_ids[i];
+        model_str += `
+        <tr id="model-` + m_id + `" onclick="get_model_preview(this)">
+            <td><input type="checkbox" onchange="model_select(this)" id="` +
+            m_id + `"></td><td>`+ data.model_names[i] + `</td>
+        </tr>
+        `
+    }
+    
+    return model_str;
+}
+
+function model_select(checkbox) {
+    let model_id = checkbox.id;
+    if (checkbox.checked) {
+            
+        if (!models.includes(model_id)) {
+            console.log("selecting model " + model_id);
+            models.push(model_id);
+            document.getElementById("start-button").disabled = false;
+        }
+    } else {
+        if (models.includes(model_id)) {
+            console.log("Deselecting model " + model_id);
+            models.splice(models.indexOf(model_id), 1);
+
+            if (models.length === 0) {
+                document.getElementById("start-button").disabled = true;
+            }
+        }
+    }
+    console.log("Current models: " + models);
+}
+
 
 function update() {
-    if (document.getElementById("play-button").disabled) {
-        var x = 1; // Fetch
+    console.log("In update");
+    if (current_arena_id !== null) {
+        console.log("Arena ID not null");
+        if (arena_running) {
+            console.log("Start button disabled");
+            $(document).ready(function(){
+                $.ajax({
+                        url:'./arena/' + current_arena_id + "/generation_plot/START/END",
+                        type:'post',
+                        success : function(data){
+                          $('#statistics').html(data)
+                        }
+                })
+            })
+        }
     }
+    let model_select;
 }
 
-function play() {
-    var activity = document.getElementById("activity").value;
-    var data = document.getElementById("dataSelect").value;
-    var models = []
-    var leaderboardSelector = document.getElementById("leaderboardSelector");
-
-    if (document.getElementById("model1").checked) {
-        models.push("model1");
-        newOption = createNewOption("model1")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
+function start() {
+    document.getElementById("stop-button").disabled = false;
+    document.getElementById("start-button").disabled = true;
+    document.getElementById("get-generation").disabled = false;
+    if (current_arena_id !== null && !arena_running) {
+        start_arena(current_arena_id);
+        return;
     }
-
-    if (document.getElementById("model2").checked) {
-        models.push("model2");
-        newOption = createNewOption("model2")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
-    }
-
-    if (document.getElementById("model3").checked) {
-        models.push("model3");
-        newOption = createNewOption("model3")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
-    }
-
-    if (document.getElementById("model4").checked) {
-        models.push("model4");
-        newOption = createNewOption("model4")
-
-        if (!checkOptions(leaderboardSelector, newOption))
-            leaderboardSelector.add(newOption);
-    }
-
-    document.getElementById("play-button").disabled = true;
-    document.getElementById("pause-button").disabled = false;
-    document.getElementById("next-gen").disabled = false;
-    document.getElementById("prev-gen").disabled = false;
-
-    var serverRequest = {
-        requests: {
-            "new_arena": {
-                "model_ids": models
-            }
-        },
-        webState:
-        {
-            "activity": activity,
-            "data": data,
-            "models": models
-        }
-    };
-
-    console.log(JSON.stringify(serverRequest));
-    (post("/start_arena", serverRequest).then(function(data) {
-        console.log(data)
-    }))
-
+    new_arena();
 }
 
 function stop() {
-    document.getElementById("pause-button").disabled = true;
-    document.getElementById("next-gen").disabled = true;
-    document.getElementById("prev-gen").disabled = true;
+    stop_arena(current_arena_id);
+    document.getElementById("stop-button").disabled = true;
+    document.getElementById("start-button").disabled = false;
 }
 
-// Takes selected model and displays the required leaderboard
-function leaderboardSelect() {
-    // Selection from here populates leads[] in table with elements and scores
-    entries = '';
-    document.getElementById("leaderBody").innerHTML = entries;
-
-    lead1 = new Leader(001, 45);
-    lead2 = new Leader(002, 77);
-    lead3 = new Leader(003, 13);
-
-    leads = [lead1, lead2, lead3];
-
-    leads.sort((aLeader, bLeader) => aLeader.score - bLeader.score);
-    leads.forEach((lead) => entries += '<tr><td>' + lead.id + '</td><td>' + lead.score + '</td></tr>');
-    document.getElementById("leaderBody").innerHTML = entries;
-    console.log(entries);
-}
-
-function Leader(id, score) {
-    this.id = id;
-    this.score = score;
-}
-
-// Creates a new select option based on given string value
-function createNewOption(newOption) {
-    var option = document.createElement("option");
-    option.text = newOption;
-    option.value = newOption;
-    return option;
-}
-
-// Returns true if a given option is already part of a given list
-function checkOptions(checkedList, checkOption) {
-    var options = checkedList.options;
-
-    if (options.length == 0)
-        return false;
-
-    for (i = 0; i < options.length; i++) {
-        if (checkOption.value == options[i].value) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-function post(path, params) {
-
-    var url = path
-
-    return fetch(url, {
+function post(path, params,) {
+    return fetch(path, {
         method: "POST",
         body: JSON.stringify(params),
         headers: new Headers({
@@ -155,16 +126,93 @@ function post(path, params) {
     .then(response => response.json());
 }
 
-// POST request when play button is clicked.
-$(document).ready(function(){
-    $('#play-button').on('click', function(e){
-      e.preventDefault()
-      $.ajax({
-        url:'./update_plot',
-        type:'post',
-        success : function(data){
-          $('#statistics').html(data)
-        }
-      })
+
+// Create new arena and return the new id
+function new_arena() {
+    console.log("Creating new arena");
+
+    post("/arena/new_arena",
+    {
+        'models': models,
+        'activity': document.getElementById('activity-selection').value
+    }
+    ).then(function (response) {
+        let arena_id = response["arena_id"];
+        console.log("Generated new arena with id: " + arena_id);
+        arena_list.push(arena_id);
+        set_arena(arena_id);
+        start_arena(arena_id);
     });
-});
+}
+
+// Set the current arena instance
+function set_arena(id) {
+    console.log("Updating current arena to id: " + id);
+    current_arena_id = id;
+}
+
+// Start the current arena
+function start_arena(id) {
+    console.log("Starting arena:" + id);
+    post("/arena/" + id + "/start");
+    arena_running = true;
+}
+
+// Stop the current arena
+function stop_arena(id) {
+    console.log("Stopping arena:" + id);
+    post("/arena/" + id + "/stop");
+    arena_running = false;
+}
+
+// Generation Routes
+
+// Retrieve a specified generation, or the last if num is -1
+function get_generation() {
+    let num = document.getElementById('generation-entry').value;
+
+    post("/arena/" + current_arena_id + "/generation/" + num).then(function(data) {
+        let leaderboard = data['leaderboard'];
+        document.getElementById('leader-table').hidden = false;
+
+        for (var i=0; i < 10; i++) {
+            document.getElementById('type-' + (i+1)).innerHTML = leaderboard[i][0];
+            document.getElementById('tid-' + (i+1)).innerHTML = leaderboard[i][1];
+            document.getElementById('score-' + (i+1)).innerHTML = leaderboard[i][2];
+        }
+    });
+}
+
+function get_generations() {
+    let start = "START";
+    let end = "END";
+    console.log("Get all generations");
+    return post("/arena/" + current_arena_id + "/generations/" + start + "/" + end);
+}
+// Model Routes
+
+function get_activities() {
+    console.log("Retrieving activities");
+    return post("/activity")
+}
+
+function get_models(activity_id) {
+    console.log("Retrieving models for activity " + activity_id);
+    return post("/activity/" + activity_id + "/models");
+}
+
+function get_model_preview(trow) {
+    let _id = trow.id;
+    _id = _id.substring(6);
+
+    console.log("Retrieving model preview for " + _id)
+    post("/model/" + _id).then(function(data) {
+        console.log(data);
+        code = data['preview'];
+        code = code.replace(/\n/ig, '<br>');
+        code = code.split(" ").join("&nbsp;");
+        document.getElementById('primary-preview').innerHTML = code;
+        document.getElementById('secondary-preview').innerHTML = data['secondary_preview'];
+    })
+}
+

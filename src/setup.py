@@ -5,7 +5,7 @@ with open('requirements.txt', 'r+') as requirements_file:
 
 setup(
     name='Aipen',
-    version='0.4.1',
+    version='0.4.3',
     url='https://github.com/ShaynAli/Aipen',
     author='Shayaan Syed Ali',
     author_email='shayaan.syed.ali@gmail.com',
