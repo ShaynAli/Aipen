@@ -117,7 +117,7 @@ def start_arena(arena_id):
     arena = id_to_arena[arena_id]
     print(f'Staring arena {arena_id}')
     while arena_id_started[arena_id]:
-        # print(f'Running generation {len(arena.score_history) + 1} for arena {arena_id}')
+        print(f'Running generation {len(arena.score_history) + 1} for arena {arena_id}')
         arena.auto_compete()
     return jsonify(success=True)
 

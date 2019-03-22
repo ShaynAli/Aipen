@@ -1,5 +1,5 @@
 """ evaluation.py - Evaluates AI and ML models """
-from math import ceil
+from math import ceil, isnan
 import numpy as np
 
 # For ML models
@@ -78,15 +78,17 @@ DEFAULT_TRACK_FUNCTION = rms_error
 def score(model, x, y, score_function=DEFAULT_SCORE_FUNCTION, train_after_testing=True):
     try:
         model_score = score_function(model.predict(x), y)
+        if isnan(model_score):
+            model_score = 0
     except BaseException as e:
-        # print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during scoring')
+        print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during scoring')
         model_score = 0
     try:
         if train_after_testing:
             model.train(x, y)
     except BaseException as e:
         pass
-        # print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during training')
+        print(f'Model {model.__class__.__name__} encountered exception {e.__class__.__name__} {e} during training')
     return model_score
 
 # endregion

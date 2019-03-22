@@ -62,11 +62,8 @@ body div div div * {
     float: right;
 }
 
-#plot {
-    margin: 0.5vw;
-}
-
 #plot * {
+    width: auto;
     margin: 0;
 }
 

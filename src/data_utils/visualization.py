@@ -60,7 +60,7 @@ def multi_line(data, x_label="X", y_label="Y"):
     for k, v in data.items():
         generations = [e[0] for e in v]
         scores = [e[1] for e in v]
-        p.line(generations, scores, line_width=2, legend=k)
+        p.line(generations, scores, line_width=2, legend=k[:8])
         p.legend.click_policy = "hide"
 
     p.plot_width, p.plot_height = plot_dimensions
