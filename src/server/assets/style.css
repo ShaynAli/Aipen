@@ -94,10 +94,10 @@ table tr:nth-child(even) {
 }
 
 .preview {
-    margin: 10px;
     background-color: #23283C;
-    height: 92.5%;
     font-family: 'Ubuntu Mono', monospace;
+    margin: 10px;
+    height: 250px;
     overflow: hidden;
     overflow-y: scroll;
 }
