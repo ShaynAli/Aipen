@@ -140,11 +140,18 @@ def arena_generation_scores(arena_id, generation_number):
         arena = id_to_arena[arena_id]
         model_scores = arena.score_history[generation_number]
         model_id_to_score = {model_instance_id[model]: score for model, score in model_scores.items()}
+        model_to_names = {model: model_names[type(model)] for model in model_scores}
+        leaderboard = []
+        for model, model_name in model_to_names.items():
+            model_id = model_instance_id[model]
+            model_score = model_id_to_score[model_id]
+            leaderboard.append((model_name, model_id, model_score))
+        leaderboard.sort(key=lambda e: e[2])
     except (ValueError, IndexError):
         print(f'Invalid generation number {generation_number} for arena {arena_id}')
         return jsonify(success=False)
     print(f'Returning generation {generation_number} results for arena {arena_id}')
-    return jsonify(success=True, scores=model_id_to_score)
+    return jsonify(success=True, leaderboard=leaderboard)
 
 
 @app.route('/arena/<arena_id>/generation_plot/<start>/<end>', methods=http_methods)
