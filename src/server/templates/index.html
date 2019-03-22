@@ -9,7 +9,7 @@
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-1.0.4.min.js"></script>
         <script src="http://cdn.pydata.org/bokeh/release/bokeh-widgets-1.0.4.min.js"></script>
       
-        <script>{{functionScript|safe}}</script>
+        <script>{{frontend_script|safe}}</script>
         <style> {{style|safe}} </style>
 
         <title>Aipen</title>
@@ -20,95 +20,81 @@
     <body onload="init()">
 
         <div class="card">
+            <h1>ACTIVITIES</h1>
             <div>
-            <h1>ACTIVITIES</h1></div>
-            <div id="activities">
-                <nav>
-                    <select onchange="activitySelect()" id="activity" size="10">
-                        <option value="Test">Test</option>
-                        <option value="Test2">Test2</option>
-                        <option>Test3</option>
-                        <option>Test4</option>
-                        <option>Test5</option>
-                        <option>Test6</option>
-                        <option>Test7</option>
-                        <option>Test8</option>
-                        <option>Test9</option>
-                        <option>Test10</option>
-                        <option>Test11</option>
+                 <div id="activities">
+                    <select id="activity-selection" size="10" onchange="activitySelect()">
+                        <option value="Test" id="activity-1"></option>
+                        <option>Battleship</option>
+                        <option>Weather Forecast</option>
+                        <option>Sports Prediction</option>
+                        <option>Mario</option>
+                        <option>Racing</option>
+                        <option>File Carving (NYI)</option>
+                        <option>..................................................................</option>
+                        <option>More Coming Soon!</option>
+
                     </select>
-                </nav>
+                </div>
             </div>
+
         </div>
 
         <div class="card">
-            <div>
-            <h1>PREVIEW</h1></div>
+            <h1>PREVIEW</h1>
             <div id="preview">
-                <nav>
-                    <select id="leaderboardSelector" onchange="leaderboardSelect()" class="left">
-                    </select>
-                </nav>
+                <div id="primary-preview" class="left">
+
+                </div>
+                <div id="secondary-preview" class="right">
+
+                </div>
             </div>
         </div>
 
         <div class="card">
+            <h1>MODELS</h1>
             <div>
-            <h1>DATA</h1></div>
-            <div id="data">
-                <nav>
-                    <select id="dataSelect">
-                        <optgroup id="group1" label="Group 1">
-                            <option value="" selected disabled hidden >Select Data Set</option>
-                            <option>CIFAR-10</option>
-                            <option>CIFAR-100</option>
-                        </optgroup>
-                        <optgroup id="group2" label="Group 2">
-                            <option>Test 2</option>
-                        </optgroup>
-                    </select>
-                </nav>
+                <div id="models" class="scroll">
+                    <table id="model-table">
+                        <thead id="model-header">
+                            <th>Enable</th> <th>Model Name</th>
+                        </thead>
+
+                    </table>
+                </div>
             </div>
         </div>
 
         <div class="card">
-            <div>
-                <h1>STATISTICS</h1></div>
-            <div id="statistics" class="left">
-                {{plotView|safe}}
-                {{plotScript|safe}}
-            </div>
 
-            <table id="leaderboard" class="right">
-              <thead>
-                <th>Model ID</th>
-                <th>Score</th>
-              </thead>
-              <tbody id="leaderBody"></tbody>
-            </table>
-        </div>
-
-        <div class="card">
+            <h1>STATISTICS</h1>
             <div>
-            <h1>MODELS</h1></div>
-            <div id="models">
-                    <ul>
-                        <li><input id="model1" type="checkbox"> Model 1</li>
-                        <li><input id="model2" type="checkbox"> Model 2</li>
-                        <li><input id="model3" type="checkbox"> Model 3</li>
-                        <li><input id="model4" type="checkbox"> Model 4</li>
-                    </ul>
+                <div id="statistics" class="left">
+                    <div id="plot">
+                        {{plot_script|safe}}
+                    </div>
+                    <div id="plot-script">
+                        {{plot_view|safe}}
+                    </div>
+                </div>
+
+                <div id="leader-board" class="right">
+                    <!-- TODO -->
+                </div>
             </div>
         </div>
 
-        <div class="card">
+        <div class="card" id="controls-card">
+            <h1>CONTROLS</h1>
             <div>
-            <h1>CONTROLS</h1></div>
-            <div id="controls">
-                <button id="play-button" onclick="play()">&#9658 Start</button>
-                <button id="pause-button" onclick="stop()" disabled>&#9724 Stop</button>
-                <button id="next-gen" onclick="nextGen()" disabled>&#9650 Next Generation</button>
-                <button id="prev-gen" onclick="prevGen()" disabled>&#9660 Previous Generation</button>
+                <div id="controls">
+                    <button id="play-button" onclick="play()">&#9658 Start</button>
+                    <button id="pause-button" onclick="stop()" disabled>&#9724 Stop</button>
+                    <br>
+                    <button id="get-generation" onclick="get_generation()" disabled>Get Generation</button>
+                    <input id="generation-entry" type="text" onfocus="this.value=''" value="Enter the generation number">
+                </div>
             </div>
         </div>
 

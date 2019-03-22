@@ -6,7 +6,7 @@ body {
     width: 98vw;
     height: 98vh;
     display: inline-grid;
-    grid-template-columns: 20vw 78vw;
+    grid-template-columns: 20vw 79vw;
     padding: 0.5vw;
     margin: 0;
 }
@@ -18,65 +18,77 @@ body {
     font-weight:bold
 }
 
-
-#statistics {
-    margin: 1.5vw;
+#controls-card {
+    grid-column: 1 / span 2;
 }
 
 h1 {
     font-weight: bold;
     font-size: 1em;
+    padding: 0.5em;
+    margin: 0;
+    border-bottom: 5px solid #23283C;
+    background-image: linear-gradient(to right, #2D334C, #23283C);
 }
 
-nav select {
-    height: 95%;
-    width: 95%;
-    overflow: hidden;
-    overflow-y: scroll;
-    margin: 0.3vw;
+body div div {
+    margin: 0;
+    width: calc(100% - 2 * 0.25vw);
+    height: calc(100% - 2 * 0.25vw - 5px - 1em * 2);
 }
 
-#leaderboard {
-    width: 30vw
+body div div div {
+    height: 100%;
+    margin: 0.5vw;;
+    padding: 0;
 }
 
-#models ul {
-  margin: 0;
-  list-style: none;
-  float: left;
-}
-
-#data {
-    visibility: hidden;
-}
-
-#pause-button {
-   text-align: center;
-}
-
-table {
-  border-collapse: collapse;
-}
-
-th {
-  border: 1px solid #aaa;
-  padding: 1vw;
-  margin: 1vw;
-  text-align: center;
-}
-
-td {
-  border: 1px solid #aaa;
-  padding: 1vw;
-  margin: 1vw;
-  text-align: left;
+body div div div * {
+    height: auto;
+    margin: auto;
+    padding: auto;
 }
 
 .left {
-    width: 49%;
+    margin: 0;
+    padding: 0;
+    width: 70%;
     float: left;
 }
 
 .right {
+    margin: 0;
+    padding: 0;
+    width: 25%;
     float: right;
+}
+
+#plot {
+    margin: 0.5vw;
+}
+
+#plot * {
+    margin: 0;
+}
+
+#plot-script {
+    visibility: hidden;
+}
+
+select {
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+    /*margin: 2.5%;*/
+}
+
+table {
+    width: 100%;
+    overflow: hidden;
+    overflow-y: scroll;
+}
+
+table tr:nth-child(even) {
+    background: #23283C;
 }
