@@ -146,8 +146,8 @@ def arena_generation_score(arena_id, generation_number):
     return jsonify(success=True, scores=model_id_to_score)
 
 
-@app.route('/arena/<arena_id>/generations/<start_generation_number>/<end_generation_number')
-def temp(arena_id, start_generation_number, end_generation_number):
+@app.route('/arena/<arena_id>/generations/<start_generation>/<end_generation>')
+def temp(arena_id, start_generation, end_generation):
     pass
 
 

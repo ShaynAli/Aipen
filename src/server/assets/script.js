@@ -87,9 +87,14 @@ function model_select(checkbox) {
 
 function update() {
 
-    if (document.getElementById("start-button").disabled) {
-        let x = 1; // Fetch
+    if (current_arena_id !== null) {
+        if (document.getElementById("start-button").disabled) {
+            get_generations().then(function(response) {
+                console.log(response);
+            })
+        }
     }
+
     let model_select;
 }
 
@@ -179,11 +184,17 @@ function stop_arena(id) {
 function get_generation() {
     let num = document.getElementById('generation-entry').value;
 
-    post("/arena/" + current_arena_id + "/generation/" + num).then( function(response) {
+    post("/arena/" + current_arena_id + "/generation/" + num);
+}
+
+function get_generations() {
+    let start = "START";
+    let end = "END";
+
+    post("/arena/" + current_arena_id + "/generations/" + start + "/" + end).then(function(response) {
         console.log(response);
     });
 }
-
 // Model Routes
 
 function get_activities() {
@@ -195,3 +206,4 @@ function get_models(activity_id) {
     console.log("Retrieving models for activity " + activity_id);
     return post("/activity/" + activity_id + "/models");
 }
+
