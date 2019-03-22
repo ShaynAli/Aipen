@@ -2,6 +2,7 @@ from activities.stock_prediction.stock_prediction import FrankfurtStockPredictio
 import numpy as np
 from keras import Sequential
 from keras.layers import Dense, Activation
+from random import randint
 
 
 class RandomRangePredictor(FrankfurtStockPrediction.Model):
@@ -60,7 +61,7 @@ class MeanRowPredictor(FrankfurtStockPrediction.Model):
         return '''Predicts that every stock will have the same mean price at every time interval.'''
 
 
-class NeuralNetworkPredictor(FrankfurtStockPrediction.Model):
+class ShallowNeuralNetworkPredictor(FrankfurtStockPrediction.Model):
 
     def __init__(self, activity):
         super().__init__(activity)
@@ -81,4 +82,27 @@ class NeuralNetworkPredictor(FrankfurtStockPrediction.Model):
 
     @staticmethod
     def description():
-        return '''Creates a random neural network.'''
+        return '''Uses a shallow, wide neural network.'''
+
+
+class RandomDepthNeuralNetworkPredictor(FrankfurtStockPrediction.Model):
+
+    def __init__(self, activity):
+        super().__init__(activity)
+        self.neural_network = Sequential([Dense(8, input_shape=(self.x_shape[1],))] +
+                                         [Dense(8) for _ in range(randint(0, 8))] +
+                                         [Dense(self.y_shape[1])])
+        self.neural_network.compile(
+            optimizer='nadam',
+            loss='mse'
+        )
+
+    def train(self, x, y):
+        self.neural_network.fit(x=x, y=y)
+
+    def predict(self, x):
+        return self.neural_network.predict(x)
+
+    @staticmethod
+    def description():
+        return '''Creates a neural network of depth from 2-10.'''

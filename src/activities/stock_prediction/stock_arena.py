@@ -4,7 +4,7 @@ import pprint
 
 if __name__ == '__main__':
 
-    arena = MachineLearningArena(model_pool=[NeuralNetworkPredictor], activity=FrankfurtStockPrediction)
+    arena = MachineLearningArena(model_pool=[ShallowNeuralNetworkPredictor], activity=FrankfurtStockPrediction)
     printer = pprint.PrettyPrinter()
     for _ in range(10):
         arena.auto_compete()

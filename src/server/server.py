@@ -23,14 +23,16 @@ activity_descriptions = {
 }
 
 activities_to_models = {
-    FrankfurtStockPrediction: [RandomRangePredictor, MeanPredictor, MeanRowPredictor, NeuralNetworkPredictor]
+    FrankfurtStockPrediction: [RandomRangePredictor, MeanPredictor, MeanRowPredictor, ShallowNeuralNetworkPredictor,
+                               RandomDepthNeuralNetworkPredictor]
 }
 
 model_names = {
     RandomRangePredictor: 'Random Range Model',
     MeanPredictor: 'Mean Model',
     MeanRowPredictor: 'Mean Row Model',
-    NeuralNetworkPredictor: 'Neural Network Model'
+    ShallowNeuralNetworkPredictor: 'Shallow Neural Network',
+    RandomDepthNeuralNetworkPredictor: 'Random Depth Neural Network'
 }
 
 # endregion
