@@ -237,7 +237,7 @@ def get_activity(activity_id):
         activity = id_to_activity[activity_id]
         print(f'Returning activity {activity_id}')
         return jsonify(success=True, name=activity_names[activity],
-                       preview=activity_descriptions[activity], secondary_preview=activities_to_models[activity])
+                       preview=activity_descriptions[activity], secondary_preview='')
     except KeyError:
         print(f'Could not find activity {activity_id}')
         return jsonify(success=False)
