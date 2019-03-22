@@ -31,8 +31,8 @@ plot_script, plot_view = components(test_plot)
 
 elements = {
     'style': style,
-    'plot_script': plot_view,
-    'plot_view': plot_script,
+    'plot_script': plot_script,
+    'plot_view': plot_view,
     'frontend_script': frontend_script
 }
 
@@ -117,7 +117,7 @@ def start_arena(arena_id):
     arena = id_to_arena[arena_id]
     print(f'Staring arena {arena_id}')
     while arena_id_started[arena_id]:
-        print(f'Running generation {len(arena.score_history) + 1} for arena {arena_id}')
+        # print(f'Running generation {len(arena.score_history) + 1} for arena {arena_id}')
         arena.auto_compete()
     return jsonify(success=True)
 
@@ -163,8 +163,18 @@ def arena_generation_plot_update(arena_id, start, end):
         for model, score in generation.items():
             model_id = model_instance_id[model]
             models_scores[model_id].append((generation_no, score))
-    # TODO
-    return jsonify(success=True)
+
+    if not models_scores.keys():
+        return render_template('plot.html', **elements)
+
+    new_plot = vs.multi_line(models_scores, "Generation", "Score")
+
+    new_script, new_view = components(new_plot)
+
+    elements['plot_script'] = new_script
+    elements['plot_view'] = new_view
+
+    return render_template('plot.html', **elements)
 
 
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)

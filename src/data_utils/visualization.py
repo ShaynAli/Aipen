@@ -1,5 +1,6 @@
 import bokeh
 from bokeh.plotting import figure, output_file, show
+import pdb
 
 plot_dimensions = (1225, 600)
 
@@ -57,10 +58,10 @@ def multi_line(data, x_label="X", y_label="Y"):
     p = figure(tooltips=tools, x_axis_label=x_label, y_axis_label=y_label)
 
     for k, v in data.items():
-            generations = [e[0] for e in v]
-            scores = [e[1] for e in v]
-            p.line(generations, scores, line_width=2, legend=k)
-            p.legend.click_policy = "hide"
+        generations = [e[0] for e in v]
+        scores = [e[1] for e in v]
+        p.line(generations, scores, line_width=2, legend=k)
+        p.legend.click_policy = "hide"
 
     p.plot_width, p.plot_height = plot_dimensions
     p.toolbar.logo = "grey"
