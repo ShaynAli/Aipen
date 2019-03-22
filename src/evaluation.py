@@ -70,7 +70,7 @@ def complement_mean_pct_error(predicted, actual):
 
 # region Model scoring
 
-DEFAULT_SCORE_FUNCTION = complement_mean_pct_error
+DEFAULT_SCORE_FUNCTION = inv_norm_err
 DEFAULT_ERROR_FUNCTION = rms_error
 DEFAULT_TRACK_FUNCTION = rms_error
 

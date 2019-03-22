@@ -7,8 +7,29 @@ from activities.stock_prediction.stock_prediction import FrankfurtStockPredictio
 from activities.stock_prediction.stock_prediction_models import RandomRangePredictor
 from arena.arena import MachineLearningArena
 from collections import defaultdict
-from itertools import count
+from itertools import count, chain
+from inspect import getsource
 import pdb
+
+
+# Configuration dicts
+activity_names = {
+    FrankfurtStockPrediction: 'Frankfurt Stock Prediction'
+}
+
+activity_descriptions = {
+    FrankfurtStockPrediction: '''
+        
+    '''
+}
+
+model_names = {
+    RandomRangePredictor: 'Random Range Predictor'
+}
+
+activities_to_models = {
+    FrankfurtStockPrediction: [RandomRangePredictor]
+}
 
 app = Flask(__name__)
 http_methods = ['POST', 'GET']
@@ -36,19 +57,6 @@ elements = {
     'frontend_script': frontend_script
 }
 
-# Configuration dicts
-activity_names = {
-    FrankfurtStockPrediction: 'Frankfurt Stock Prediction'
-}
-
-model_names = {
-    RandomRangePredictor: 'Random Range Predictor'
-}
-
-activities_to_models = {
-    FrankfurtStockPrediction: [RandomRangePredictor]
-}
-
 
 def new_uuid():
     return str(uuid4())
@@ -60,6 +68,7 @@ activity_to_id = {activity: activity_id for activity_id, activity in id_to_activ
 
 id_to_model = {new_uuid(): model for model_list in activities_to_models.values() for model in model_list}
 model_to_id = {model: model_id for model_id, model in id_to_model.items()}
+model_to_source = {model: getsource(model) for model in chain(*activities_to_models.values())}
 
 # Dynamic dicts
 id_to_arena = {}
@@ -70,15 +79,14 @@ model_instance_id = defaultdict(new_uuid)
 
 # region Homepage
 
-
 @app.route('/', methods=http_methods)
 def home():
         return render_template('index.html', **elements)
 
 # endregion
 
-# region Arena routes
 
+# region Arena routes
 
 @app.route('/arena', methods=http_methods)
 def get_arenas():
@@ -200,11 +208,14 @@ def set_models(arena_id):
 
 # region Model routes
 
-
 @app.route('/model/<model_id>', methods=http_methods)
 def get_model(model_id):
     print(f'Returning model {model_id}')
-    return jsonify(success=True, model_name=id_to_model[model_id])
+    model = id_to_model[model_id]
+
+    model_name = model_names[type(model)]
+    model_source = model_to_source[type(model)]
+    return jsonify(success=True, model_name=model_name, model_source=model_source, model_params=model.parameters())
 
 # endregion
 

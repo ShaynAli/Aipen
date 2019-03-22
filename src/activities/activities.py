@@ -94,5 +94,9 @@ class MachineLearningActivity(metaclass=ABCMeta):
         def predict(self, x):
             pass
 
+        @abstractmethod
+        def parameters(self):
+            pass
+
 
 # endregion

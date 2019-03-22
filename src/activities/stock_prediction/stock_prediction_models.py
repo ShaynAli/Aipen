@@ -16,3 +16,9 @@ class RandomRangePredictor(FrankfurtStockPrediction.Model):
 
     def predict(self, x):
         return np.random.uniform(size=(self.y_shape[0], x.shape[1]))
+
+    def parameters(self):
+        return {
+            'min': self.min,
+            'max': self.max
+        }

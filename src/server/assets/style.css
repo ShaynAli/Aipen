@@ -51,7 +51,7 @@ body div div div * {
 .left {
     margin: 0;
     padding: 0;
-    width: 70%;
+    width: 72%;
     float: left;
 }
 
@@ -93,3 +93,8 @@ table tr:nth-child(even) {
     background: #23283C;
 }
 
+.preview {
+    margin: 10px;
+    background-color: #23283C;
+    height: 92.5%;
+}
