@@ -94,15 +94,16 @@ function play() {
     //     start_arena(current_arena);
     // }
     new_arena();
+    document.getElementById("stop-button").disabled = false;
+    document.getElementById("play-button").disabled = true;
     console.log(arena_list);
 }
 
 function stop() {
-    document.getElementById("pause-button").disabled = true;
+    stop_arena(current_arena)
+    document.getElementById("stop-button").disabled = true;
     document.getElementById("get-generation").disabled = true;
-    document.getElementById("pause-button").disabled = false;
-    stop_arena(current_arena);
-
+    document.getElementById("play-button").disabled = false;
 }
 
 function post(path, params,) {
@@ -164,7 +165,7 @@ function start_arena(id) {
 // Stop the current arena
 function stop_arena(id) {
     console.log("Stopping arena:" + id);
-    post("/arena/" + id + "/stop_arena");
+    post("/arena/" + id + "/stop");
     arena_running = false;
 }
 

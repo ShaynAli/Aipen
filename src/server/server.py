@@ -101,21 +101,20 @@ def get_arena(arena_id):
 
 @app.route('/arena/<arena_id>/start', methods=http_methods)
 def start_arena(arena_id):
-    print(arena_id)
-    print(id_to_arena)
-    print(arena_id_started)
 
     arena_id_started[arena_id] = True
-    print(arena_id_started)
-    print(id_to_arena[arena_id])
     arena = id_to_arena[arena_id]
+    print(f'Staring arena {arena_id}')
     while arena_id_started[arena_id]:
+        print(f'Running another round for arena {arena_id}')
         arena.auto_compete()
+    return jsonify(success=True)
 
 
 @app.route('/arena/<arena_id>/stop', methods=http_methods)
 def stop_arena(arena_id,):
     arena_id_started[arena_id] = False
+    return jsonify(success=True)
 
 
 @app.route('/arena/<arena_id>/generation/<generation_number>', methods=http_methods)
@@ -128,6 +127,7 @@ def arena_generation_score(arena_id, generation_number):
 def set_models(arena_id):
     arena = id_to_arena[arena_id]
     arena.model_pool = [id_to_model[model_id] for model_id in request.json]
+    return jsonify(success=True)
 
 
 # endregion
