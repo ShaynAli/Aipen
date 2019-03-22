@@ -21,20 +21,6 @@ function init() {
     setInterval(update, 5000);
 }
 
-// POST request when start button is clicked.
-//$(document).ready(function(){
-//    $('#start-button').on('click', function(e){
-//      e.preventDefault();
-//      $.ajax({
-//        url:'./update_plot',
-//        type:'post',
-//        success : function(data){
-//          $('#statistics').html(data)
-//        }
-//      })
-//    });
-//});
-
 function activity_select() {
     let x = document.getElementById("activity-selection").value;
     $("#model-table tr").remove();
@@ -91,9 +77,6 @@ function update() {
         console.log("Arena ID not null");
         if (arena_running) {
             console.log("Start button disabled");
-//            get_generations().then(function(response) {
-//                console.log(response);
-//            })
             $(document).ready(function(){
                 $.ajax({
                         url:'./arena/' + current_arena_id + "/generation_plot/START/END",
@@ -141,7 +124,6 @@ function post(path, params,) {
 // Create new arena and return the new id
 function new_arena() {
     console.log("Creating new arena");
-    //console.log(get_activities());
 
     post("/arena/new_arena",
     {

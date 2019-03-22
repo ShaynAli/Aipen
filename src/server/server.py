@@ -9,27 +9,30 @@ from arena.arena import MachineLearningArena
 from collections import defaultdict
 from itertools import count, chain
 from inspect import getsource
-import pdb
 
 
-# Configuration dicts
+# region Activity configuration
+
 activity_names = {
     FrankfurtStockPrediction: 'Frankfurt Stock Prediction'
 }
 
 activity_descriptions = {
     FrankfurtStockPrediction: '''
-        
+        Use the opening price of a few stocks from the Frankfurt Exchange to anticipate the price of a few other
+        stocks.\n
     '''
+}
+
+activities_to_models = {
+    FrankfurtStockPrediction: [RandomRangePredictor]
 }
 
 model_names = {
     RandomRangePredictor: 'Random Range Predictor'
 }
 
-activities_to_models = {
-    FrankfurtStockPrediction: [RandomRangePredictor]
-}
+# endregion
 
 app = Flask(__name__)
 http_methods = ['POST', 'GET']
@@ -212,10 +215,10 @@ def set_models(arena_id):
 def get_model(model_id):
     print(f'Returning model {model_id}')
     model = id_to_model[model_id]
-
-    model_name = model_names[type(model)]
-    model_source = model_to_source[type(model)]
-    return jsonify(success=True, model_name=model_name, model_source=model_source, model_params=model.parameters())
+    # model_name = model_names[type(model)]
+    # model_source = model_to_source[type(model)]
+    return jsonify(success=True, name='Random Predictor lmfaoo', preview='This is source code',
+                   secondary_preview=model.parameters())
 
 # endregion
 
@@ -225,8 +228,20 @@ def get_model(model_id):
 @app.route('/activity', methods=http_methods)
 def get_activities():
     print(f'Returning all activities')
-    return jsonify(activity_ids=[activity_id for activity_id in id_to_activity],
+    return jsonify(success=True, activity_ids=[activity_id for activity_id in id_to_activity],
                    activity_names=[activity_names[activity] for activity in activity_to_id])
+
+
+@app.route('/activity/<activity_id>', methods=http_methods)
+def get_activity(activity_id):
+    try:
+        activity = id_to_activity[activity_id]
+        print(f'Returning activity {activity_id}')
+        return jsonify(success=True, name=activity_names[activity],
+                       preview=activity_descriptions[activity], secondary_preview=activities_to_models[activity])
+    except KeyError:
+        print(f'Could not find activity {activity_id}')
+        return jsonify(success=False)
 
 
 @app.route('/activity/<activity_id>/models', methods=http_methods)
@@ -234,7 +249,7 @@ def get_models(activity_id):
     print(f'Returning models for activity {activity_id}')
     activity = id_to_activity[activity_id]
     models = activities_to_models[activity]
-    return jsonify(model_ids=[model_to_id[model] for model in models],
+    return jsonify(succes=True, model_ids=[model_to_id[model] for model in models],
                    model_names=[model_names[model] for model in models])
 
 # endregion
