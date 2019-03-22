@@ -54,7 +54,7 @@ function build_model_pool(data) {
         var m_id = data.model_ids[i];
         model_str += `
         <tr>
-            <td><input type="checkbox" onchange="model_select(this)" id="` + 
+            <td><input type="checkbox" onchange="model_select(this)" "id="` + 
             m_id + `"></td><td>`+ data.model_names[i] + `</td>
         </tr>
         `
@@ -64,16 +64,15 @@ function build_model_pool(data) {
 }
 
 function model_select(checkbox) {
-    var model_id = checkbox.id;
+    var model_id = checkbox.getAttribute("id");
+    console.log(checkbox);
     if (checkbox.checked) {
             
         if (!models.includes(model_id)) {
             console.log("selecting model " + model_id);
             models.push(model_id);
         }
-    } 
-    
-    else {
+    } else {
         if (models.includes(model_id)) {
             console.log("deselecting model " + model_id);
             models.splice(models.indexOf(model_id), 1);
@@ -138,15 +137,14 @@ function new_arena() {
 
     post("/arena/new_arena",
     {
-        'models': models,
+        'models': [],
         'activity': document.getElementById('activity-selection').value
     }
     ).then(function (response) {
         let arena_id = response["arena_id"];
         console.log("Generated new arena with id: " + arena_id);
         arena_list.push(arena_id);
-        set_arena(arena_id);
-        start_arena(arena_list);
+        set_arena(id);
     });
 }
 
