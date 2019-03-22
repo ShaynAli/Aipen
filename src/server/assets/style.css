@@ -89,6 +89,14 @@ table tr:nth-child(even) {
     background: #23283C;
 }
 
+#leader-board table td {
+    font-size: 90%;
+}
+
+option {
+    font-size: 120%;
+}
+
 .preview {
     background-color: #23283C;
     font-family: 'Ubuntu Mono', monospace;

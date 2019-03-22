@@ -1,5 +1,8 @@
-numpy
-bokeh
-quandl
-scikit-learn
+numpy==1.16
 flask
+bokeh
+scikit-learn
+keras
+tensorflow
+quandl
+pandas

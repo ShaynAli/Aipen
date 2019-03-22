@@ -4,8 +4,8 @@ with open('requirements.txt', 'r+') as requirements_file:
     requirements = requirements_file.read().splitlines()
 
 setup(
-    name='Aipen',
-    version='0.4.3',
+    name='aipen',
+    version='0.5.2',
     url='https://github.com/ShaynAli/Aipen',
     author='Shayaan Syed Ali',
     author_email='shayaan.syed.ali@gmail.com',

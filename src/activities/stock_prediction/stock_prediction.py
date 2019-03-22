@@ -1,7 +1,5 @@
 from activities.activities import MachineLearningActivity
 import quandl
-from _datetime import date, timedelta
-import pdb
 import numpy as np
 from datetime import date
 from dateutil.relativedelta import relativedelta
@@ -196,6 +194,8 @@ class FrankfurtStockPrediction(MachineLearningActivity):
 
     default_guess_tickers = ['CON_X']
 
+    n_days = 20
+
     def __init__(self, tickers=default_tickers, guess_tickers=default_guess_tickers):
         quandl.ApiConfig.api_key = 'z3rsXS2rz9ZXCe76xozE'
         self.code = 'FSE'
@@ -204,11 +204,11 @@ class FrankfurtStockPrediction(MachineLearningActivity):
 
     @property
     def x_shape(self):
-        return len(self.tickers), None
+        return FrankfurtStockPrediction.n_days, len(self.tickers)
 
     @property
     def y_shape(self):
-        return len(self.guess_tickers), None
+        return FrankfurtStockPrediction.n_days, len(self.guess_tickers)
 
     def next_data(self):
         from random import choice
@@ -237,7 +237,10 @@ class FrankfurtStockPrediction(MachineLearningActivity):
         except ValueError:
             return self.next_data()
 
-        return tickers, guess_tickers
+        x = np.transpose(tickers)[:FrankfurtStockPrediction.n_days, :]
+        y = np.transpose(guess_tickers)[:FrankfurtStockPrediction.n_days, :]
+
+        return x, y
 
     def get_ticker(self, ticker, start_date, end_date, field='Open'):
         return quandl.get(f'{self.code}/{ticker}', returns='numpy', start_date=start_date, end_date=end_date)[field]
@@ -245,5 +248,7 @@ class FrankfurtStockPrediction(MachineLearningActivity):
 
 if __name__ == '__main__':
     activity = FrankfurtStockPrediction()
-    data = [activity.next_data() for _ in range(3)]
-    pdb.set_trace()
+    while True:
+        x, y = activity.next_data()
+        from pdb import set_trace
+        set_trace()
