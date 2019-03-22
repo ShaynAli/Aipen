@@ -23,6 +23,7 @@ function init() {
 
 function activity_select() {
     let x = document.getElementById("activity-selection").value;
+    document.getElementById('model-table').hidden = false;
     $("#model-table tr").remove();
     document.getElementById("model-header").innerHTML = `
         <th>Enable</th> <th>Model Name</th>`;
@@ -33,6 +34,7 @@ function activity_select() {
 
     post('/activity/' + x).then(function(data) {
         console.log(data);
+        document.getElementById('primary-preview').innerHTML = data['']
     })
 }
 
