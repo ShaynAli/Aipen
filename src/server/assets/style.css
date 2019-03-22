@@ -97,4 +97,7 @@ table tr:nth-child(even) {
     margin: 10px;
     background-color: #23283C;
     height: 92.5%;
+    font-family: 'Ubuntu Mono', monospace;
+    overflow: hidden;
+    overflow-y: scroll;
 }
