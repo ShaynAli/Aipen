@@ -7,6 +7,7 @@ from activities.stock_prediction.stock_prediction import FrankfurtStockPredictio
 from activities.stock_prediction.stock_prediction_models import RandomRangePredictor
 from arena.arena import MachineLearningArena
 from collections import defaultdict
+from itertools import count
 import pdb
 
 app = Flask(__name__)
@@ -133,7 +134,7 @@ def stop_arena(arena_id):
 
 
 @app.route('/arena/<arena_id>/generation/<generation_number>', methods=http_methods)
-def arena_generation_score(arena_id, generation_number):
+def arena_generation_scores(arena_id, generation_number):
     try:
         generation_number = int(generation_number)
         arena = id_to_arena[arena_id]
@@ -146,9 +147,23 @@ def arena_generation_score(arena_id, generation_number):
     return jsonify(success=True, scores=model_id_to_score)
 
 
-@app.route('/arena/<arena_id>/generations/<start_generation>/<end_generation>')
-def temp(arena_id, start_generation, end_generation):
-    pass
+@app.route('/arena/<arena_id>/generations/<start>/<end>', methods=http_methods)
+def arena_generations_scores(arena_id, start, end):
+    try:
+        arena = id_to_arena[arena_id]
+    except KeyError:
+        print(f'Unable to find arena {arena_id}')
+        return jsonify(success=False)
+    if start == 'start' or start == 'START':
+        start = 0
+    if end == 'end' or end == 'END':
+        end = len(arena.score_history)
+    models_scores = {}
+    for generation_no, generation in zip(count(start), arena.score_history[start:end]):
+        for model, score in generation:
+            model_id = model_instance_id[model]
+            models_scores[model_id].append((generation_no, score))
+    return jsonify(success=False, generation_scores=models_scores)
 
 
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)

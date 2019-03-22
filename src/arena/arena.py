@@ -28,3 +28,4 @@ class MachineLearningArena:
     def auto_compete(self, live_ratio=0.5):
         x, y = self.activity.next_data()
         self.compete(x=x, y=y, live_ratio=live_ratio, score_function=evaluation.DEFAULT_SCORE_FUNCTION)
+
