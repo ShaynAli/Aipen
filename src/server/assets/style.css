@@ -17,10 +17,6 @@ body {
     margin: 0.5vw;
 }
 
-#controls-card {
-    grid-column: 1 / span 2;
-}
-
 h1 {
     font-weight: bold;
     font-size: 1em;
@@ -97,7 +93,7 @@ table tr:nth-child(even) {
     background-color: #23283C;
     font-family: 'Ubuntu Mono', monospace;
     margin: 10px;
-    height: 250px;
+    height: 320px;
     overflow: hidden;
     overflow-y: scroll;
 }
