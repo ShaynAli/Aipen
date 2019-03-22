@@ -158,11 +158,12 @@ def arena_generations_scores(arena_id, start, end):
         start = 0
     if end == 'end' or end == 'END':
         end = len(arena.score_history)
-    models_scores = {}
+    models_scores = defaultdict(list)
     for generation_no, generation in zip(count(start), arena.score_history[start:end]):
-        for model, score in generation:
+        for model, score in generation.items():
             model_id = model_instance_id[model]
             models_scores[model_id].append((generation_no, score))
+    pdb.set_trace()
     return jsonify(success=False, generation_scores=models_scores)
 
 
