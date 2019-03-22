@@ -215,10 +215,9 @@ def set_models(arena_id):
 def get_model(model_id):
     print(f'Returning model {model_id}')
     model = id_to_model[model_id]
-    # model_name = model_names[type(model)]
-    # model_source = model_to_source[type(model)]
-    return jsonify(success=True, name='Random Predictor lmfaoo', preview='This is source code',
-                   secondary_preview=model.parameters())
+    model_name = model_names[model]
+    model_source = model_to_source[model]
+    return jsonify(success=True, name=model_name, preview=model_source, secondary_preview=model.description())
 
 # endregion
 
