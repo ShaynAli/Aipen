@@ -147,8 +147,8 @@ def arena_generation_scores(arena_id, generation_number):
     return jsonify(success=True, scores=model_id_to_score)
 
 
-@app.route('/arena/<arena_id>/generations/<start>/<end>', methods=http_methods)
-def arena_generations_scores(arena_id, start, end):
+@app.route('/arena/<arena_id>/generation_plot/<start>/<end>', methods=http_methods)
+def arena_generation_plot_update(arena_id, start, end):
     try:
         arena = id_to_arena[arena_id]
     except KeyError:
@@ -163,7 +163,8 @@ def arena_generations_scores(arena_id, start, end):
         for model, score in generation.items():
             model_id = model_instance_id[model]
             models_scores[model_id].append((generation_no, score))
-    return jsonify(success=False, generation_scores=models_scores)
+    # TODO
+    return jsonify(success=True)
 
 
 @app.route('/arena/<arena_id>/set_models', methods=http_methods)
