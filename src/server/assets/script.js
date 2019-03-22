@@ -177,7 +177,7 @@ function stop_arena(id) {
 
 // Retrieve a specified generation, or the last if num is -1
 function get_generation() {
-    let num = document.getElementById('generation-entry').value
+    let num = document.getElementById('generation-entry').value;
 
     post("/arena/" + current_arena_id + "/generation/" + num).then( function(response) {
         console.log(response);
